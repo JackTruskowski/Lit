@@ -49,10 +49,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <segue destination="aMf-ta-IVw" kind="popoverPresentation" id="Trj-wt-0wm">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
+                        <segue destination="kZc-gu-8hB" kind="popoverPresentation" id="Ep2-7i-6FV">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
+                        <segue destination="vi9-at-wa3" kind="popoverPresentation" id="J8j-s6-BPH">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="251" y="418"/>
+            <point key="canvasLocation" x="265" y="390"/>
         </scene>
         <!--Event View Controller-->
         <scene sceneID="8bV-Hb-5cT">
@@ -70,7 +81,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sc-gS-0HS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1121" y="418"/>
+            <point key="canvasLocation" x="929" y="1192"/>
         </scene>
         <!--Venue View Controller-->
         <scene sceneID="dsk-fc-Qul">
@@ -88,7 +99,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zd4-RK-74O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1121" y="1103"/>
+            <point key="canvasLocation" x="251" y="1192"/>
         </scene>
         <!--User View Controller-->
         <scene sceneID="vIt-AD-3bw">
@@ -106,7 +117,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vMC-pX-xpE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1121" y="1802"/>
+            <point key="canvasLocation" x="-467" y="1192"/>
         </scene>
     </scenes>
 </document>
