@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1713" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Qr3-8p-6h7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Qr3-8p-6h7">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Settings View Controller-->
@@ -47,19 +49,23 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1TW-TT-bFS">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dja-zg-hkC">
+                                        <rect key="frame" x="488" y="562" width="104" height="30"/>
+                                        <state key="normal" title="Segue to Event"/>
+                                        <connections>
+                                            <segue destination="aMf-ta-IVw" kind="show" id="oP6-gc-JpL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <connections>
-                        <segue destination="aMf-ta-IVw" kind="popoverPresentation" id="Trj-wt-0wm">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
-                        <segue destination="kZc-gu-8hB" kind="popoverPresentation" id="Ep2-7i-6FV">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
-                        <segue destination="vi9-at-wa3" kind="popoverPresentation" id="J8j-s6-BPH">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -76,8 +82,55 @@
                     <view key="view" contentMode="scaleToFill" id="H9n-Pl-C4g">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="EPC-TX-0oJ">
+                                <rect key="frame" x="20" y="168" width="560" height="412"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dTrenagpc" translatesAutoresizingMaskIntoConstraints="NO" id="MQm-mT-qgn">
+                                <rect key="frame" x="20" y="20" width="133" height="133"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="MQm-mT-qgn" secondAttribute="height" multiplier="1:1" id="oeA-06-i46"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGS-oi-YE9">
+                                <rect key="frame" x="168" y="20" width="412" height="56"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Host" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p9b-gw-fap">
+                                <rect key="frame" x="168" y="100" width="412" height="60"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="p9b-gw-fap" firstAttribute="leading" secondItem="MQm-mT-qgn" secondAttribute="trailing" constant="15" id="ADe-s0-TF8"/>
+                            <constraint firstItem="p9b-gw-fap" firstAttribute="trailing" secondItem="H9n-Pl-C4g" secondAttribute="trailingMargin" id="HD0-Q9-AJS"/>
+                            <constraint firstItem="EPC-TX-0oJ" firstAttribute="trailing" secondItem="H9n-Pl-C4g" secondAttribute="trailingMargin" id="Hdg-ma-5hp"/>
+                            <constraint firstItem="EPC-TX-0oJ" firstAttribute="top" secondItem="MQm-mT-qgn" secondAttribute="bottom" constant="15" id="K5b-UQ-5Y2"/>
+                            <constraint firstItem="p9b-gw-fap" firstAttribute="top" secondItem="sGS-oi-YE9" secondAttribute="bottom" constant="24" id="NiT-Jr-N8M"/>
+                            <constraint firstItem="sGS-oi-YE9" firstAttribute="leading" secondItem="MQm-mT-qgn" secondAttribute="trailing" constant="15" id="Qh4-g3-trv"/>
+                            <constraint firstItem="sGS-oi-YE9" firstAttribute="width" secondItem="p9b-gw-fap" secondAttribute="height" multiplier="103:15" id="RFR-4H-0CH"/>
+                            <constraint firstItem="sGS-oi-YE9" firstAttribute="top" secondItem="MQm-mT-qgn" secondAttribute="top" id="T60-Lx-rVt"/>
+                            <constraint firstItem="sGS-oi-YE9" firstAttribute="top" secondItem="4po-pp-rTq" secondAttribute="bottom" id="UVn-3r-IpZ"/>
+                            <constraint firstItem="sGS-oi-YE9" firstAttribute="trailing" secondItem="H9n-Pl-C4g" secondAttribute="trailingMargin" id="VEm-gN-FiZ"/>
+                            <constraint firstItem="MQm-mT-qgn" firstAttribute="top" secondItem="4po-pp-rTq" secondAttribute="bottom" id="WLB-U2-IZ8"/>
+                            <constraint firstItem="EPC-TX-0oJ" firstAttribute="leading" secondItem="H9n-Pl-C4g" secondAttribute="leadingMargin" id="Xni-NE-NcJ"/>
+                            <constraint firstItem="EPC-TX-0oJ" firstAttribute="top" secondItem="p9b-gw-fap" secondAttribute="bottom" constant="8" id="wCB-72-xSL"/>
+                            <constraint firstItem="Z4V-e0-Ijh" firstAttribute="top" secondItem="EPC-TX-0oJ" secondAttribute="bottom" constant="20" id="x3l-mx-iid"/>
+                            <constraint firstItem="MQm-mT-qgn" firstAttribute="leading" secondItem="H9n-Pl-C4g" secondAttribute="leadingMargin" id="yo4-C9-ikF"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="eventHost" destination="p9b-gw-fap" id="fM2-ed-LGH"/>
+                        <outlet property="eventImage" destination="MQm-mT-qgn" id="HgQ-QX-zbA"/>
+                        <outlet property="eventTableView" destination="EPC-TX-0oJ" id="WUD-Ln-mvP"/>
+                        <outlet property="eventTitle" destination="sGS-oi-YE9" id="BrX-CE-CGy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sc-gS-0HS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -120,4 +173,7 @@
             <point key="canvasLocation" x="-461" y="1192"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="dTrenagpc" width="133" height="133"/>
+    </resources>
 </document>

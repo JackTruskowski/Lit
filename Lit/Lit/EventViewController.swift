@@ -9,17 +9,32 @@
 import UIKit
 
 class EventViewController: UIViewController {
-    var event = Event()
+    
+    var event : Event?
 
+    //storyboard vars
+    @IBOutlet weak var eventTitle: UILabel!
+    @IBOutlet weak var eventHost: UILabel!
+    @IBOutlet weak var eventImage: UIImageView!
+    @IBOutlet weak var eventTableView: UITableView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        if event != nil{
+            setupView()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupView(){
+        eventTitle.text = event?.title
+        eventHost.text = event?.host?.name
     }
     
 
