@@ -19,8 +19,8 @@ class Event{
     //optional vars
     var startTime: NSDate?
     var endTime: NSDate?
-    private var attendanceCount : Int
-    private var attendees : [User] = []
+    var attendanceCount : Int
+    var attendees : [User] = []
     
     
     //functions

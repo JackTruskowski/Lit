@@ -21,6 +21,7 @@
 		86D6BF731CC6C2E0004E44D2 /* VenueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF721CC6C2E0004E44D2 /* VenueViewController.swift */; };
 		86D6BF751CC6C32C004E44D2 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF741CC6C32C004E44D2 /* UserViewController.swift */; };
 		86D6BF771CC6C3E6004E44D2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */; };
+		A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */; };
 		A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89E974B1CCC0F4400B463A0 /* MapPin.swift */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +63,7 @@
 		86D6BF721CC6C2E0004E44D2 /* VenueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueViewController.swift; sourceTree = "<group>"; };
 		86D6BF741CC6C32C004E44D2 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttendeeTableViewCell.swift; sourceTree = "<group>"; };
 		A89E974B1CCC0F4400B463A0 /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,6 +129,7 @@
 				86D6BF451CC6BEE0004E44D2 /* LaunchScreen.storyboard */,
 				86D6BF481CC6BEE0004E44D2 /* Info.plist */,
 				A89E974B1CCC0F4400B463A0 /* MapPin.swift */,
+				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
 			);
 			path = Lit;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86D6BF6F1CC6C0F8004E44D2 /* UserModel.swift in Sources */,
+				A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */,
 				86D6BF751CC6C32C004E44D2 /* UserViewController.swift in Sources */,
 				86D6BF731CC6C2E0004E44D2 /* VenueViewController.swift in Sources */,
 				86D6BF3F1CC6BEE0004E44D2 /* MapViewController.swift in Sources */,
@@ -432,6 +436,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Lit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JCS.Lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -443,6 +448,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Lit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JCS.Lit;
 				PRODUCT_NAME = "$(TARGET_NAME)";

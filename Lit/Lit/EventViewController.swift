@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EventViewController: UIViewController {
+class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var event : Event?
 
@@ -18,6 +18,7 @@ class EventViewController: UIViewController {
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventTableView: UITableView!
     
+    @IBOutlet weak var attendanceCount: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,9 @@ class EventViewController: UIViewController {
         if event != nil{
             setupView()
         }
+        
+        eventTableView.dataSource = self
+        eventTableView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,8 +39,32 @@ class EventViewController: UIViewController {
     func setupView(){
         eventTitle.text = event?.title
         eventHost.text = event?.venue.name
+        attendanceCount.text = "\((event?.attendanceCount)!)"
     }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(event?.attendees.count)
+        return (event?.attendees.count)!
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("aTableViewCell") as! AttendeeTableViewCell
+        
+        if event?.attendees[indexPath.row].picture != nil{
+            cell.userImage.image = event?.attendees[indexPath.row].picture
+        }else{
+            cell.userImage.image = UIImage(named: "useravatar")
+        }
+        cell.nameLabel.text = event?.attendees[indexPath.row].name
+        return cell
+    }
+    
+//    
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        performSegueWithIdentifier("WebSegue", sender: indexPath)
+//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+//    }
+//    
 
     
 

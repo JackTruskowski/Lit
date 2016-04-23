@@ -6,11 +6,11 @@
 //  Copyright © 2016 Jack Chris and Simon. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class User{
     var name: String?
-    var picture = 0
+    var picture : UIImage?
     var passwordHash = 0
     var uniqueID = -1
 }

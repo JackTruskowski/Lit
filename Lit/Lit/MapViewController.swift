@@ -62,8 +62,32 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         aVenue.name = "Studzinski"
         aVenue.location = mapView.userLocation.location
         let anEvent = Event(eventTitle: "Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: aHost)
+        
+        //add some people for testing
+        let user1 = User()
+        user1.name = "John Doe"
+        user1.uniqueID = 1
+        let user2 = User()
+        user2.name = "Jane Doe"
+        user2.uniqueID = 2
+        let user3 = User()
+        user3.name = "Simon Moushabeck"
+        user3.uniqueID = 3
+        let user4 = User()
+        user4.name = "Chris MacDonald"
+        user4.uniqueID = 4
+        
+        anEvent.addAttendee(user1)
+        anEvent.addAttendee(user2)
+        anEvent.addAttendee(user3)
+        anEvent.addAttendee(user4)
+        anEvent.updateAttendance(4)
+        
         addedEvents.append(anEvent)
-        print(addedEvents.count)
+        
+        
+        
+        
         
     }
     
