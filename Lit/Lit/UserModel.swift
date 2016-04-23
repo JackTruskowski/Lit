@@ -12,4 +12,5 @@ class User{
     var name: String?
     var picture = 0
     var passwordHash = 0
+    var uniqueID = -1
 }

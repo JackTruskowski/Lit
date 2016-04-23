@@ -19,9 +19,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     //Todo: better way to store this, maybe hashing of some sort by location
     var addedEvents : [Event] = []
     
-    //Data structure to map pins to their associated Event
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +42,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         //add all the events to the map as annotations
         for var i = 0; i < addedEvents.count; ++i {
-            let coordinates = CLLocationCoordinate2DMake((addedEvents[i].venue?.location!.coordinate.latitude)!, (addedEvents[i].venue?.location!.coordinate.longitude)!)
+            let coordinates = CLLocationCoordinate2DMake((addedEvents[i].venue.location!.coordinate.latitude), (addedEvents[i].venue.location!.coordinate.longitude))
             let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: addedEvents[i])
             mapView.addAnnotation(dropPin)
         }
@@ -56,7 +53,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         //test event data
         //vars for testing only
-        let anEvent = Event()
         let aHost = User()
         let aVenue = Venue()
         
@@ -65,7 +61,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         aHost.name = "Jack Truskowski"
         aVenue.name = "Studzinski"
         aVenue.location = mapView.userLocation.location
-        anEvent.initWithParams("Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: aHost)
+        let anEvent = Event(eventTitle: "Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: aHost)
         addedEvents.append(anEvent)
         print(addedEvents.count)
         

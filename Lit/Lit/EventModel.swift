@@ -10,18 +10,21 @@ import Foundation
 
 class Event{
     
-    //variables
-    var title: String?
+    //required vars upon initialization
+    var title: String
+    var description: String
+    var host: User
+    var venue: Venue
+    
+    //optional vars
     var startTime: NSDate?
     var endTime: NSDate?
-    var description: String?
-    var venue: Venue?
-    var host: User?
+    private var attendanceCount : Int
+    private var attendees : [User] = []
     
     
     //functions
-    
-    func initWithParams(eventTitle: String, eventStartTime: NSDate?, eventEndTime: NSDate?, eventDescription: String, eventVenue: Venue?, eventHost: User){
+    init(eventTitle: String, eventStartTime: NSDate?, eventEndTime: NSDate?, eventDescription: String, eventVenue: Venue, eventHost: User){
         
         title = eventTitle
         startTime = eventStartTime
@@ -29,7 +32,36 @@ class Event{
         description = eventDescription
         venue = eventVenue
         host = eventHost
+        attendanceCount = 0
+    }
+    
+    //Receives a change in attendance numbers (ie -1 = one person left) and updates attendanceCount
+    func updateAttendance(changeInAttendance : Int){
+        if attendanceCount + changeInAttendance > 0 {
+            attendanceCount += changeInAttendance
+        }else{
+            attendanceCount = 0
+        }
         
+    }
+    
+    func addAttendee(person: User){
+        //ensure the user hasn't already checked in (will this be necessary?)
+        for var i = 0; i < attendees.count; ++i {
+            if person.uniqueID == attendees[i].uniqueID {
+                return
+            }
+        }
+        attendees.append(person)
+    }
+    
+    func removeAttendee(person: User){
+        //loop thru and find the user
+        for var i = 0; i < attendees.count; ++i {
+            if person.uniqueID == attendees[i].uniqueID {
+                attendees.removeAtIndex(i)
+            }
+        }
     }
     
     
