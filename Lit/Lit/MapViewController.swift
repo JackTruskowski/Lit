@@ -11,17 +11,44 @@ import MapKit
 
 class MapViewController: UIViewController {
     
+    @IBOutlet var mapView: MKMapView!
+    
+    //Todo: better way to store this, maybe hashing of some sort 
+    var addedEvents : [Event] = []
+    
+    
+    //vars for testing only
     var anEvent = Event()
     var aHost = User()
+    var aVenue = Venue()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        //get permission to use location data
+        mapView.showsUserLocation = true
         
         //make an event for testing
         aHost.name = "Jack Truskowski"
-        anEvent.initWithParams("Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: nil, eventHost: aHost)
+        aVenue.name = "Studzinski"
+        anEvent.initWithParams("Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: aHost)
         
+    }
+    
+    @IBAction func zoomToLoc(sender: UIBarButtonItem) {
+        panAndZoomToUserLocation()
+    }
+    
+    @IBAction func refreshMapData(sender: UIBarButtonItem) {
+        
+    }
+    
+    func panAndZoomToUserLocation(){
+        
+        let userLocation = mapView.userLocation
+        let region = MKCoordinateRegionMakeWithDistance(userLocation.location!.coordinate, 2000, 2000)
+        
+        mapView.setRegion(region, animated: true)
         
     }
 

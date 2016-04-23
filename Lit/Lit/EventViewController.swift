@@ -34,7 +34,7 @@ class EventViewController: UIViewController {
     
     func setupView(){
         eventTitle.text = event?.title
-        eventHost.text = event?.host?.name
+        eventHost.text = event?.venue?.name
     }
     
 

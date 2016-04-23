@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import MapKit
 
 class Venue {
     var name: String?
     var address: String? // maybe this will be location when we use mapkit
+    var location: CLLocation?
 }
