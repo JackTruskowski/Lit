@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Qr3-8p-6h7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LQr-qB-6jA">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -60,6 +60,10 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Slw-O7-XmV">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                             </mapView>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gup-Oc-0OZ">
+                                <rect key="frame" x="50" y="41" width="130" height="115"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -93,8 +97,13 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="igo-YS-NCz"/>
                     <connections>
                         <outlet property="mapView" destination="Slw-O7-XmV" id="Qqp-2P-VMJ"/>
+                        <outlet property="popoverAnchor" destination="Gup-Oc-0OZ" id="6cw-Lq-hrT"/>
+                        <segue destination="aMf-ta-IVw" kind="popoverPresentation" identifier="eventPopover" popoverAnchorView="Gup-Oc-0OZ" id="nez-jY-HbH">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6bL-Xu-2Wr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -112,7 +121,7 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="S5o-yZ-cFd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-511" y="12"/>
+            <point key="canvasLocation" x="-1529" y="-320"/>
         </scene>
         <!--Event View Controller-->
         <scene sceneID="8bV-Hb-5cT">
@@ -168,6 +177,7 @@
                             <constraint firstItem="MQm-mT-qgn" firstAttribute="leading" secondItem="H9n-Pl-C4g" secondAttribute="leadingMargin" id="yo4-C9-ikF"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="UKo-He-dwV"/>
                     <connections>
                         <outlet property="eventHost" destination="p9b-gw-fap" id="fM2-ed-LGH"/>
                         <outlet property="eventImage" destination="MQm-mT-qgn" id="HgQ-QX-zbA"/>
@@ -177,7 +187,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sc-gS-0HS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="981" y="1192"/>
+            <point key="canvasLocation" x="1041" y="1108"/>
         </scene>
         <!--Venue View Controller-->
         <scene sceneID="dsk-fc-Qul">

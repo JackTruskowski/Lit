@@ -9,19 +9,23 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet var mapView: MKMapView!
     
-    //Todo: better way to store this, maybe hashing of some sort 
+    //this hidden view is needed to anchor the popover
+    @IBOutlet weak var popoverAnchor: UIView!
+    
+    //Todo: better way to store this, maybe hashing of some sort by location
     var addedEvents : [Event] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        mapView.delegate = self
         
         //get permission to use location data
         mapView.showsUserLocation = true
-        
     }
     
     //Actions triggered by the user
@@ -39,7 +43,6 @@ class MapViewController: UIViewController {
         for var i = 0; i < addedEvents.count; ++i {
             let dropPin = MKPointAnnotation()
             dropPin.coordinate = CLLocationCoordinate2DMake((addedEvents[i].venue?.location!.coordinate.latitude)!, (addedEvents[i].venue?.location!.coordinate.longitude)!)
-            dropPin.title = addedEvents[i].title
             mapView.addAnnotation(dropPin)
         }
     }
@@ -79,14 +82,47 @@ class MapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //this is called when a pin is clicked, segues to the event view
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView)
+    {
+        if((view.annotation?.title)! != "Current Location"){
+            popoverAnchor.frame = CGRectMake(view.frame.origin.x+10,
+                view.frame.origin.y,
+                view.frame.size.width,
+                view.frame.size.height);
+            performSegueWithIdentifier("eventPopover", sender: nil)
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController
         if let newVC = destination as? EventViewController{
             //pass the appropriate event here
+            if let ppc = newVC.popoverPresentationController {
+                ppc.delegate = self
+            }
             newVC.event = addedEvents[0]
         }
     }
 
+    /*
+        the next two functions that provide a back button on the popover view for iphones is taken from an answer on:
+            http://stackoverflow.com/questions/25860781/how-to-use-dismiss-an-iphone-popover-in-an-adaptive-storyboard
+    */
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle
+    {
+        return .FullScreen
+    }
+    func presentationController(controller: UIPresentationController,
+        viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController?{
+            
+            let navController:UINavigationController = UINavigationController(rootViewController: controller.presentedViewController)
+            controller.presentedViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action:"done")
+            return navController
+    }
+    func done (){
+        presentedViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
 
 }
 
