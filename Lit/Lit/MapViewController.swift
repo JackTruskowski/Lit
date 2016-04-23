@@ -15,12 +15,6 @@ class MapViewController: UIViewController {
     
     //Todo: better way to store this, maybe hashing of some sort 
     var addedEvents : [Event] = []
-    
-    
-    //vars for testing only
-    var anEvent = Event()
-    var aHost = User()
-    var aVenue = Venue()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,20 +22,48 @@ class MapViewController: UIViewController {
         //get permission to use location data
         mapView.showsUserLocation = true
         
-        //make an event for testing
-        aHost.name = "Jack Truskowski"
-        aVenue.name = "Studzinski"
-        anEvent.initWithParams("Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: aHost)
-        
     }
     
+    //Actions triggered by the user
     @IBAction func zoomToLoc(sender: UIBarButtonItem) {
         panAndZoomToUserLocation()
     }
     
+    //get updated event data for their location and populate map
     @IBAction func refreshMapData(sender: UIBarButtonItem) {
         
+        //remove all old annotations
+        mapView.removeAnnotations(mapView.annotations)
+        
+        //add all the events to the map as annotations
+        for var i = 0; i < addedEvents.count; ++i {
+            let dropPin = MKPointAnnotation()
+            dropPin.coordinate = CLLocationCoordinate2DMake((addedEvents[i].venue?.location!.coordinate.latitude)!, (addedEvents[i].venue?.location!.coordinate.longitude)!)
+            dropPin.title = addedEvents[i].title
+            mapView.addAnnotation(dropPin)
+        }
     }
+    
+    //add an event to the map (pressing this button should also trigger a popover for adding event info)
+    @IBAction func addEvent(sender: UIBarButtonItem) {
+        
+        //test event data
+        //vars for testing only
+        let anEvent = Event()
+        let aHost = User()
+        let aVenue = Venue()
+        
+        
+        //make an event for testing
+        aHost.name = "Jack Truskowski"
+        aVenue.name = "Studzinski"
+        aVenue.location = mapView.userLocation.location
+        anEvent.initWithParams("Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: aHost)
+        addedEvents.append(anEvent)
+        print(addedEvents.count)
+        
+    }
+    
     
     func panAndZoomToUserLocation(){
         
@@ -60,8 +82,8 @@ class MapViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController
         if let newVC = destination as? EventViewController{
-            print(anEvent.title, anEvent.host?.name)
-            newVC.event = anEvent
+            //pass the appropriate event here
+            newVC.event = addedEvents[0]
         }
     }
 

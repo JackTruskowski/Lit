@@ -50,6 +50,11 @@
                                             <action selector="refreshMapData:" destination="LQr-qB-6jA" id="aCb-WV-aep"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Add Event" id="SIs-62-hAC">
+                                        <connections>
+                                            <action selector="addEvent:" destination="LQr-qB-6jA" id="hs2-B9-7T0"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Slw-O7-XmV">
