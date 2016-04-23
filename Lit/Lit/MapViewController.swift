@@ -18,6 +18,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //Todo: better way to store this, maybe hashing of some sort by location
     var addedEvents : [Event] = []
+    
+    //Data structure to map pins to their associated Event
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +45,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         //add all the events to the map as annotations
         for var i = 0; i < addedEvents.count; ++i {
-            let dropPin = MKPointAnnotation()
-            dropPin.coordinate = CLLocationCoordinate2DMake((addedEvents[i].venue?.location!.coordinate.latitude)!, (addedEvents[i].venue?.location!.coordinate.longitude)!)
+            let coordinates = CLLocationCoordinate2DMake((addedEvents[i].venue?.location!.coordinate.latitude)!, (addedEvents[i].venue?.location!.coordinate.longitude)!)
+            let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: addedEvents[i])
             mapView.addAnnotation(dropPin)
         }
     }
@@ -57,7 +61,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         let aVenue = Venue()
         
         
-        //make an event for testing
+        //make a sample event for testing
         aHost.name = "Jack Truskowski"
         aVenue.name = "Studzinski"
         aVenue.location = mapView.userLocation.location
@@ -67,7 +71,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
     }
     
-    
+    //TODO: It would be nice to do this immediately, but that causes a crash - the user must click the zoom button for now
     func panAndZoomToUserLocation(){
         
         let userLocation = mapView.userLocation
@@ -90,18 +94,22 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
                 view.frame.origin.y,
                 view.frame.size.width,
                 view.frame.size.height);
-            performSegueWithIdentifier("eventPopover", sender: nil)
+            performSegueWithIdentifier("eventPopover", sender: view)
         }
     }
     
+    //Passes any objects the new view might need
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController
         if let newVC = destination as? EventViewController{
             //pass the appropriate event here
+            if let theSender = sender?.annotation as? MapPin{
+                newVC.event = theSender.event
+            }
             if let ppc = newVC.popoverPresentationController {
                 ppc.delegate = self
             }
-            newVC.event = addedEvents[0]
+            
         }
     }
 
