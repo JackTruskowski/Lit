@@ -28,6 +28,46 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //get permission to use location data
         mapView.showsUserLocation = true
         
+        //make a sample event from a different user for testing
+        let aVenue = Venue()
+        let aHost = User()
+        aHost.name = "Guy Chill"
+        aHost.uniqueID = 2000
+        
+        //make a sample event for testing
+        //aHost.name = "Jack Truskowski"
+        aVenue.name = "Smith Union"
+        let aLocation = CLLocation(latitude: 37.781536, longitude: -122.426327)
+        aVenue.location = aLocation
+        let anEvent = Event(eventTitle: "Club Fair", eventStartTime: nil, eventEndTime: nil, eventDescription: "A fair with clubs", eventVenue: aVenue, eventHost: aHost)
+        
+        //add some people for testing
+        let user1 = User()
+        user1.name = "John Doe"
+        user1.uniqueID = 1
+        let user2 = User()
+        user2.name = "Jane Doe"
+        user2.uniqueID = 2
+        let user3 = User()
+        user3.name = "Simon Moushabeck"
+        user3.uniqueID = 3
+        let user4 = User()
+        user4.name = "Chris MacDonald"
+        user4.uniqueID = 4
+        
+        anEvent.addAttendee(user1)
+        anEvent.addAttendee(user2)
+        anEvent.addAttendee(user3)
+        anEvent.addAttendee(user4)
+        anEvent.updateAttendance(4)
+        
+        addedEvents.append(anEvent)
+        
+        
+        
+        
+        
+        
     }
     
     //Actions triggered by the user
@@ -47,8 +87,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             //vars for testing only
             //let aHost = User()
             let aVenue = Venue()
-            
-            
+        
             //make a sample event for testing
             //aHost.name = "Jack Truskowski"
             aVenue.name = "Studzinski"
@@ -69,11 +108,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             user4.name = "Chris MacDonald"
             user4.uniqueID = 4
             
+            anEvent.addAttendee(theUser!)
             anEvent.addAttendee(user1)
             anEvent.addAttendee(user2)
             anEvent.addAttendee(user3)
             anEvent.addAttendee(user4)
-            anEvent.updateAttendance(4)
+            anEvent.updateAttendance(5)
             
             addedEvents.append(anEvent)
         }else{

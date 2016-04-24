@@ -20,7 +20,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventTableView: UITableView!
     @IBOutlet weak var deleteEventButton: UIButton!
-    
     @IBOutlet weak var attendanceCount: UILabel!
     
     override func viewDidLoad() {
@@ -39,6 +38,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         // Dispose of any resources that can be recreated.
     }
     
+    //called when the view loads to populate all the event fields in the view and hide the delete button
     func setupView(){
         eventTitle.text = event?.title
         eventHost.text = event?.venue.name
@@ -53,10 +53,12 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         
     }
     
+    //returns the number of rows that the attendee table will have
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (event?.attendees.count)!
     }
     
+    //action that deletes the current event, removes it from the map, and dismisses the popover view
     @IBAction func deleteEventPressed(sender: UIButton) {
         
         if mapInstance != nil && event != nil{
@@ -66,6 +68,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
+    //populates the table with the attendees and their images
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("aTableViewCell") as! AttendeeTableViewCell
         

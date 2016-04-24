@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
     
     var myProfile : User?
     var mapVC : MapViewController?
@@ -30,10 +30,13 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         }
         mapVC?.theUser = myProfile
         
+        
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.profileName.delegate = self
 
         //tap gesture recognizer for touching the picture
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
@@ -103,6 +106,13 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         
         dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    //hides the keyboard when the user hits the return button
+    func textFieldShouldReturn(userText: UITextField) -> Bool {
+        userText.resignFirstResponder()
+        return true;
+    }
+    
 
     /*
     // MARK: - Navigation
