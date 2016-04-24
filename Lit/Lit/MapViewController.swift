@@ -18,7 +18,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //Todo: better way to store this, maybe hashing of some sort by location
     var addedEvents : [Event] = []
-    
+    var theUser : User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +27,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         //get permission to use location data
         mapView.showsUserLocation = true
+        
     }
     
     //Actions triggered by the user
@@ -36,6 +37,62 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //get updated event data for their location and populate map
     @IBAction func refreshMapData(sender: UIBarButtonItem) {
+        refreshAnnotations()
+    }
+    
+    //add an event to the map (pressing this button should also trigger a popover for adding event info)
+    @IBAction func addEvent(sender: UIBarButtonItem) {
+        if(theUser != nil){
+            //test event data
+            //vars for testing only
+            //let aHost = User()
+            let aVenue = Venue()
+            
+            
+            //make a sample event for testing
+            //aHost.name = "Jack Truskowski"
+            aVenue.name = "Studzinski"
+            aVenue.location = mapView.userLocation.location
+            let anEvent = Event(eventTitle: "Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: theUser!)
+            
+            //add some people for testing
+            let user1 = User()
+            user1.name = "John Doe"
+            user1.uniqueID = 1
+            let user2 = User()
+            user2.name = "Jane Doe"
+            user2.uniqueID = 2
+            let user3 = User()
+            user3.name = "Simon Moushabeck"
+            user3.uniqueID = 3
+            let user4 = User()
+            user4.name = "Chris MacDonald"
+            user4.uniqueID = 4
+            
+            anEvent.addAttendee(user1)
+            anEvent.addAttendee(user2)
+            anEvent.addAttendee(user3)
+            anEvent.addAttendee(user4)
+            anEvent.updateAttendance(4)
+            
+            addedEvents.append(anEvent)
+        }else{
+            
+            //give an alert saying the user must be signed in
+            let alertController = UIAlertController(title: "Error", message:
+                "You must be signed in to add an event", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func initializeUser(aUser : User){
+        theUser = aUser
+    }
+    
+    func refreshAnnotations(){
         
         //remove all old annotations
         mapView.removeAnnotations(mapView.annotations)
@@ -48,48 +105,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         }
     }
     
-    //add an event to the map (pressing this button should also trigger a popover for adding event info)
-    @IBAction func addEvent(sender: UIBarButtonItem) {
-        
-        //test event data
-        //vars for testing only
-        let aHost = User()
-        let aVenue = Venue()
-        
-        
-        //make a sample event for testing
-        aHost.name = "Jack Truskowski"
-        aVenue.name = "Studzinski"
-        aVenue.location = mapView.userLocation.location
-        let anEvent = Event(eventTitle: "Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: aHost)
-        
-        //add some people for testing
-        let user1 = User()
-        user1.name = "John Doe"
-        user1.uniqueID = 1
-        let user2 = User()
-        user2.name = "Jane Doe"
-        user2.uniqueID = 2
-        let user3 = User()
-        user3.name = "Simon Moushabeck"
-        user3.uniqueID = 3
-        let user4 = User()
-        user4.name = "Chris MacDonald"
-        user4.uniqueID = 4
-        
-        anEvent.addAttendee(user1)
-        anEvent.addAttendee(user2)
-        anEvent.addAttendee(user3)
-        anEvent.addAttendee(user4)
-        anEvent.updateAttendance(4)
-        
-        addedEvents.append(anEvent)
-        
-        
-        
-        
-        
+    //removes an event from the array
+    func deleteEvent(anEvent: Event){
+        for var i=0; i<addedEvents.count; ++i{
+            if addedEvents[i] === anEvent {
+                addedEvents.removeAtIndex(i)
+            }
+        }
     }
+    
     
     //TODO: It would be nice to do this immediately, but that causes a crash - the user must click the zoom button for now
     func panAndZoomToUserLocation(){
@@ -122,9 +146,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController
         if let newVC = destination as? EventViewController{
+            
             //pass the appropriate event here
             if let theSender = sender?.annotation as? MapPin{
                 newVC.event = theSender.event
+                //give the view controller this MapViewController instance for event deletion
+                newVC.mapInstance = self
             }
             if let ppc = newVC.popoverPresentationController {
                 ppc.delegate = self

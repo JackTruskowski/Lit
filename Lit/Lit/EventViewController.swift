@@ -11,12 +11,15 @@ import UIKit
 class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var event : Event?
+    var mapInstance : MapViewController?
 
     //storyboard vars
     @IBOutlet weak var eventTitle: UILabel!
-    @IBOutlet weak var eventHost: UILabel!
+    @IBOutlet weak var eventHost: UILabel!  // NOTE: host and venue are swapped
+    @IBOutlet weak var eventVenue: UILabel! // because renaming them was creating problems
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventTableView: UITableView!
+    @IBOutlet weak var deleteEventButton: UIButton!
     
     @IBOutlet weak var attendanceCount: UILabel!
     
@@ -39,12 +42,28 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     func setupView(){
         eventTitle.text = event?.title
         eventHost.text = event?.venue.name
+        eventVenue.text = event?.host.name
         attendanceCount.text = "\((event?.attendanceCount)!)"
+        
+        if mapInstance?.theUser?.uniqueID != event?.host.uniqueID {
+            deleteEventButton.hidden = true
+        }else{
+            deleteEventButton.hidden = false
+        }
+        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(event?.attendees.count)
         return (event?.attendees.count)!
+    }
+    
+    @IBAction func deleteEventPressed(sender: UIButton) {
+        
+        if mapInstance != nil && event != nil{
+            mapInstance?.deleteEvent(event!)
+            mapInstance?.refreshAnnotations()
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -58,13 +77,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         cell.nameLabel.text = event?.attendees[indexPath.row].name
         return cell
     }
-    
-//    
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        performSegueWithIdentifier("WebSegue", sender: indexPath)
-//        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-//    }
-//    
 
     
 

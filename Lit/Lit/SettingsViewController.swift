@@ -8,12 +8,55 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    var myProfile : User?
+    var mapVC : MapViewController?
+    
+    //profile fields
+    @IBOutlet weak var profileImage: UIImageView!
+    @IBOutlet weak var profileName: UITextField!
+    
+    @IBAction func updateProfile(sender: UIButton) {
+        
+        if myProfile != nil{
+            myProfile!.name = profileName.text
+            myProfile!.picture = profileImage.image
+        }else{
+            myProfile = User()
+            myProfile!.uniqueID = 101
+            myProfile!.name = profileName.text
+            myProfile!.picture = profileImage.image
+        }
+        mapVC?.theUser = myProfile
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        //tap gesture recognizer for touching the picture
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+        profileImage.userInteractionEnabled = true
+        profileImage.addGestureRecognizer(tapGestureRecognizer)
+        
+        //update profile picture
+        if myProfile?.picture != nil {
+            profileImage.image = myProfile!.picture
+        }else{
+            profileImage.image = UIImage(named: "useravatar")
+        }
+        
+        //add the detail
+        if let split = self.splitViewController {
+            let controllers = split.viewControllers
+            if let newVC = controllers[1] as? MapViewController{
+                mapVC = newVC
+            }
+            
+        }
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,6 +64,45 @@ class SettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func imageTapped(image: AnyObject){
+        //allow user to select an image
+        selectPicture()
+    }
+    
+    /*
+        Image selection code from:
+            https://www.hackingwithswift.com/example-code/media/how-to-choose-a-photo-from-the-camera-roll-using-uiimagepickercontroller
+    */
+    
+    func selectPicture() {
+        let picker = UIImagePickerController()
+        picker.allowsEditing = true
+        picker.delegate = self
+        presentViewController(picker, animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        var newImage: UIImage
+        
+        if let possibleImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            newImage = possibleImage
+        } else if let possibleImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            newImage = possibleImage
+        } else {
+            return
+        }
+        
+        // do something interesting here!
+        profileImage.image = newImage
+        
+        mapVC?.theUser = myProfile
+        
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation
