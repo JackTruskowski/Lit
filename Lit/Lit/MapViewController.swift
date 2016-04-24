@@ -15,6 +15,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //this hidden view is needed to anchor the popover
     @IBOutlet weak var popoverAnchor: UIView!
+    @IBOutlet weak var settingsButton: UIBarButtonItem!
     
     //Todo: better way to store this, maybe hashing of some sort by location
     var addedEvents : [Event] = []
@@ -27,6 +28,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         //get permission to use location data
         mapView.showsUserLocation = true
+        
+        
+        //hide the settings button if its an ipad
+        let deviceIdiom = UIScreen.mainScreen().traitCollection.userInterfaceIdiom
+        if deviceIdiom == .Pad{
+            settingsButton.title = ""
+            settingsButton.enabled = false
+        }
         
         //make a sample event from a different user for testing
         let aVenue = Venue()
@@ -63,11 +72,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         addedEvents.append(anEvent)
         
-        
-        
-        
-        
-        
+        //refresh right when the view loads
+        refreshAnnotations()
     }
     
     //Actions triggered by the user
@@ -85,11 +91,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         if(theUser != nil){
             //test event data
             //vars for testing only
-            //let aHost = User()
             let aVenue = Venue()
         
             //make a sample event for testing
-            //aHost.name = "Jack Truskowski"
             aVenue.name = "Studzinski"
             aVenue.location = mapView.userLocation.location
             let anEvent = Event(eventTitle: "Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: theUser!)

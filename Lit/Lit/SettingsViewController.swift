@@ -11,33 +11,68 @@ import UIKit
 class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
     
     var myProfile : User?
-    var mapVC : MapViewController?
     
     //profile fields
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var profileName: UITextField!
+    @IBOutlet weak var backToMapButton: UIButton!
     
-    @IBAction func updateProfile(sender: UIButton) {
+    @IBAction func `return`(sender: UIButton) {
         
-        if myProfile != nil{
-            myProfile!.name = profileName.text
-            myProfile!.picture = profileImage.image
+        //dont perform segue if its an ipad
+        let deviceIdiom = UIScreen.mainScreen().traitCollection.userInterfaceIdiom
+        if deviceIdiom == .Phone{
+            performSegueWithIdentifier("returnToMap", sender: nil)
         }else{
-            myProfile = User()
-            myProfile!.uniqueID = 101
-            myProfile!.name = profileName.text
-            myProfile!.picture = profileImage.image
+            if let split = self.splitViewController {
+                let controllers = split.viewControllers
+                if let newVC = controllers[1] as? MapViewController {
+                    if profileName.text != ""{
+                        if myProfile != nil{
+                            myProfile!.name = profileName.text
+                            myProfile!.picture = profileImage.image
+                        }else{
+                            myProfile = User()
+                            myProfile!.uniqueID = 101
+                            myProfile!.name = profileName.text
+                            myProfile!.picture = profileImage.image
+                        }
+                        newVC.theUser = myProfile!
+                    }else{
+                        newVC.theUser = nil
+                    }
+                }
+                
+            }
         }
-        mapVC?.theUser = myProfile
-        
         
     }
-
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let destination = segue.destinationViewController
+        if let newvc = destination as? MapViewController{
+            if profileName.text != ""{
+                if myProfile != nil{
+                    myProfile!.name = profileName.text
+                    myProfile!.picture = profileImage.image
+                }else{
+                    myProfile = User()
+                    myProfile!.uniqueID = 101
+                    myProfile!.name = profileName.text
+                    myProfile!.picture = profileImage.image
+                }
+                newvc.theUser = myProfile!
+            }else{
+                newvc.theUser = nil
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.profileName.delegate = self
-
+        
         //tap gesture recognizer for touching the picture
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
         profileImage.userInteractionEnabled = true
@@ -50,14 +85,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             profileImage.image = UIImage(named: "useravatar")
         }
         
-        //add the detail
-        if let split = self.splitViewController {
-            let controllers = split.viewControllers
-            if let newVC = controllers[1] as? MapViewController{
-                mapVC = newVC
-            }
-            
-        }
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
         
         
     }
@@ -102,8 +131,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         // do something interesting here!
         profileImage.image = newImage
         
-        mapVC?.theUser = myProfile
-        
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -112,6 +139,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         userText.resignFirstResponder()
         return true;
     }
+    
+    
     
 
     /*
