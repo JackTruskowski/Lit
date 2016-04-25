@@ -23,6 +23,7 @@
 		86D6BF771CC6C3E6004E44D2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */; };
 		A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */; };
 		A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89E974B1CCC0F4400B463A0 /* MapPin.swift */; };
+		CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttendeeTableViewCell.swift; sourceTree = "<group>"; };
 		A89E974B1CCC0F4400B463A0 /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
+		CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 				86D6BF481CC6BEE0004E44D2 /* Info.plist */,
 				A89E974B1CCC0F4400B463A0 /* MapPin.swift */,
 				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
+				CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */,
 			);
 			path = Lit;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */,
 				86D6BF6F1CC6C0F8004E44D2 /* UserModel.swift in Sources */,
 				A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */,
 				86D6BF751CC6C32C004E44D2 /* UserViewController.swift in Sources */,

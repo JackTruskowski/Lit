@@ -8,7 +8,7 @@
 
 import UIKit
 
-class User{
+class User {
     var name: String?
     var picture : UIImage?
     var passwordHash = 0

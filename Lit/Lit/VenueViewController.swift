@@ -8,10 +8,33 @@
 
 import UIKit
 
-class VenueViewController: UIViewController {
+class VenueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    var venue : Venue?
 
+    @IBOutlet weak var venueName: UILabel!
+    @IBOutlet weak var venueAddress: UILabel!
+    @IBOutlet weak var venueCapacity: UILabel!
+    @IBOutlet weak var venueManager: UILabel!
+    @IBOutlet weak var eventsTableView: UITableView!
+    @IBAction func addEvent(sender: UIButton) {
+    }
+    
+    
+    /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier = "
+    }*/
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if venue != nil {
+            setupView()
+        }
+        
+        eventsTableView.dataSource = self
+        eventsTableView.delegate = self
 
         // Do any additional setup after loading the view.
     }
@@ -19,6 +42,38 @@ class VenueViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setupView() {
+        venueName.text = venue?.name
+        venueAddress.text = venue?.address
+        venueCapacity.text = "\((venue?.capacity)!)"
+        venueManager.text = "\((venue?.manager)!)"
+        
+        print("\(venue?.events[0])")
+        
+        //user must be signed in to schedule event
+        /*if userIsSignedIn {
+            deleteEventButton.hidden = true
+        }else{
+            deleteEventButton.hidden = false
+        }*/
+        
+    }
+    
+    //returns the number of rows that the events table will have
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("in tableView function in Venue VC")
+        return (venue?.events.count)!
+    }
+    
+    //populates the table with the events
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("anEventTableViewCell") as! EventTableViewCell
+    
+        print("populating table with events...")
+        cell.eventTitleLabel.text = venue!.events[indexPath.row].title
+        return cell
     }
     
 

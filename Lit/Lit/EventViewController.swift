@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate {
     
     var event : Event?
     var mapInstance : MapViewController?
@@ -81,6 +81,25 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print("preparing for segue...")
+        if segue.identifier == "venueDetail" {
+            print("segue is a venueDetail")
+            let destination = segue.destinationViewController
+            if let newVC = destination as? VenueViewController{
+                print("destination is a venue VC")
+                //pass the appropriate venue here
+                if let theVenue = event?.venue {
+                    print("passed venue to new VC")
+                    newVC.venue = theVenue
+                }
+                if let ppc = newVC.popoverPresentationController {
+                    print("self is a delegate")
+                    ppc.delegate = self
+                }
+            }
+        }
+    }
     
 
     /*

@@ -38,14 +38,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         }
         
         //make a sample event from a different user for testing
-        let aVenue = Venue()
         let aHost = User()
+        let aVenue = Venue(venueName: "Smith Union", venueAddress: "Bowdoin College, 6000 College Station, Brunswick, ME 04011-8451", venueCapacity: 500, creator:  aHost)
+        
         aHost.name = "Guy Chill"
         aHost.uniqueID = 2000
         
         //make a sample event for testing
         //aHost.name = "Jack Truskowski"
-        aVenue.name = "Smith Union"
+        //aVenue.name = "Smith Union"
         let aLocation = CLLocation(latitude: 37.781536, longitude: -122.426327)
         aVenue.location = aLocation
         let anEvent = Event(eventTitle: "Club Fair", eventStartTime: nil, eventEndTime: nil, eventDescription: "A fair with clubs", eventVenue: aVenue, eventHost: aHost)
@@ -70,7 +71,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         anEvent.addAttendee(user4)
         anEvent.updateAttendance(4)
         
-        addedEvents.append(anEvent)
         
         //refresh right when the view loads
         refreshAnnotations()
@@ -91,10 +91,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         if(theUser != nil){
             //test event data
             //vars for testing only
-            let aVenue = Venue()
+            let aVenue = Venue(venueName: "Studzinski", venueAddress: "Bowdoin College, 6000 College Station, Brunswick, ME 04011-8451", venueCapacity: 500, creator:  theUser!)
         
             //make a sample event for testing
-            aVenue.name = "Studzinski"
             aVenue.location = mapView.userLocation.location
             let anEvent = Event(eventTitle: "Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: theUser!)
             
@@ -111,6 +110,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             let user4 = User()
             user4.name = "Chris MacDonald"
             user4.uniqueID = 4
+            
+            aVenue.addEvent(anEvent)
             
             anEvent.addAttendee(theUser!)
             anEvent.addAttendee(user1)

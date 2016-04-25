@@ -21,6 +21,7 @@ class Event{
     var endTime: NSDate?
     var attendanceCount : Int
     var attendees : [User] = []
+
     
     
     //functions
