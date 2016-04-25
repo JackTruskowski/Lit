@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86471FB31CCE982A00049FFC /* DateAndTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86471FB21CCE982A00049FFC /* DateAndTimeTableViewCell.swift */; };
+		86C5A8EA1CCE92EF00436163 /* SidePaneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86C5A8E91CCE92EF00436163 /* SidePaneViewController.swift */; };
 		86D6BF3D1CC6BEE0004E44D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */; };
 		86D6BF3F1CC6BEE0004E44D2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */; };
 		86D6BF421CC6BEE0004E44D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86D6BF401CC6BEE0004E44D2 /* Main.storyboard */; };
@@ -44,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		86471FB21CCE982A00049FFC /* DateAndTimeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateAndTimeTableViewCell.swift; sourceTree = "<group>"; };
+		86C5A8E91CCE92EF00436163 /* SidePaneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidePaneViewController.swift; sourceTree = "<group>"; };
 		86D6BF391CC6BEE0004E44D2 /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -127,12 +131,17 @@
 				86D6BF741CC6C32C004E44D2 /* UserViewController.swift */,
 				86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */,
 				86D6BF401CC6BEE0004E44D2 /* Main.storyboard */,
+				86C5A8E91CCE92EF00436163 /* SidePaneViewController.swift */,
 				86D6BF431CC6BEE0004E44D2 /* Assets.xcassets */,
 				86D6BF451CC6BEE0004E44D2 /* LaunchScreen.storyboard */,
 				86D6BF481CC6BEE0004E44D2 /* Info.plist */,
 				A89E974B1CCC0F4400B463A0 /* MapPin.swift */,
 				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
+<<<<<<< HEAD
 				CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */,
+=======
+				86471FB21CCE982A00049FFC /* DateAndTimeTableViewCell.swift */,
+>>>>>>> 64fbe16dae7c1ade35bf243658551a4955f03ad1
 			);
 			path = Lit;
 			sourceTree = "<group>";
@@ -294,10 +303,12 @@
 				86D6BF3F1CC6BEE0004E44D2 /* MapViewController.swift in Sources */,
 				86D6BF3D1CC6BEE0004E44D2 /* AppDelegate.swift in Sources */,
 				86D6BF711CC6C195004E44D2 /* VenueModel.swift in Sources */,
+				86471FB31CCE982A00049FFC /* DateAndTimeTableViewCell.swift in Sources */,
 				A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */,
 				86D6BF6D1CC6BFC9004E44D2 /* EventModel.swift in Sources */,
 				86D6BF6B1CC6BF62004E44D2 /* EventViewController.swift in Sources */,
 				86D6BF771CC6C3E6004E44D2 /* SettingsViewController.swift in Sources */,
+				86C5A8EA1CCE92EF00436163 /* SidePaneViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
