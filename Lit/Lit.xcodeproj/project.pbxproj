@@ -137,11 +137,9 @@
 				86D6BF481CC6BEE0004E44D2 /* Info.plist */,
 				A89E974B1CCC0F4400B463A0 /* MapPin.swift */,
 				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
-<<<<<<< HEAD
 				CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */,
-=======
+
 				86471FB21CCE982A00049FFC /* DateAndTimeTableViewCell.swift */,
->>>>>>> 64fbe16dae7c1ade35bf243658551a4955f03ad1
 			);
 			path = Lit;
 			sourceTree = "<group>";
