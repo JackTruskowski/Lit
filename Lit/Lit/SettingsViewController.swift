@@ -38,6 +38,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                             myProfile!.picture = profileImage.image
                         }
                         newVC.theUser = myProfile!
+                        print("created a user in split")
                     }else{
                         newVC.theUser = nil
                     }
@@ -62,8 +63,10 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                     myProfile!.picture = profileImage.image
                 }
                 newvc.theUser = myProfile!
+                print("created a user in segue")
             }else{
                 newvc.theUser = nil
+                print("failed to create a user in segue")
             }
         }
     }
