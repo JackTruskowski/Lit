@@ -26,19 +26,25 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         }else{
             if let split = self.splitViewController {
                 let controllers = split.viewControllers
-                if let newVC = controllers[1] as? MapViewController {
+                if let _ = controllers[1] as? MapViewController {
                     if profileName.text != ""{
                         if myProfile != nil{
                             myProfile!.name = profileName.text
                             myProfile!.picture = profileImage.image
                         }else{
                             myProfile = User()
-                            myProfile!.uniqueID = 101
+                            myProfile!.uniqueID = "ad24rew"
                             myProfile!.name = profileName.text
                             myProfile!.picture = profileImage.image
                         }
                         theUser = myProfile!
-                        print("created a user in split")
+                        
+                        //save the NSUserdefaults
+                        let defaults = NSUserDefaults.standardUserDefaults()
+                        defaults.setValue(theUser?.name, forKey: "userName")
+                        defaults.setValue(theUser?.uniqueID, forKey: "userID")
+                        
+                        
                     }else{
                         theUser = nil
                     }
@@ -51,14 +57,14 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController
-        if let newvc = destination as? MapViewController{
+        if let _ = destination as? MapViewController{
             if profileName.text != ""{
                 if myProfile != nil{
                     myProfile!.name = profileName.text
                     myProfile!.picture = profileImage.image
                 }else{
                     myProfile = User()
-                    myProfile!.uniqueID = 101
+                    myProfile!.uniqueID = "ad24rew"
                     myProfile!.name = profileName.text
                     myProfile!.picture = profileImage.image
                 }
@@ -90,6 +96,11 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
+        //fill in the name field if user defaults exist
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let userName = defaults.stringForKey("userName"){
+            profileName.text = userName
+        }
         
         
     }

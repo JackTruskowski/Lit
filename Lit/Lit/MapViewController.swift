@@ -38,6 +38,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             settingsButton.enabled = false
         }
         
+        //read in user defaults
+        readInDataFromDefaults()
+        
         //refresh right when the view loads
         refreshAnnotations()
     }
@@ -95,6 +98,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         mapView.setRegion(region, animated: true)
         
+    }
+    
+    
+    //reads in existing user data from nsuserdefaults
+    func readInDataFromDefaults(){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let userName = defaults.stringForKey("userName"){
+            if let userUniqueKey = defaults.stringForKey("userID"){
+                let existingUser = User()
+                existingUser.name = userName
+                existingUser.uniqueID = userUniqueKey
+                theUser = existingUser
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

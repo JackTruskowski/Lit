@@ -17,7 +17,8 @@ class AddEventTableViewController: UITableViewController {
     @IBOutlet weak var endTimePicker: UIDatePicker!
     @IBOutlet weak var venueField: UITextField!
     @IBOutlet weak var titleField: UITextField!
-    @IBOutlet weak var descriptionField: UITextField!
+    @IBOutlet weak var descriptionField: UITextView!
+   
 
     @IBAction func addEventButtonPress(sender: UIButton) {
         
@@ -32,6 +33,8 @@ class AddEventTableViewController: UITableViewController {
             errorMsg = "The event must have a description"
         }else if NSDate().compare(endTimePicker.date) == NSComparisonResult.OrderedDescending{
             errorMsg = "The end time of the event must be in the future"
+        }else if startTimePicker.date.compare(endTimePicker.date) == NSComparisonResult.OrderedDescending{
+            errorMsg = "The end time must be after the start time"
         }
         
         if errorMsg == ""{
@@ -74,7 +77,7 @@ class AddEventTableViewController: UITableViewController {
                         theVenue.name = venueField.text!
                         theVenue.location = mapVC!.mapView.userLocation.location
                 
-                        addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: "test", eventVenue: theVenue, eventHost: theUser!))
+                        addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: descriptionField.text!, eventVenue: theVenue, eventHost: theUser!))
                     
                 }else{
                     print("no user exists")

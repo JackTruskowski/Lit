@@ -23,6 +23,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var attendanceCount: UILabel!
     @IBOutlet weak var startTime: UILabel!
     @IBOutlet weak var endTime: UILabel!
+    @IBOutlet weak var descriptionView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,10 +43,24 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     //called when the view loads to populate all the event fields in the view and hide the delete button
     func setupView(){
+        
+        //setup description
+        descriptionView.text = event?.description
+        descriptionView.scrollEnabled = false
+        //make the description field an appropriate size
+        let fixedWidth = descriptionView.frame.size.width
+        descriptionView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        let newSize = descriptionView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        var newFrame = descriptionView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        descriptionView.frame = newFrame;
+        
+        
         eventTitle.text = event?.title
         eventHost.text = event?.venue.name
         eventVenue.text = event?.host.name
         attendanceCount.text = "\((event?.attendanceCount)!)"
+        
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.locale = NSLocale.currentLocale()
