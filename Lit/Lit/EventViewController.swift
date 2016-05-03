@@ -45,7 +45,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         eventVenue.text = event?.host.name
         attendanceCount.text = "\((event?.attendanceCount)!)"
         
-        if mapInstance?.theUser?.uniqueID != event?.host.uniqueID {
+        if theUser?.uniqueID != event?.host.uniqueID {
             deleteEventButton.hidden = true
         }else{
             deleteEventButton.hidden = false

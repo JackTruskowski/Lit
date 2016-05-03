@@ -9,6 +9,10 @@
 import UIKit
 import MapKit
 
+//Todo: better way to store this, maybe hashing of some sort by location
+var addedEvents : [Event] = []
+var theUser : User?
+
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet var mapView: MKMapView!
@@ -17,10 +21,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     @IBOutlet weak var popoverAnchor: UIView!
     @IBOutlet weak var settingsButton: UIBarButtonItem!
     
-    //Todo: better way to store this, maybe hashing of some sort by location
-    var addedEvents : [Event] = []
-    var theUser : User?
-    var theNewEvent : Event?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,14 +36,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         if deviceIdiom == .Pad{
             settingsButton.title = ""
             settingsButton.enabled = false
-        }
-        
-        //check if an event needs to be added
-        //this is sketch, not sure of how to do it better though
-        print("checking")
-        if theNewEvent != nil{
-            addedEvents.append(theNewEvent!)
-            theNewEvent = nil
         }
         
         //refresh right when the view loads

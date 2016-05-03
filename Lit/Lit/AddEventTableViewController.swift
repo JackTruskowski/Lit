@@ -44,15 +44,15 @@ class AddEventTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addEvent" {
             let destination = segue.destinationViewController
-            if let destVC = destination as? MapViewController{
-                if(mapVC!.theUser != nil){
+            if let _ = destination as? MapViewController{
+                if(theUser != nil){
                     if(titleField.text != "" && titleField.text != nil && venueField.text != "" && venueField.text != nil && descriptionField.text != "" && descriptionField.text != nil){
                         //add the event here
                         let theVenue = Venue()
                         theVenue.name = venueField.text!
                         theVenue.location = mapVC!.mapView.userLocation.location
                 
-                        destVC.theNewEvent = Event(eventTitle: titleField.text!, eventStartTime: nil, eventEndTime: nil, eventDescription: "test", eventVenue: theVenue, eventHost: mapVC!.theUser!)
+                        addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: nil, eventEndTime: nil, eventDescription: "test", eventVenue: theVenue, eventHost: theUser!))
                     }
                     else{
                         print("one of the fields doesn't exist")

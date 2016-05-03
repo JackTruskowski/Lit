@@ -37,10 +37,10 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                             myProfile!.name = profileName.text
                             myProfile!.picture = profileImage.image
                         }
-                        newVC.theUser = myProfile!
+                        theUser = myProfile!
                         print("created a user in split")
                     }else{
-                        newVC.theUser = nil
+                        theUser = nil
                     }
                 }
                 
@@ -62,10 +62,10 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                     myProfile!.name = profileName.text
                     myProfile!.picture = profileImage.image
                 }
-                newvc.theUser = myProfile!
+                theUser = myProfile!
                 print("created a user in segue")
             }else{
-                newvc.theUser = nil
+                theUser = nil
                 print("failed to create a user in segue")
             }
         }
