@@ -21,6 +21,8 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var eventTableView: UITableView!
     @IBOutlet weak var deleteEventButton: UIButton!
     @IBOutlet weak var attendanceCount: UILabel!
+    @IBOutlet weak var startTime: UILabel!
+    @IBOutlet weak var endTime: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +46,13 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         eventHost.text = event?.venue.name
         eventVenue.text = event?.host.name
         attendanceCount.text = "\((event?.attendanceCount)!)"
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.locale = NSLocale.currentLocale()
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+    
+        startTime.text = dateFormatter.stringFromDate((event?.startTime)!)
+        endTime.text = dateFormatter.stringFromDate((event?.endTime)!)
         
         if theUser?.uniqueID != event?.host.uniqueID {
             deleteEventButton.hidden = true

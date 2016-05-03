@@ -17,15 +17,15 @@ class Event{
     var venue: Venue
     
     //optional vars
-    var startTime: NSDate?
-    var endTime: NSDate?
+    var startTime: NSDate
+    var endTime: NSDate
     var attendanceCount : Int
     var attendees : [User] = []
 
     
     
     //functions
-    init(eventTitle: String, eventStartTime: NSDate?, eventEndTime: NSDate?, eventDescription: String, eventVenue: Venue, eventHost: User){
+    init(eventTitle: String, eventStartTime: NSDate, eventEndTime: NSDate, eventDescription: String, eventVenue: Venue, eventHost: User){
         
         title = eventTitle
         startTime = eventStartTime

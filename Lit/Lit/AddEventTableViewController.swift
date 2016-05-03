@@ -20,8 +20,30 @@ class AddEventTableViewController: UITableViewController {
     @IBOutlet weak var descriptionField: UITextField!
 
     @IBAction func addEventButtonPress(sender: UIButton) {
-        //perform the segue
-        performSegueWithIdentifier("addEvent", sender: sender);
+        
+        //Check to ensure that the required fields are all filled in
+        var errorMsg = ""
+        
+        if titleField.text == "" || titleField.text == nil {
+            errorMsg = "The event must have a title"
+        }else if venueField.text == "" || venueField.text == nil {
+            errorMsg = "The event must have a venue"
+        }else if descriptionField.text == "" || descriptionField.text == nil {
+            errorMsg = "The event must have a description"
+        }else if NSDate().compare(endTimePicker.date) == NSComparisonResult.OrderedDescending{
+            errorMsg = "The end time of the event must be in the future"
+        }
+        
+        if errorMsg == ""{
+            //perform the segue
+            performSegueWithIdentifier("addEvent", sender: sender);
+        }else{
+            let alertController = UIAlertController(title: "Error Adding Event", message:
+                errorMsg, preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }
         
     }
 
@@ -46,17 +68,14 @@ class AddEventTableViewController: UITableViewController {
             let destination = segue.destinationViewController
             if let _ = destination as? MapViewController{
                 if(theUser != nil){
-                    if(titleField.text != "" && titleField.text != nil && venueField.text != "" && venueField.text != nil && descriptionField.text != "" && descriptionField.text != nil){
+                 
                         //add the event here
                         let theVenue = Venue()
                         theVenue.name = venueField.text!
                         theVenue.location = mapVC!.mapView.userLocation.location
                 
-                        addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: nil, eventEndTime: nil, eventDescription: "test", eventVenue: theVenue, eventHost: theUser!))
-                    }
-                    else{
-                        print("one of the fields doesn't exist")
-                    }
+                        addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: "test", eventVenue: theVenue, eventHost: theUser!))
+                    
                 }else{
                     print("no user exists")
                 }

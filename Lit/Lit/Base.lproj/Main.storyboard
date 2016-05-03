@@ -462,11 +462,13 @@
                     <connections>
                         <outlet property="attendanceCount" destination="IKV-xm-s59" id="VrQ-dw-0U1"/>
                         <outlet property="deleteEventButton" destination="LiM-de-yf3" id="wtc-G9-So6"/>
+                        <outlet property="endTime" destination="Ezw-A2-dAU" id="XuB-YB-7Up"/>
                         <outlet property="eventHost" destination="p9b-gw-fap" id="fM2-ed-LGH"/>
                         <outlet property="eventImage" destination="MQm-mT-qgn" id="HgQ-QX-zbA"/>
                         <outlet property="eventTableView" destination="EPC-TX-0oJ" id="WUD-Ln-mvP"/>
                         <outlet property="eventTitle" destination="sGS-oi-YE9" id="BrX-CE-CGy"/>
                         <outlet property="eventVenue" destination="oPJ-Lh-V3W" id="eFv-2w-JnL"/>
+                        <outlet property="startTime" destination="bbv-6N-Xde" id="59P-J2-gr5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sc-gS-0HS" userLabel="First Responder" sceneMemberID="firstResponder"/>
