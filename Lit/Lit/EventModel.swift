@@ -36,16 +36,6 @@ class Event{
         attendanceCount = 0
     }
     
-    //Receives a change in attendance numbers (ie -1 = one person left) and updates attendanceCount
-    func updateAttendance(changeInAttendance : Int){
-        if attendanceCount + changeInAttendance > 0 {
-            attendanceCount += changeInAttendance
-        }else{
-            attendanceCount = 0
-        }
-        
-    }
-    
     func addAttendee(person: User){
         //ensure the user hasn't already checked in (will this be necessary?)
         for var i = 0; i < attendees.count; ++i {
@@ -54,6 +44,7 @@ class Event{
             }
         }
         attendees.append(person)
+        attendanceCount++
     }
     
     func removeAttendee(person: User){
@@ -61,6 +52,8 @@ class Event{
         for var i = 0; i < attendees.count; ++i {
             if person.uniqueID == attendees[i].uniqueID {
                 attendees.removeAtIndex(i)
+                attendanceCount--
+                return
             }
         }
     }

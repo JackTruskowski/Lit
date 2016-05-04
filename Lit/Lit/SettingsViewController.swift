@@ -15,7 +15,10 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     //profile fields
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var profileName: UITextField!
+    @IBOutlet weak var userID: UITextField!
+    
     @IBOutlet weak var backToMapButton: UIButton!
+
     
     @IBAction func `return`(sender: UIButton) {
         
@@ -27,27 +30,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             if let split = self.splitViewController {
                 let controllers = split.viewControllers
                 if let _ = controllers[1] as? MapViewController {
-                    if profileName.text != ""{
-                        if myProfile != nil{
-                            myProfile!.name = profileName.text
-                            myProfile!.picture = profileImage.image
-                        }else{
-                            myProfile = User()
-                            myProfile!.uniqueID = "ad24rew"
-                            myProfile!.name = profileName.text
-                            myProfile!.picture = profileImage.image
-                        }
-                        theUser = myProfile!
-                        
-                        //save the NSUserdefaults
-                        let defaults = NSUserDefaults.standardUserDefaults()
-                        defaults.setValue(theUser?.name, forKey: "userName")
-                        defaults.setValue(theUser?.uniqueID, forKey: "userID")
-                        
-                        
-                    }else{
-                        theUser = nil
-                    }
+                    assignUser()
                 }
                 
             }
@@ -58,25 +41,37 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController
         if let _ = destination as? MapViewController{
-            if profileName.text != ""{
-                if myProfile != nil{
-                    myProfile!.name = profileName.text
-                    myProfile!.picture = profileImage.image
-                }else{
-                    myProfile = User()
-                    myProfile!.uniqueID = "ad24rew"
-                    myProfile!.name = profileName.text
-                    myProfile!.picture = profileImage.image
-                }
-                theUser = myProfile!
-                print("created a user in segue")
-            }else{
-                theUser = nil
-                print("failed to create a user in segue")
-            }
+            assignUser()
         }
+        
     }
     
+    //updates the global user variable if necessary
+    func assignUser(){
+        if profileName.text != ""{
+            if myProfile != nil{
+                myProfile!.name = profileName.text
+                myProfile!.picture = profileImage.image
+            }else{
+                myProfile = User()
+                if userID.text != ""{
+                    myProfile!.uniqueID = userID.text!
+                }else{
+                    myProfile!.uniqueID = "ad24rew"
+                }
+                let defaults = NSUserDefaults.standardUserDefaults()
+                defaults.setValue(myProfile!.uniqueID, forKey: "userID")
+                
+                myProfile!.name = profileName.text
+                myProfile!.picture = profileImage.image
+            }
+            theUser = myProfile!
+        }else{
+            theUser = nil
+        }
+    
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,6 +95,9 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         let defaults = NSUserDefaults.standardUserDefaults()
         if let userName = defaults.stringForKey("userName"){
             profileName.text = userName
+        }
+        if let id = defaults.stringForKey("userID"){
+            userID.text = id
         }
         
         

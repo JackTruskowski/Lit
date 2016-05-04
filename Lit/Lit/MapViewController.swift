@@ -106,7 +106,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         let defaults = NSUserDefaults.standardUserDefaults()
         if let userName = defaults.stringForKey("userName"){
             if let userUniqueKey = defaults.stringForKey("userID"){
-                let existingUser = User()
+                var existingUser = User()
                 existingUser.name = userName
                 existingUser.uniqueID = userUniqueKey
                 theUser = existingUser
