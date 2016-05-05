@@ -12,6 +12,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var event : Event?
     var mapInstance : MapViewController?
+    var map : Map?
 
     //storyboard vars
     @IBOutlet weak var eventTitle: UILabel!
@@ -92,6 +93,8 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if let theVenue = event?.venue {
                     print("passed venue to new VC")
                     newVC.venue = theVenue
+                    
+                    newVC.map = map
                 }
                 if let ppc = newVC.popoverPresentationController {
                     print("self is a delegate")

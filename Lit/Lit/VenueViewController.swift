@@ -11,6 +11,7 @@ import UIKit
 class VenueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var venue : Venue?
+    var map : Map?
 
     @IBOutlet weak var venueName: UILabel!
     @IBOutlet weak var venueAddress: UILabel!
@@ -50,7 +51,7 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
         venueCapacity.text = "\((venue?.capacity)!)"
         venueManager.text = "\((venue?.manager)!)"
         
-        print("\(venue?.events[0])")
+        //print("\(venue?.events[0])")
         
         //user must be signed in to schedule event
         /*if userIsSignedIn {
@@ -64,7 +65,8 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
     //returns the number of rows that the events table will have
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("in tableView function in Venue VC")
-        return (venue?.events.count)!
+        print("\(map?.getVenueEventsCount(venue!))")
+        return (map?.getVenueEventsCount(venue!))!
     }
     
     //populates the table with the events
@@ -72,7 +74,8 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
         let cell = tableView.dequeueReusableCellWithIdentifier("anEventTableViewCell") as! EventTableViewCell
     
         print("populating table with events...")
-        cell.eventTitleLabel.text = venue!.events[indexPath.row].title
+        cell.eventTitleLabel.text = map?.getEventsAtVenue(venue!)![indexPath.row].title
+ //           venue!.events[indexPath.row].title
         return cell
     }
     

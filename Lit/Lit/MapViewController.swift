@@ -19,7 +19,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //Todo: better way to store this, maybe hashing of some sort by location
     var addedEvents : [Event] = []
+    var addedVenues : [Venue] = []
     var theUser : User?
+    var map = Map()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +52,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         let aLocation = CLLocation(latitude: 37.781536, longitude: -122.426327)
         aVenue.location = aLocation
         let anEvent = Event(eventTitle: "Club Fair", eventStartTime: nil, eventEndTime: nil, eventDescription: "A fair with clubs", eventVenue: aVenue, eventHost: aHost)
+        
+        print("Adding event... <<<<<<<<<<<<<<<<<<<< with venue \(aVenue.name)")
+        map.addEvent(anEvent)
+        addedEvents.append(anEvent)
+        
+        //make a second event at same location for testing purposes
+        
+        let aSecondEvent = Event(eventTitle: "Block Party", eventStartTime: nil, eventEndTime: nil, eventDescription: "A party with blocks", eventVenue: aVenue, eventHost: aHost)
+        
+        map.addEvent(aSecondEvent)
+        addedEvents.append(aSecondEvent)
         
         //add some people for testing
         let user1 = User()
@@ -111,7 +124,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             user4.name = "Chris MacDonald"
             user4.uniqueID = 4
             
-            aVenue.addEvent(anEvent)
+            print("Adding event 2... <<<<<<<<<<<<<<<<<<")
+            map.addEvent(anEvent)
             
             anEvent.addAttendee(theUser!)
             anEvent.addAttendee(user1)
@@ -195,6 +209,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             //pass the appropriate event here
             if let theSender = sender?.annotation as? MapPin{
                 newVC.event = theSender.event
+                newVC.map   = map
+                
                 //give the view controller this MapViewController instance for event deletion
                 newVC.mapInstance = self
             }
