@@ -9,6 +9,10 @@
 import UIKit
 import MapKit
 
+//Todo: better way to store this, maybe hashing of some sort by location
+var addedEvents : [Event] = []
+var theUser : User?
+
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
     
     @IBOutlet var mapView: MKMapView!
@@ -84,6 +88,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         anEvent.addAttendee(user4)
         anEvent.updateAttendance(4)
         
+        //read in user defaults
+        readInDataFromDefaults()
         
         //refresh right when the view loads
         refreshAnnotations()
@@ -101,50 +107,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //add an event to the map (pressing this button should also trigger a popover for adding event info)
     @IBAction func addEvent(sender: UIBarButtonItem) {
-        if(theUser != nil){
-            //test event data
-            //vars for testing only
-            let aVenue = Venue(venueName: "Studzinski", venueAddress: "Bowdoin College, 6000 College Station, Brunswick, ME 04011-8451", venueCapacity: 500, creator:  theUser!)
-        
-            //make a sample event for testing
-            aVenue.location = mapView.userLocation.location
-            let anEvent = Event(eventTitle: "Jazz Concert", eventStartTime: nil, eventEndTime: nil, eventDescription: "A jazz concert", eventVenue: aVenue, eventHost: theUser!)
-            
-            //add some people for testing
-            let user1 = User()
-            user1.name = "John Doe"
-            user1.uniqueID = 1
-            let user2 = User()
-            user2.name = "Jane Doe"
-            user2.uniqueID = 2
-            let user3 = User()
-            user3.name = "Simon Moushabeck"
-            user3.uniqueID = 3
-            let user4 = User()
-            user4.name = "Chris MacDonald"
-            user4.uniqueID = 4
-            
-            print("Adding event 2... <<<<<<<<<<<<<<<<<<")
-            map.addEvent(anEvent)
-            
-            anEvent.addAttendee(theUser!)
-            anEvent.addAttendee(user1)
-            anEvent.addAttendee(user2)
-            anEvent.addAttendee(user3)
-            anEvent.addAttendee(user4)
-            anEvent.updateAttendance(5)
-            
-            addedEvents.append(anEvent)
-        }else{
-            
-            //give an alert saying the user must be signed in
-            let alertController = UIAlertController(title: "Error", message:
-                "You must be signed in to add an event", preferredStyle: UIAlertControllerStyle.Alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-            
-            self.presentViewController(alertController, animated: true, completion: nil)
-        }
-        
+
+        performSegueWithIdentifier("segueToAddEventView", sender: sender)
     }
     
     func initializeUser(aUser : User){
@@ -155,6 +119,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         //remove all old annotations
         mapView.removeAnnotations(mapView.annotations)
+        
+        print(addedEvents.count)
         
         //add all the events to the map as annotations
         for var i = 0; i < addedEvents.count; ++i {
@@ -182,6 +148,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         mapView.setRegion(region, animated: true)
         
+    }
+    
+    
+    //reads in existing user data from nsuserdefaults
+    func readInDataFromDefaults(){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let userName = defaults.stringForKey("userName"){
+            if let userUniqueKey = defaults.stringForKey("userID"){
+                var existingUser = User()
+                existingUser.name = userName
+                existingUser.uniqueID = userUniqueKey
+                theUser = existingUser
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -218,6 +198,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
                 ppc.delegate = self
             }
             
+        }else if let newVC = destination as? AddEventTableViewController{
+            newVC.mapVC = self
         }
     }
 

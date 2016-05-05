@@ -15,7 +15,10 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     //profile fields
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var profileName: UITextField!
+    @IBOutlet weak var userID: UITextField!
+    
     @IBOutlet weak var backToMapButton: UIButton!
+
     
     @IBAction func `return`(sender: UIButton) {
         
@@ -26,21 +29,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         }else{
             if let split = self.splitViewController {
                 let controllers = split.viewControllers
-                if let newVC = controllers[1] as? MapViewController {
-                    if profileName.text != ""{
-                        if myProfile != nil{
-                            myProfile!.name = profileName.text
-                            myProfile!.picture = profileImage.image
-                        }else{
-                            myProfile = User()
-                            myProfile!.uniqueID = 101
-                            myProfile!.name = profileName.text
-                            myProfile!.picture = profileImage.image
-                        }
-                        newVC.theUser = myProfile!
-                    }else{
-                        newVC.theUser = nil
-                    }
+                if let _ = controllers[1] as? MapViewController {
+                    assignUser()
                 }
                 
             }
@@ -50,24 +40,38 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destination = segue.destinationViewController
-        if let newvc = destination as? MapViewController{
-            if profileName.text != ""{
-                if myProfile != nil{
-                    myProfile!.name = profileName.text
-                    myProfile!.picture = profileImage.image
-                }else{
-                    myProfile = User()
-                    myProfile!.uniqueID = 101
-                    myProfile!.name = profileName.text
-                    myProfile!.picture = profileImage.image
-                }
-                newvc.theUser = myProfile!
-            }else{
-                newvc.theUser = nil
-            }
+        if let _ = destination as? MapViewController{
+            assignUser()
         }
+        
     }
     
+    //updates the global user variable if necessary
+    func assignUser(){
+        if profileName.text != ""{
+            if myProfile != nil{
+                myProfile!.name = profileName.text
+                myProfile!.picture = profileImage.image
+            }else{
+                myProfile = User()
+                if userID.text != ""{
+                    myProfile!.uniqueID = userID.text!
+                }else{
+                    myProfile!.uniqueID = "ad24rew"
+                }
+                let defaults = NSUserDefaults.standardUserDefaults()
+                defaults.setValue(myProfile!.uniqueID, forKey: "userID")
+                
+                myProfile!.name = profileName.text
+                myProfile!.picture = profileImage.image
+            }
+            theUser = myProfile!
+        }else{
+            theUser = nil
+        }
+    
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,6 +91,14 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
         
+        //fill in the name field if user defaults exist
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let userName = defaults.stringForKey("userName"){
+            profileName.text = userName
+        }
+        if let id = defaults.stringForKey("userID"){
+            userID.text = id
+        }
         
         
     }

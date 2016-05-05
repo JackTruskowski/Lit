@@ -25,6 +25,7 @@
 		86D6BF771CC6C3E6004E44D2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */; };
 		A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */; };
 		A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89E974B1CCC0F4400B463A0 /* MapPin.swift */; };
+		A8D6CB721CCFFB8F00DD10DB /* AddEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */; };
 		CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */; };
 		CBC91D621CCFF3D700B399D2 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC91D611CCFF3D700B399D2 /* MapModel.swift */; };
 /* End PBXBuildFile section */
@@ -71,6 +72,7 @@
 		86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttendeeTableViewCell.swift; sourceTree = "<group>"; };
 		A89E974B1CCC0F4400B463A0 /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
+		A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventTableViewController.swift; sourceTree = "<group>"; };
 		CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		CBC91D611CCFF3D700B399D2 /* MapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -142,6 +144,8 @@
 				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
 				CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */,
 				86471FB21CCE982A00049FFC /* DateAndTimeTableViewCell.swift */,
+
+				A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */,
 			);
 			path = Lit;
 			sourceTree = "<group>";
@@ -306,6 +310,7 @@
 				86D6BF711CC6C195004E44D2 /* VenueModel.swift in Sources */,
 				86471FB31CCE982A00049FFC /* DateAndTimeTableViewCell.swift in Sources */,
 				A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */,
+				A8D6CB721CCFFB8F00DD10DB /* AddEventTableViewController.swift in Sources */,
 				86D6BF6D1CC6BFC9004E44D2 /* EventModel.swift in Sources */,
 				86D6BF6B1CC6BF62004E44D2 /* EventViewController.swift in Sources */,
 				86D6BF771CC6C3E6004E44D2 /* SettingsViewController.swift in Sources */,
