@@ -32,6 +32,11 @@ class Venue: Hashable {
         manager = creator
     }
     
+    init() {
+        name = "New Venue"
+        address = "New Address"
+    }
+    
    
     
     func addEvent(event: Event) {
