@@ -27,7 +27,6 @@
 		A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89E974B1CCC0F4400B463A0 /* MapPin.swift */; };
 		A8D6CB721CCFFB8F00DD10DB /* AddEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */; };
 		CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */; };
-		CBC91D621CCFF3D700B399D2 /* MapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC91D611CCFF3D700B399D2 /* MapModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +73,6 @@
 		A89E974B1CCC0F4400B463A0 /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
 		A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventTableViewController.swift; sourceTree = "<group>"; };
 		CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
-		CBC91D611CCFF3D700B399D2 /* MapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +125,6 @@
 			children = (
 				86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */,
 				86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */,
-				CBC91D611CCFF3D700B399D2 /* MapModel.swift */,
 				86D6BF6A1CC6BF62004E44D2 /* EventViewController.swift */,
 				86D6BF6C1CC6BFC9004E44D2 /* EventModel.swift */,
 				86D6BF721CC6C2E0004E44D2 /* VenueViewController.swift */,
@@ -144,7 +141,6 @@
 				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
 				CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */,
 				86471FB21CCE982A00049FFC /* DateAndTimeTableViewCell.swift */,
-
 				A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */,
 			);
 			path = Lit;
@@ -300,7 +296,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */,
-				CBC91D621CCFF3D700B399D2 /* MapModel.swift in Sources */,
 				86D6BF6F1CC6C0F8004E44D2 /* UserModel.swift in Sources */,
 				A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */,
 				86D6BF751CC6C32C004E44D2 /* UserViewController.swift in Sources */,

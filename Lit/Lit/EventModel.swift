@@ -36,25 +36,43 @@ class Event{
         attendanceCount = 0
     }
     
-    func addAttendee(person: User){
+    //returns a boolean of whether or not the user is at the event
+    func userIsAttending(person: User?)->Bool{
+        if person != nil{
+            for i in 0 ..< attendees.count {
+                if person!.uniqueID == attendees[i].uniqueID {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+    
+    func addAttendee(person: User?){
         //ensure the user hasn't already checked in (will this be necessary?)
-        for var i = 0; i < attendees.count; ++i {
-            if person.uniqueID == attendees[i].uniqueID {
+        if person != nil{
+        for i in 0 ..< attendees.count {
+            if person!.uniqueID == attendees[i].uniqueID {
+                print("failed to add attendee")
                 return
             }
         }
-        attendees.append(person)
-        attendanceCount++
+        print("added attendee")
+        attendees.append(person!)
+        attendanceCount += 1
+        }
     }
     
-    func removeAttendee(person: User){
+    func removeAttendee(person: User?){
+        if person != nil{
         //loop thru and find the user
-        for var i = 0; i < attendees.count; ++i {
-            if person.uniqueID == attendees[i].uniqueID {
+        for i in 0 ..< attendees.count {
+            if person!.uniqueID == attendees[i].uniqueID {
                 attendees.removeAtIndex(i)
-                attendanceCount--
+                attendanceCount -= 1
                 return
             }
+        }
         }
     }
 }

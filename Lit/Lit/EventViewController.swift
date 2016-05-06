@@ -12,7 +12,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var event : Event?
     var mapInstance : MapViewController?
-    var map : Map?
 
     //storyboard vars
     @IBOutlet weak var eventTitle: UILabel!
@@ -25,6 +24,9 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var startTime: UILabel!
     @IBOutlet weak var endTime: UILabel!
     @IBOutlet weak var descriptionView: UITextView!
+    @IBOutlet weak var checkInButton: UIButton!
+    
+    var checkedIn = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +42,17 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    @IBAction func checkInButtonPressed(sender: UIButton) {
+        if checkedIn == false{
+            event?.addAttendee(theUser)
+        }else{
+            event?.removeAttendee(theUser)
+        }
+        setupView()
+        eventTableView.reloadData()
     }
     
     //called when the view loads to populate all the event fields in the view and hide the delete button
@@ -70,11 +83,22 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         startTime.text = dateFormatter.stringFromDate((event?.startTime)!)
         endTime.text = dateFormatter.stringFromDate((event?.endTime)!)
         
+        //do button-related setup
         if theUser?.uniqueID != event?.host.uniqueID {
             deleteEventButton.hidden = true
         }else{
             deleteEventButton.hidden = false
         }
+        
+        let isUserThere = event?.userIsAttending(theUser)
+        if isUserThere == true {
+            checkInButton.setTitle("Leave Event", forState: UIControlState.Normal)
+            checkedIn = true
+        }else{
+            checkInButton.setTitle("Check-In", forState: UIControlState.Normal)
+            checkedIn = false
+        }
+        
         
     }
     
@@ -117,8 +141,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if let theVenue = event?.venue {
                     print("passed venue to new VC")
                     newVC.venue = theVenue
-                    
-                    newVC.map = map
                 }
                 if let ppc = newVC.popoverPresentationController {
                     print("self is a delegate")

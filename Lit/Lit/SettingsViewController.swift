@@ -78,7 +78,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         self.profileName.delegate = self
         
         //tap gesture recognizer for touching the picture
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(SettingsViewController.imageTapped(_:)))
         profileImage.userInteractionEnabled = true
         profileImage.addGestureRecognizer(tapGestureRecognizer)
         

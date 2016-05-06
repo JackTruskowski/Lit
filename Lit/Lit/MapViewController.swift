@@ -11,6 +11,8 @@ import MapKit
 
 //Todo: better way to store this, maybe hashing of some sort by location
 var addedEvents : [Event] = []
+var venuesTable : [Venue: [Event]] = [:] //dictionary where key is a Venue and value is a list of Events at that Venue
+
 var theUser : User?
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
@@ -21,11 +23,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     @IBOutlet weak var popoverAnchor: UIView!
     @IBOutlet weak var settingsButton: UIBarButtonItem!
     
-    //Todo: better way to store this, maybe hashing of some sort by location
-    var addedEvents : [Event] = []
-    var addedVenues : [Venue] = []
-    var theUser : User?
-    var map = Map()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,51 +39,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             settingsButton.title = ""
             settingsButton.enabled = false
         }
-        
-        //make a sample event from a different user for testing
-        let aHost = User()
-        let aVenue = Venue(venueName: "Smith Union", venueAddress: "Bowdoin College, 6000 College Station, Brunswick, ME 04011-8451", venueCapacity: 500, creator:  aHost)
-        
-        aHost.name = "Guy Chill"
-        aHost.uniqueID = 2000
-        
-        //make a sample event for testing
-        //aHost.name = "Jack Truskowski"
-        //aVenue.name = "Smith Union"
-        let aLocation = CLLocation(latitude: 37.781536, longitude: -122.426327)
-        aVenue.location = aLocation
-        let anEvent = Event(eventTitle: "Club Fair", eventStartTime: nil, eventEndTime: nil, eventDescription: "A fair with clubs", eventVenue: aVenue, eventHost: aHost)
-        
-        print("Adding event... <<<<<<<<<<<<<<<<<<<< with venue \(aVenue.name)")
-        map.addEvent(anEvent)
-        addedEvents.append(anEvent)
-        
-        //make a second event at same location for testing purposes
-        
-        let aSecondEvent = Event(eventTitle: "Block Party", eventStartTime: nil, eventEndTime: nil, eventDescription: "A party with blocks", eventVenue: aVenue, eventHost: aHost)
-        
-        map.addEvent(aSecondEvent)
-        addedEvents.append(aSecondEvent)
-        
-        //add some people for testing
-        let user1 = User()
-        user1.name = "John Doe"
-        user1.uniqueID = 1
-        let user2 = User()
-        user2.name = "Jane Doe"
-        user2.uniqueID = 2
-        let user3 = User()
-        user3.name = "Simon Moushabeck"
-        user3.uniqueID = 3
-        let user4 = User()
-        user4.name = "Chris MacDonald"
-        user4.uniqueID = 4
-        
-        anEvent.addAttendee(user1)
-        anEvent.addAttendee(user2)
-        anEvent.addAttendee(user3)
-        anEvent.addAttendee(user4)
-        anEvent.updateAttendance(4)
         
         //read in user defaults
         readInDataFromDefaults()
@@ -107,7 +59,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //add an event to the map (pressing this button should also trigger a popover for adding event info)
     @IBAction func addEvent(sender: UIBarButtonItem) {
-
+        
         performSegueWithIdentifier("segueToAddEventView", sender: sender)
     }
     
@@ -189,8 +141,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             //pass the appropriate event here
             if let theSender = sender?.annotation as? MapPin{
                 newVC.event = theSender.event
-                newVC.map   = map
-                
                 //give the view controller this MapViewController instance for event deletion
                 newVC.mapInstance = self
             }

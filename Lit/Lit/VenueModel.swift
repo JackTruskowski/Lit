@@ -10,8 +10,8 @@ import Foundation
 import MapKit
 
 class Venue: Hashable {
-    var name: String
-    var address: String // maybe this will be location when we use mapkit
+    var name: String?
+    var address: String? // maybe this will be location when we use mapkit
     var location: CLLocation?
     var capacity: Int?
     var manager: User?
@@ -37,16 +37,12 @@ class Venue: Hashable {
         address = "New Address"
     }
     
-   
-    
     func addEvent(event: Event) {
         events.append(event)
     }
     
-    
 
 }
-
 
 //Venue also conforms to protocol Equatable (needed for a class to be Hashable)
 func == (lhs: Venue, rhs: Venue) -> Bool {
