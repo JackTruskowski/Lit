@@ -8,9 +8,19 @@
 
 import UIKit
 
-struct User {
+class User: CustomStringConvertible{
     var name: String?
     var picture : UIImage?
     var passwordHash = 0
     var uniqueID = ""
+    
+    var description: String{
+        get{
+            if name != nil {
+                return name!
+            } else {
+                return "no name"
+            }
+        }
+    }
 }

@@ -11,11 +11,12 @@ import UIKit
 class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate {
     
     var event : Event?
+    var theUser: User?
     var mapInstance : MapViewController?
 
     //storyboard vars
     @IBOutlet weak var eventTitle: UILabel!
-    @IBOutlet weak var eventHost: UILabel!  // NOTE: host and venue are swapped
+    @IBOutlet weak var eventHost: UILabel!  // NOTE: host and venue were swapped // potentially fixed
     @IBOutlet weak var eventVenue: UILabel! // because renaming them was creating problems
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventTableView: UITableView!
@@ -23,7 +24,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var attendanceCount: UILabel!
     @IBOutlet weak var startTime: UILabel!
     @IBOutlet weak var endTime: UILabel!
-    @IBOutlet weak var descriptionView: UITextView!
+    @IBOutlet weak var summaryView: UITextView!
     @IBOutlet weak var checkInButton: UIButton!
     
     var checkedIn = false
@@ -38,12 +39,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         eventTableView.dataSource = self
         eventTableView.delegate = self
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     
     @IBAction func checkInButtonPressed(sender: UIButton) {
         if checkedIn == false{
@@ -58,17 +53,17 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     //called when the view loads to populate all the event fields in the view and hide the delete button
     func setupView(){
         
-        //setup description
-        descriptionView.text = event?.description
-        descriptionView.scrollEnabled = false
-        //make the description field an appropriate size
-        let fixedWidth = descriptionView.frame.size.width
-        descriptionView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        let newSize = descriptionView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        var newFrame = descriptionView.frame
-        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
-        descriptionView.frame = newFrame;
+        //setup summary
+        summaryView.text = event?.summary
+        summaryView.scrollEnabled = false
         
+        //make the summary field an appropriate size
+        let fixedWidth = summaryView.frame.size.width
+        summaryView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        let newSize = summaryView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        var newFrame = summaryView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        summaryView.frame = newFrame;
         
         eventTitle.text = event?.title
         eventHost.text = event?.venue.name
@@ -131,15 +126,11 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print("preparing for segue...")
         if segue.identifier == "venueDetail" {
-            print("segue is a venueDetail")
             let destination = segue.destinationViewController
             if let newVC = destination as? VenueViewController{
-                print("destination is a venue VC")
                 //pass the appropriate venue here
                 if let theVenue = event?.venue {
-                    print("passed venue to new VC")
                     newVC.venue = theVenue
                 }
                 if let ppc = newVC.popoverPresentationController {

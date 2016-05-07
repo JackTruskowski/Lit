@@ -8,10 +8,9 @@
 
 import UIKit
 
-class AddEventTableViewController: UITableViewController {
+class AddEventTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, mapData {
     
     var mapVC : MapViewController?
-    var serverLink = Server()
     
     //storyboard vars
     @IBOutlet weak var startTimePicker: UIDatePicker!
@@ -19,8 +18,14 @@ class AddEventTableViewController: UITableViewController {
     @IBOutlet weak var venueField: UITextField!
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var descriptionField: UITextView!
-   
-
+    
+    @IBOutlet weak var venuePicker: UIPickerView!
+    
+    
+    
+    @IBAction func createVenue(sender: AnyObject) {
+    }
+    
     @IBAction func addEventButtonPress(sender: UIButton) {
         
         //Check to ensure that the required fields are all filled in
@@ -50,21 +55,52 @@ class AddEventTableViewController: UITableViewController {
         }
         
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.venuePicker.delegate = self
+        self.venuePicker.dataSource = self
+        
         //disable scrolling
-        tableView.scrollEnabled = false
+        tableView.scrollEnabled = true
+        
         
         //remove extraneous cells
         tableView.tableFooterView = UIView()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    //MARK -- functions for venuePicker/UIPickerView -> source: http://codewithchris.com/uipickerview-example/
+    
+    //the number of columns of data
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    //the number of rows of data
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        print("Number of rows of data \((mapVC?.map.getVenuesCount())!)")
+        return (mapVC?.map.getVenuesCount())!
+    }
+    
+    //the data to return for the row and component (column) that's being passed in
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        print(mapVC?.map.getVenueList())
+        return (mapVC?.map.getVenueList()[row].name)
+    }
+    
+    
+    // Catpure the picker view selection
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // This method is triggered whenever the user makes a change to the picker selection.
+        // The parameter named row and component represents what was selected.
+    }
+    
     
     //adds the event to the list when the add event button is pressed
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -72,32 +108,43 @@ class AddEventTableViewController: UITableViewController {
             let destination = segue.destinationViewController
             if let _ = destination as? MapViewController{
                 if(theUser != nil){
-                 
-                        //add the event here
-                        let theVenue = Venue()
-                        theVenue.name = venueField.text!
-                        theVenue.location = mapVC!.mapView.userLocation.location
                     
-                        let newEvent = Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: descriptionField.text!, eventVenue: theVenue, eventHost: theUser!)
-                
-                        addedEvents.append(newEvent)
-                        serverLink.postToServer(newEvent)
+                    //add the event here
+                    let theVenue = Venue()
+                    theVenue.name = venueField.text!
+                    theVenue.location = mapVC!.mapView.userLocation.location
+                    
+                    addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: descriptionField.text!, eventVenue: theVenue, eventHost: theUser!))
                     
                 }else{
                     print("no user exists")
                 }
             }
+        } else if segue.identifier == "addVenue" {
+            let destination = segue.destinationViewController
+            if let newVC = destination as? AddVenueViewController {
+                newVC.popoverPresentationController!.delegate = self
+                newVC.delegate = self
+                newVC.map = mapVC!.map
+                
+            }
         }
     }
-
+    
+    func sendUpdatedMapToPreviousVC (updatedMap: Map, name: String) {
+        mapVC?.map = updatedMap
+        venuePicker.reloadAllComponents()
+        print("map model in addEventVC containts these venues \((mapVC?.map.getVenueList()))")
+    }
+    
     /*
     // MARK: - Navigation
-
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Get the new view controller using segue.destinationViewController.
+    // Pass the selected object to the new view controller.
     }
     */
-
+    
 }

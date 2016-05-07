@@ -1,5 +1,5 @@
 //
-//  MapModel.swift
+//  DataModel.swift
 //  Lit
 //
 //  Created by Simon Moushabeck on 5/7/16.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Map {
-    static var eventsList : [Event] = []
-    static var venuesList : [Venue] = []
+class Data {
+    var eventsList : [Event] = []
+    var venuesList : [Venue] = []
 }

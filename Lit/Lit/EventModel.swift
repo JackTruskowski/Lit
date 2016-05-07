@@ -8,11 +8,11 @@
 
 import Foundation
 
-class Event{
+class Event: CustomStringConvertible{
     
     //required vars upon initialization
     var title: String
-    var description: String
+    var summary: String
     var host: User
     var venue: Venue
     
@@ -21,16 +21,22 @@ class Event{
     var endTime: NSDate
     var attendanceCount : Int
     var attendees : [User] = []
+    
+    var description: String{
+        get{
+            return title
+        }
+    }
 
     
     
     //functions
-    init(eventTitle: String, eventStartTime: NSDate, eventEndTime: NSDate, eventDescription: String, eventVenue: Venue, eventHost: User){
+    init(eventTitle: String, eventStartTime: NSDate, eventEndTime: NSDate, eventSummary: String, eventVenue: Venue, eventHost: User){
         
         title = eventTitle
         startTime = eventStartTime
         endTime = eventEndTime
-        description = eventDescription
+        summary = eventSummary
         venue = eventVenue
         host = eventHost
         attendanceCount = 0
@@ -65,14 +71,14 @@ class Event{
     
     func removeAttendee(person: User?){
         if person != nil{
-        //loop thru and find the user
-        for i in 0 ..< attendees.count {
-            if person!.uniqueID == attendees[i].uniqueID {
-                attendees.removeAtIndex(i)
-                attendanceCount -= 1
-                return
+            //loop thru and find the user
+            for i in 0 ..< attendees.count {
+                if person!.uniqueID == attendees[i].uniqueID {
+                    attendees.removeAtIndex(i)
+                    attendanceCount -= 1
+                    return
+                }
             }
-        }
         }
     }
 }

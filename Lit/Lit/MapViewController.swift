@@ -9,17 +9,13 @@
 import UIKit
 import MapKit
 
-//Todo: better way to store this, maybe hashing of some sort by location
-var addedEvents : [Event] = []
-var venuesTable : [Venue: [Event]] = [:] //dictionary where key is a Venue and value is a list of Events at that Venue
-
-var theUser : User?
-let serverInstance = Server()
-
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
+    var data = Data()
+    var theUser : User?
+    let serverInstance = Server()
     
     @IBOutlet var mapView: MKMapView!
-    
+
     //this hidden view is needed to anchor the popover
     @IBOutlet weak var popoverAnchor: UIView!
     @IBOutlet weak var settingsButton: UIBarButtonItem!
@@ -34,6 +30,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         mapView.showsUserLocation = true
         
         
+        
+        //TODO make this unnecessary by embedding all in navigation controller
         //hide the settings button if its an ipad
         let deviceIdiom = UIScreen.mainScreen().traitCollection.userInterfaceIdiom
         if deviceIdiom == .Pad{
@@ -64,12 +62,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //add an event to the map (pressing this button should also trigger a popover for adding event info)
     @IBAction func addEvent(sender: UIBarButtonItem) {
-        
         performSegueWithIdentifier("segueToAddEventView", sender: sender)
-    }
-    
-    func initializeUser(aUser : User){
-        theUser = aUser
     }
     
     func refreshAnnotations(){
@@ -77,21 +70,21 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //remove all old annotations
         mapView.removeAnnotations(mapView.annotations)
         
-        print(addedEvents.count)
+        print(data.eventsList.count)
         
         //add all the events to the map as annotations
-        for var i = 0; i < addedEvents.count; ++i {
-            let coordinates = CLLocationCoordinate2DMake((addedEvents[i].venue.location!.coordinate.latitude), (addedEvents[i].venue.location!.coordinate.longitude))
-            let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: addedEvents[i])
+        for var i = 0; i < data.eventsList.count; ++i {
+            let coordinates = CLLocationCoordinate2DMake((data.eventsList[i].venue.location!.coordinate.latitude), (data.eventsList[i].venue.location!.coordinate.longitude))
+            let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: data.eventsList[i])
             mapView.addAnnotation(dropPin)
         }
     }
     
     //removes an event from the array
     func deleteEvent(anEvent: Event){
-        for var i=0; i<addedEvents.count; ++i{
-            if addedEvents[i] === anEvent {
-                addedEvents.removeAtIndex(i)
+        for var i=0; i<data.eventsList.count; ++i{
+            if data.eventsList[i] === anEvent {
+                data.eventsList.removeAtIndex(i)
             }
         }
     }
@@ -113,17 +106,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         let defaults = NSUserDefaults.standardUserDefaults()
         if let userName = defaults.stringForKey("userName"){
             if let userUniqueKey = defaults.stringForKey("userID"){
-                var existingUser = User()
+                let existingUser = User() //TODO maybe make a constructor for this
                 existingUser.name = userName
                 existingUser.uniqueID = userUniqueKey
                 theUser = existingUser
             }
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     //this is called when a pin is clicked, segues to the event view
@@ -134,12 +122,28 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
                 view.frame.origin.y,
                 view.frame.size.width,
                 view.frame.size.height);
-            performSegueWithIdentifier("eventPopover", sender: view)
+            performSegueWithIdentifier("segueToEventPopover", sender: view)
         }
     }
     
     //Passes any objects the new view might need
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        // good way
+        if segue.identifier == "segueToAddEventView" {
+            let newVC = segue.destinationViewController as! AddEventTableViewController
+            newVC.data = data // newVC doesn't have data yet
+        } else if segue.identifier == "segueToEventPopover" {
+            let newVC = segue.destinationViewController as! EventViewController
+            // which event was clicked?
+            if let theSender = sender?.annotation as? MapPin{
+                newVC.event = theSender.event
+                //give the view controller this MapViewController instance for event deletion
+                newVC.mapInstance = self
+            }
+        }
+        
+        /*
         let destination = segue.destinationViewController
         if let newVC = destination as? EventViewController{
             
@@ -149,15 +153,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
                 //give the view controller this MapViewController instance for event deletion
                 newVC.mapInstance = self
             }
-            if let ppc = newVC.popoverPresentationController {
+            //TODO what is this
+            if let ppc = newVC.popoverPresentationController { //TODO what is this?
                 ppc.delegate = self
             }
-            
-        }else if let newVC = destination as? AddEventTableViewController{
-            newVC.mapVC = self
         }
+        */
     }
 
+    
+    //TODO style the popover so that we don't need a back button, instead it looks like a bubble, and clicking outside closes it
+    // also we may need to move the view so that the pin is at the bottom center.
     /*
         the next two functions that provide a back button on the popover view for iphones is taken from an answer on:
             http://stackoverflow.com/questions/25860781/how-to-use-dismiss-an-iphone-popover-in-an-adaptive-storyboard

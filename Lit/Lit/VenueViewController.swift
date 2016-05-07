@@ -14,16 +14,8 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     @IBOutlet weak var venueName: UILabel!
     @IBOutlet weak var venueAddress: UILabel!
-    @IBOutlet weak var venueCapacity: UILabel!
     @IBOutlet weak var venueManager: UILabel!
     @IBOutlet weak var eventsTableView: UITableView!
-    @IBAction func addEvent(sender: UIButton) {
-    }
-    
-    
-    /*override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier = "
-    }*/
     
     
     override func viewDidLoad() {
@@ -38,20 +30,15 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
 
         // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     func setupView() {
         venueName.text = venue?.name
         venueAddress.text = venue?.address
-        venueCapacity.text = "\((venue?.capacity)!)"
         venueManager.text = "\((venue?.manager)!)"
         
         print("\(venue?.events[0])")
         
+        //TODO what is this?
         //user must be signed in to schedule event
         /*if userIsSignedIn {
             deleteEventButton.hidden = true
@@ -76,15 +63,5 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    // TODO add event scheduling from venue (ommitted for now for simplicity)
 }
