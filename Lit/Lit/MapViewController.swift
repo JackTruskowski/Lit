@@ -14,6 +14,7 @@ var addedEvents : [Event] = []
 var venuesTable : [Venue: [Event]] = [:] //dictionary where key is a Venue and value is a list of Events at that Venue
 
 var theUser : User?
+let serverInstance = Server()
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
     
@@ -43,6 +44,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //read in user defaults
         readInDataFromDefaults()
         
+        //read in existing events from server
+        serverInstance.refreshEventsFromServer()
+        
         //refresh right when the view loads
         refreshAnnotations()
     }
@@ -54,6 +58,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //get updated event data for their location and populate map
     @IBAction func refreshMapData(sender: UIBarButtonItem) {
+        serverInstance.refreshEventsFromServer()
         refreshAnnotations()
     }
     

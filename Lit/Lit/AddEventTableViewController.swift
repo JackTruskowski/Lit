@@ -11,6 +11,7 @@ import UIKit
 class AddEventTableViewController: UITableViewController {
     
     var mapVC : MapViewController?
+    var serverLink = Server()
     
     //storyboard vars
     @IBOutlet weak var startTimePicker: UIDatePicker!
@@ -76,8 +77,11 @@ class AddEventTableViewController: UITableViewController {
                         let theVenue = Venue()
                         theVenue.name = venueField.text!
                         theVenue.location = mapVC!.mapView.userLocation.location
+                    
+                        let newEvent = Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: descriptionField.text!, eventVenue: theVenue, eventHost: theUser!)
                 
-                        addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: descriptionField.text!, eventVenue: theVenue, eventHost: theUser!))
+                        addedEvents.append(newEvent)
+                        serverLink.postToServer(newEvent)
                     
                 }else{
                     print("no user exists")
