@@ -40,9 +40,7 @@ class Server {
             print(starttimedate)
             
             //make a sample host TODO: should look up in a host database
-            var aHost = User()
-            aHost.name = "Unknown"
-            aHost.uniqueID = hostidstr
+            let aHost = User(userName: "Unknown", ID: hostidstr)
             
             //make a sample venue TODO: should look up in a venue database
             let aVenue = Venue()
@@ -64,7 +62,7 @@ class Server {
     func postToServer(anEvent: Event){
         
         let hostidstr = anEvent.host.uniqueID
-        let venueidstr = anEvent.venue.name! //TODO: give venues unique IDs
+        let venueidstr = anEvent.venue.name //TODO: give venues unique IDs
         
         //convert to a datetime object from mysql
         let starttimestr = anEvent.startTime//dateFormatter.stringFromDate(anEvent.startTime)

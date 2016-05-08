@@ -31,15 +31,68 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if event != nil{
-            setupView()
-        } else{
-            //TODO something
-        }
+        setupView()
+
         
         eventTableView.dataSource = self
         eventTableView.delegate = self
     }
+    
+    //called when the view loads to populate all the event fields in the view and hide the delete button
+    func setupView(){
+        if event == nil{
+            print("cannot setup nil event")
+            return
+        }
+        let theEvent = event!
+        
+        //setup summary
+        summaryView.text = theEvent.summary
+        summaryView.scrollEnabled = false
+        
+        //make the summary field an appropriate size
+        let fixedWidth = summaryView.frame.size.width
+        let newSize = summaryView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
+        var newFrame = summaryView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        summaryView.frame = newFrame;
+        
+        eventTitle.text = theEvent.title
+        eventVenue.text = theEvent.venue.name
+        eventHost.text = theEvent.host.name
+        
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.locale = NSLocale.currentLocale()
+        dateFormatter.dateFormat = "MM-dd HH:mm"
+        
+        startTime.text = dateFormatter.stringFromDate(theEvent.startTime)
+        endTime.text = dateFormatter.stringFromDate(theEvent.endTime)
+        
+        //do button-related setup
+        if let theUser = data?.currentUser{ // confirm that there is a user
+            
+            // is the user in attendance
+            let isUserThere = theEvent.userIsAttending(theUser)
+            if isUserThere {
+                checkInButton.setTitle("Leave Event", forState: UIControlState.Normal)
+                checkedIn = true
+            }else{
+                checkInButton.setTitle("Check-In", forState: UIControlState.Normal)
+                checkedIn = false
+            }
+            
+            // can the user delete events
+            if theUser.uniqueID != theEvent.host.uniqueID {
+                deleteEventButton.hidden = true
+            }else{ deleteEventButton.hidden = false }
+
+        } else{ // if there is no user, they can't check in, or delete events
+            checkInButton.hidden = true
+            deleteEventButton.hidden = true
+        }
+    }
+    
     
     @IBAction func checkInButtonPressed(sender: UIButton) {
         if checkedIn == false{
@@ -53,51 +106,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         eventTableView.reloadData()
     }
     
-    //called when the view loads to populate all the event fields in the view and hide the delete button
-    func setupView(){
-        
-        //setup summary
-        summaryView.text = event?.summary
-        summaryView.scrollEnabled = false
-        
-        //make the summary field an appropriate size
-        let fixedWidth = summaryView.frame.size.width
-        summaryView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        let newSize = summaryView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.max))
-        var newFrame = summaryView.frame
-        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
-        summaryView.frame = newFrame;
-        
-        eventTitle.text = event?.title
-        eventHost.text = event?.venue.name
-        eventVenue.text = event?.host.name
-        
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale.currentLocale()
-        dateFormatter.dateFormat = "MM-dd HH:mm"
     
-        startTime.text = dateFormatter.stringFromDate((event?.startTime)!)
-        endTime.text = dateFormatter.stringFromDate((event?.endTime)!)
-        
-        //do button-related setup
-        if theUser?.uniqueID != event?.host.uniqueID {
-            deleteEventButton.hidden = true
-        }else{
-            deleteEventButton.hidden = false
-        }
-        
-        let isUserThere = event?.userIsAttending(theUser)
-        if isUserThere == true {
-            checkInButton.setTitle("Leave Event", forState: UIControlState.Normal)
-            checkedIn = true
-        }else{
-            checkInButton.setTitle("Check-In", forState: UIControlState.Normal)
-            checkedIn = false
-        }
-        
-        
-    }
     
     //returns the number of rows that the attendee table will have
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,11 +115,9 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     //action that deletes the current event, removes it from the map, and dismisses the popover view
     @IBAction func deleteEventPressed(sender: UIButton) {
-        
-        if mapInstance != nil && event != nil{
-            mapInstance?.deleteEvent(event!)
-            mapInstance?.refreshAnnotations()
-            self.dismissViewControllerAnimated(true, completion: nil)
+        if data != nil && event != nil{
+            data?.deleteEvent(event!)
+            self.dismissViewControllerAnimated(true, completion: nil) //TODO what is this?
         }
     }
     
@@ -140,18 +147,9 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
                     ppc.delegate = self
                 }
             }
+        } else{
+            print("SEGUE WITH IDENTIFIER" + segue.identifier!)
+            //data?.refreshAnnotations() // TODO put this in the prepare for segue
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

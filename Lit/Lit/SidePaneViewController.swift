@@ -10,7 +10,7 @@ import UIKit
 
 class SidePaneViewController: UIViewController {
     var currentUser: User?
-    var data: Data?
+    var data: LitData?
     
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var userPicture: UIImageView!

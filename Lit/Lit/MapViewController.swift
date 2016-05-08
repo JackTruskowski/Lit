@@ -6,7 +6,8 @@
 //  Copyright © 2016 Jack Chris and Simon. All rights reserved.
 //
 
-//TODO consider making arrays dictionarys for quick lookups
+//TODO consider making arrays dictionarys for quick lookups and removals
+//   only problem is then names become keys, so venues and events can't have duplicate names
 
 import UIKit
 import MapKit
@@ -44,21 +45,19 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         super.viewDidAppear(animated)
         panAndZoomToUserLocation()
     }
+    
     //reads in existing user data from nsuserdefaults
     func readInDataFromDefaults(){
         let defaults = NSUserDefaults.standardUserDefaults()
         if let userName = defaults.stringForKey("userName"){
             if let userUniqueKey = defaults.stringForKey("userID"){
-                let existingUser = User() //TODO maybe make a constructor for this
-                existingUser.name = userName
-                existingUser.uniqueID = userUniqueKey
+                let existingUser = User(userName: userName, ID: userUniqueKey)
                 data.currentUser = existingUser
             }
         }
     }
     
     func refreshAnnotations(){
-        
         //remove all old annotations
         mapView.removeAnnotations(mapView.annotations)
         
@@ -72,7 +71,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         }
     }
     
+    //
     //Actions triggered by the user
+    //
+    
     @IBAction func zoomToLoc(sender: UIBarButtonItem) {
         panAndZoomToUserLocation()
     }
@@ -88,7 +90,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         performSegueWithIdentifier("segueToAddEventView", sender: sender)
     }
     
-    
     //removes an event from the array
     func deleteEvent(anEvent: Event){
         for var i=0; i<data.eventsList.count; ++i{
@@ -98,12 +99,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         }
     }
     
-    
     //TODO: It would be nice to do this immediately, but that causes a crash - the user must click the zoom button for now // VIEW DID APPEAR
     func panAndZoomToUserLocation(){
         let userLocation = mapView.userLocation
         let region = MKCoordinateRegionMakeWithDistance(userLocation.location!.coordinate, 2000, 2000)
-        
         mapView.setRegion(region, animated: true)
     }
     

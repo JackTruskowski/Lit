@@ -15,26 +15,16 @@ class AddEventTableViewController: UITableViewController, UIPopoverPresentationC
     @IBOutlet weak var startTimePicker: UIDatePicker!
     @IBOutlet weak var endTimePicker: UIDatePicker!
     @IBOutlet weak var titleField: UITextField!
-    @IBOutlet weak var descriptionField: UITextView!
-    
+    @IBOutlet weak var summaryField: UITextView!
     @IBOutlet weak var venuePicker: UIPickerView!
-    
-    
-    
-    @IBAction func createVenue(sender: AnyObject) {
-    }
     
     @IBAction func addEventButtonPress(sender: UIButton) {
         
         //Check to ensure that the required fields are all filled in
         var errorMsg = ""
-        
-        //TODO fix these checks
         if titleField.text == "" || titleField.text == nil {
             errorMsg = "The event must have a title"
-        //}else if venueField.text == "" || venueField.text == nil {
-        //    errorMsg = "The event must have a venue"
-        }else if descriptionField.text == "" || descriptionField.text == nil {
+        }else if summaryField.text == "" || summaryField.text == nil {
             errorMsg = "The event must have a description"
         }else if NSDate().compare(endTimePicker.date) == NSComparisonResult.OrderedDescending{
             errorMsg = "The end time of the event must be in the future"
@@ -43,16 +33,26 @@ class AddEventTableViewController: UITableViewController, UIPopoverPresentationC
         }
         
         if errorMsg == ""{
+            //add the event
+            if(data?.currentUser != nil){
+                let theVenue = Venue()
+                theVenue.name = venueField.text! //TODO ask chris about this
+                theVenue.location = mapVC!.mapView.userLocation.location //TODO turn an adress into location
+                
+                data?.addEvent((Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventSummary: summaryField.text!, eventVenue: theVenue, eventHost: (data?.currentUser)!)))
+                
+            }else{
+                print("no user exists")
+            }
+            
             //perform the segue
             performSegueWithIdentifier("addEvent", sender: sender);
         }else{
-            let alertController = UIAlertController(title: "Error Adding Event", message:
-                errorMsg, preferredStyle: UIAlertControllerStyle.Alert)
+            let alertController = UIAlertController(title: "Error Adding Event", message: errorMsg,
+                                                    preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default,handler: nil))
-            
             self.presentViewController(alertController, animated: true, completion: nil)
         }
-        
     }
     
     override func viewDidLoad() {
@@ -60,21 +60,20 @@ class AddEventTableViewController: UITableViewController, UIPopoverPresentationC
         
         self.venuePicker.delegate = self
         self.venuePicker.dataSource = self
+        venuePicker.reloadAllComponents()
         
         //disable scrolling
         tableView.scrollEnabled = true
         
-        
         //remove extraneous cells
         tableView.tableFooterView = UIView()
+        
+        //make dates in the past not options
+        startTimePicker.minimumDate = NSDate()
+        endTimePicker.minimumDate = NSDate()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    //MARK -- functions for venuePicker/UIPickerView -> source: http://codewithchris.com/uipickerview-example/
+    // MARK: - functions for venuePicker/UIPickerView -> source: http://codewithchris.com/uipickerview-example/
     
     //the number of columns of data
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -100,37 +99,17 @@ class AddEventTableViewController: UITableViewController, UIPopoverPresentationC
         // The parameter named row and component represents what was selected.
     }
     
-    
     //adds the event to the list when the add event button is pressed
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "addEvent" {
-            let destination = segue.destinationViewController
-            if let _ = destination as? MapViewController{
-                if(theUser != nil){
-                    
-                    //add the event here
-                    let theVenue = Venue()
-                    theVenue.name = venueField.text!
-                    theVenue.location = mapVC!.mapView.userLocation.location
-                    
-                    addedEvents.append(Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: descriptionField.text!, eventVenue: theVenue, eventHost: theUser!))
-                    
-                }else{
-                    print("no user exists")
-                }
-            }
-        } else if segue.identifier == "addVenue" {
-            let destination = segue.destinationViewController
-            if let newVC = destination as? AddVenueViewController {
-                newVC.popoverPresentationController!.delegate = self
-                newVC.delegate = self
-                newVC.map = mapVC!.map
-                
+        if segue.identifier == "addVenue" {
+            if let destination = segue.destinationViewController as? AddVenueViewController {
+                destination.popoverPresentationController!.delegate = self
+                destination.delegate = self //TODO does this need a delegate
             }
         }
     }
     
-    //     venuePicker.reloadAllComponents() // TODO where to put this
+    //     venuePicker.reloadAllComponents() // TODO where to put this view did load?
     
     /*
     // MARK: - Navigation

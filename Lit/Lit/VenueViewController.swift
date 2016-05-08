@@ -9,43 +9,32 @@
 import UIKit
 
 class VenueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    var venue : Venue?
+    var venue: Venue?
 
     @IBOutlet weak var venueName: UILabel!
     @IBOutlet weak var venueAddress: UILabel!
     @IBOutlet weak var venueManager: UILabel!
     @IBOutlet weak var eventsTableView: UITableView!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if venue != nil {
-            setupView()
-        }
+        setupView()
         
         eventsTableView.dataSource = self
         eventsTableView.delegate = self
-
-        // Do any additional setup after loading the view.
     }
     
     func setupView() {
-        venueName.text = venue?.name
-        venueAddress.text = venue?.address
-        venueManager.text = "\((venue?.manager)!)"
+        if(venue == nil) {
+            return
+        }
+        let theVenue = venue!
         
-        print("\(venue?.events[0])")
+        venueName.text = theVenue.name
+        venueAddress.text = theVenue.address
         
-        //TODO what is this?
-        //user must be signed in to schedule event
-        /*if userIsSignedIn {
-            deleteEventButton.hidden = true
-        }else{
-            deleteEventButton.hidden = false
-        }*/
-        
+        print("\(theVenue.events[0])")
     }
     
     //returns the number of rows that the events table will have

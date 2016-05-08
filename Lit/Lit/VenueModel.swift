@@ -10,17 +10,15 @@ import Foundation
 import MapKit
 
 class Venue {
-    var name: String?
-    var address: String? // maybe this will be location when we use mapkit
+    var name: String = ""
+    var address: String = ""
     var location: CLLocation?
-    var manager: User?
     var events : [Event] = []
     
     //functions
-    init(venueName: String, venueAddress: String, creator: User) {
+    init(venueName: String, venueAddress: String) {
         name = venueName
         address = venueAddress
-        manager = creator
     }
     
     init() {

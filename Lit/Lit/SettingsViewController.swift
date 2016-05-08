@@ -20,7 +20,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBOutlet weak var backToMapButton: UIButton!
 
     
-    @IBAction func `return`(sender: UIButton) {
+    @IBAction func `return`(sender: UIButton) { //TODO make this unnecissary
         
         //dont perform segue if its an ipad
         let deviceIdiom = UIScreen.mainScreen().traitCollection.userInterfaceIdiom
@@ -49,21 +49,23 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     //updates the global user variable if necessary
     func assignUser(){
         if data != nil {
-            if profileName.text != ""{
-                if let theUser = data!.currentUser{
-                    theUser.name = profileName.text
+            if profileName.text != nil {
+                if let theUser = data!.currentUser {
+                    theUser.name = profileName.text!
                     theUser.picture = profileImage.image
                 }else{
-                    let theUser = User()
-                    if userID.text != ""{
-                        theUser.uniqueID = userID.text!
+                    
+                    var newID = ""
+                    if userID.text != nil{
+                        newID = userID.text!
                     }else{
-                        theUser.uniqueID = "ad24rew"
+                        newID = "ad24rew"
                     }
+                    let theUser = User(userName: profileName.text!, ID: newID)
+                    
                     let defaults = NSUserDefaults.standardUserDefaults()
                     defaults.setValue(theUser.uniqueID, forKey: "userID")
                 
-                    theUser.name = profileName.text
                     theUser.picture = profileImage.image
                     data!.currentUser = theUser
                 }

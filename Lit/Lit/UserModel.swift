@@ -9,18 +9,19 @@
 import UIKit
 
 class User: CustomStringConvertible{
-    var name: String?
+    var name: String = ""
     var picture : UIImage?
     var passwordHash = 0
     var uniqueID = ""
     
+    init(userName: String, ID: String){
+        name = userName
+        uniqueID = ID
+    }
+    
     var description: String{
         get{
-            if name != nil {
-                return name!
-            } else {
-                return "no name"
-            }
+            return name
         }
     }
 }

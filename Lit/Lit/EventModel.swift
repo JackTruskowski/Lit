@@ -10,7 +10,7 @@ import Foundation
 
 class Event: CustomStringConvertible{
     var title: String
-    var summary: String
+    var summary: String?
     var host: User
     var venue: Venue
     var startTime: NSDate
