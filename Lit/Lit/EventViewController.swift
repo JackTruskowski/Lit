@@ -10,14 +10,14 @@ import UIKit
 
 class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate {
     
-    var event : Event?
-    var theUser: User?
-    var mapInstance : MapViewController?
-
+    var event: Event?
+    var data: LitData?
+    var checkedIn = false
+    
     //storyboard vars
     @IBOutlet weak var eventTitle: UILabel!
-    @IBOutlet weak var eventHost: UILabel!  // NOTE: host and venue were swapped // potentially fixed
-    @IBOutlet weak var eventVenue: UILabel! // because renaming them was creating problems
+    @IBOutlet weak var eventHost: UILabel!
+    @IBOutlet weak var eventVenue: UILabel!
     @IBOutlet weak var eventImage: UIImageView!
     @IBOutlet weak var eventTableView: UITableView!
     @IBOutlet weak var deleteEventButton: UIButton!
@@ -27,13 +27,14 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var summaryView: UITextView!
     @IBOutlet weak var checkInButton: UIButton!
     
-    var checkedIn = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if event != nil{
             setupView()
+        } else{
+            //TODO something
         }
         
         eventTableView.dataSource = self
@@ -42,9 +43,11 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBAction func checkInButtonPressed(sender: UIButton) {
         if checkedIn == false{
-            event?.addAttendee(theUser)
+            event?.addAttendee((data?.currentUser)!)
+            checkedIn = true
         }else{
-            event?.removeAttendee(theUser)
+            event?.removeAttendee((data?.currentUser)!)
+            checkedIn = false
         }
         setupView()
         eventTableView.reloadData()
@@ -68,7 +71,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         eventTitle.text = event?.title
         eventHost.text = event?.venue.name
         eventVenue.text = event?.host.name
-        attendanceCount.text = "\((event?.attendanceCount)!)"
         
         
         let dateFormatter = NSDateFormatter()

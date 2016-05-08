@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
     
-    var myProfile : User?
+    var data: LitData?
     
     //profile fields
     @IBOutlet weak var profileImage: UIImageView!
@@ -48,28 +48,30 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     //updates the global user variable if necessary
     func assignUser(){
-        if profileName.text != ""{
-            if myProfile != nil{
-                myProfile!.name = profileName.text
-                myProfile!.picture = profileImage.image
-            }else{
-                myProfile = User()
-                if userID.text != ""{
-                    myProfile!.uniqueID = userID.text!
+        if data != nil {
+            if profileName.text != ""{
+                if let theUser = data!.currentUser{
+                    theUser.name = profileName.text
+                    theUser.picture = profileImage.image
                 }else{
-                    myProfile!.uniqueID = "ad24rew"
-                }
-                let defaults = NSUserDefaults.standardUserDefaults()
-                defaults.setValue(myProfile!.uniqueID, forKey: "userID")
+                    let theUser = User()
+                    if userID.text != ""{
+                        theUser.uniqueID = userID.text!
+                    }else{
+                        theUser.uniqueID = "ad24rew"
+                    }
+                    let defaults = NSUserDefaults.standardUserDefaults()
+                    defaults.setValue(theUser.uniqueID, forKey: "userID")
                 
-                myProfile!.name = profileName.text
-                myProfile!.picture = profileImage.image
+                    theUser.name = profileName.text
+                    theUser.picture = profileImage.image
+                    data!.currentUser = theUser
+                }
+            }else{
+                data!.currentUser = nil
             }
-            theUser = myProfile!
-        }else{
-            theUser = nil
         }
-    
+        // if data is nill, there's a problem
     }
 
     override func viewDidLoad() {
@@ -78,13 +80,13 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         self.profileName.delegate = self
         
         //tap gesture recognizer for touching the picture
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(SettingsViewController.imageTapped(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
         profileImage.userInteractionEnabled = true
         profileImage.addGestureRecognizer(tapGestureRecognizer)
         
         //update profile picture
-        if myProfile?.picture != nil {
-            profileImage.image = myProfile!.picture
+        if let theUser = data?.currentUser {
+            profileImage.image = theUser.picture
         }else{
             profileImage.image = UIImage(named: "useravatar")
         }
@@ -101,11 +103,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         }
         
         
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func imageTapped(image: AnyObject){

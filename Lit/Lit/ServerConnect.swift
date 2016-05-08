@@ -12,14 +12,14 @@ import WebKit
 class Server {
     
     var valuesFromDatabase : NSArray = []
-    
+    var mapData: LitData?
     func refreshEventsFromServer(){
         let url = NSURL(string: "http://52.201.225.102/getevent.php")
         let data = NSData(contentsOfURL: url!)
         valuesFromDatabase = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray
         
         //repopulate the added events array with events from the server
-        addedEvents.removeAll()
+        mapData?.eventsList.removeAll()
         for i in 0 ..< valuesFromDatabase.count{
             //get all vars
             let hostidstr = String(valuesFromDatabase[i]["HostID"])
@@ -54,9 +54,9 @@ class Server {
             }
 
             //make an event
-            let newEvent = Event(eventTitle: titlestr, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventDescription: descriptionstr, eventVenue: aVenue, eventHost: aHost)
+            let newEvent = Event(eventTitle: titlestr, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr, eventVenue: aVenue, eventHost: aHost)
             
-            addedEvents.append(newEvent)
+            mapData?.eventsList.append(newEvent)
         }
         
     }

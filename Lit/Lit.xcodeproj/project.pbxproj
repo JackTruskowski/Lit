@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86369E0E1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E0D1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift */; };
+		86369E101CDEE1B700EBFDBA /* categoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */; };
+		86369E121CDEE1C000EBFDBA /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */; };
+		86369E141CDEE1CA00EBFDBA /* SidePaneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */; };
 		86D6BF3D1CC6BEE0004E44D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */; };
 		86D6BF3F1CC6BEE0004E44D2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */; };
 		86D6BF421CC6BEE0004E44D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86D6BF401CC6BEE0004E44D2 /* Main.storyboard */; };
@@ -47,6 +51,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		86369E0D1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
+		86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = categoriesTableViewController.swift; sourceTree = "<group>"; };
+		86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidePaneViewController.swift; sourceTree = "<group>"; };
 		86D6BF391CC6BEE0004E44D2 /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -137,6 +145,10 @@
 				86D6BF451CC6BEE0004E44D2 /* LaunchScreen.storyboard */,
 				86D6BF481CC6BEE0004E44D2 /* Info.plist */,
 				A89E974B1CCC0F4400B463A0 /* MapPin.swift */,
+				86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */,
+				86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */,
+				86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */,
+				86369E0D1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift */,
 				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
 				CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */,
 				A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */,
@@ -297,11 +309,15 @@
 			files = (
 				86DBC6E21CDE9C9B006D4F70 /* AddVenueViewController.swift in Sources */,
 				CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */,
+				86369E101CDEE1B700EBFDBA /* categoriesTableViewController.swift in Sources */,
+				86369E121CDEE1C000EBFDBA /* OptionsViewController.swift in Sources */,
 				86D6BF6F1CC6C0F8004E44D2 /* UserModel.swift in Sources */,
 				A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */,
 				86D6BF731CC6C2E0004E44D2 /* VenueViewController.swift in Sources */,
+				86369E141CDEE1CA00EBFDBA /* SidePaneViewController.swift in Sources */,
 				86DBC6E01CDE7EEE006D4F70 /* DataModel.swift in Sources */,
 				86D6BF3F1CC6BEE0004E44D2 /* MapViewController.swift in Sources */,
+				86369E0E1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift in Sources */,
 				86D6BF3D1CC6BEE0004E44D2 /* AppDelegate.swift in Sources */,
 				86D6BF711CC6C195004E44D2 /* VenueModel.swift in Sources */,
 				A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */,

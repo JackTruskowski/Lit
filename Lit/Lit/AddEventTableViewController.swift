@@ -8,13 +8,12 @@
 
 import UIKit
 
-class AddEventTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, mapData {
-    var data: Data?
+class AddEventTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    var data: LitData?
     
     //storyboard vars
     @IBOutlet weak var startTimePicker: UIDatePicker!
     @IBOutlet weak var endTimePicker: UIDatePicker!
-    @IBOutlet weak var venueField: UITextField!
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var descriptionField: UITextView!
     
@@ -30,10 +29,11 @@ class AddEventTableViewController: UITableViewController, UIPopoverPresentationC
         //Check to ensure that the required fields are all filled in
         var errorMsg = ""
         
+        //TODO fix these checks
         if titleField.text == "" || titleField.text == nil {
             errorMsg = "The event must have a title"
-        }else if venueField.text == "" || venueField.text == nil {
-            errorMsg = "The event must have a venue"
+        //}else if venueField.text == "" || venueField.text == nil {
+        //    errorMsg = "The event must have a venue"
         }else if descriptionField.text == "" || descriptionField.text == nil {
             errorMsg = "The event must have a description"
         }else if NSDate().compare(endTimePicker.date) == NSComparisonResult.OrderedDescending{
@@ -130,11 +130,7 @@ class AddEventTableViewController: UITableViewController, UIPopoverPresentationC
         }
     }
     
-    func sendUpdatedMapToPreviousVC (updatedMap: Map, name: String) {
-        mapVC?.map = updatedMap
-        venuePicker.reloadAllComponents()
-        print("map model in addEventVC containts these venues \((mapVC?.map.getVenueList()))")
-    }
+    //     venuePicker.reloadAllComponents() // TODO where to put this
     
     /*
     // MARK: - Navigation

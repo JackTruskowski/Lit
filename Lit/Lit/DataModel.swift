@@ -8,7 +8,8 @@
 
 import Foundation
 
-class Data {
-    var eventsList : [Event] = []
-    var venuesList : [Venue] = []
+class LitData {
+    var eventsList: [Event] = []
+    var venuesList: [Venue] = []
+    var currentUser: User?
 }

@@ -6,12 +6,14 @@
 //  Copyright © 2016 Jack Chris and Simon. All rights reserved.
 //
 
+//TODO consider making arrays dictionarys for quick lookups
+
 import UIKit
 import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
-    var data = Data()
-    var theUser : User?
+    // this is the only time we create a LitData object, everyone else has references to this one
+    var data = LitData()
     let serverInstance = Server()
     
     @IBOutlet var mapView: MKMapView!
@@ -29,16 +31,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //get permission to use location data
         mapView.showsUserLocation = true
         
-        
-        
-        //TODO make this unnecessary by embedding all in navigation controller
-        //hide the settings button if its an ipad
-        let deviceIdiom = UIScreen.mainScreen().traitCollection.userInterfaceIdiom
-        if deviceIdiom == .Pad{
-            settingsButton.title = ""
-            settingsButton.enabled = false
-        }
-        
         //read in user defaults
         readInDataFromDefaults()
         
@@ -47,6 +39,37 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         
         //refresh right when the view loads
         refreshAnnotations()
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        panAndZoomToUserLocation()
+    }
+    //reads in existing user data from nsuserdefaults
+    func readInDataFromDefaults(){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if let userName = defaults.stringForKey("userName"){
+            if let userUniqueKey = defaults.stringForKey("userID"){
+                let existingUser = User() //TODO maybe make a constructor for this
+                existingUser.name = userName
+                existingUser.uniqueID = userUniqueKey
+                data.currentUser = existingUser
+            }
+        }
+    }
+    
+    func refreshAnnotations(){
+        
+        //remove all old annotations
+        mapView.removeAnnotations(mapView.annotations)
+        
+        print(data.eventsList.count)
+        
+        //add all the events to the map as annotations
+        for var i = 0; i < data.eventsList.count; ++i {
+            let coordinates = CLLocationCoordinate2DMake((data.eventsList[i].venue.location!.coordinate.latitude), (data.eventsList[i].venue.location!.coordinate.longitude))
+            let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: data.eventsList[i])
+            mapView.addAnnotation(dropPin)
+        }
     }
     
     //Actions triggered by the user
@@ -65,20 +88,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         performSegueWithIdentifier("segueToAddEventView", sender: sender)
     }
     
-    func refreshAnnotations(){
-        
-        //remove all old annotations
-        mapView.removeAnnotations(mapView.annotations)
-        
-        print(data.eventsList.count)
-        
-        //add all the events to the map as annotations
-        for var i = 0; i < data.eventsList.count; ++i {
-            let coordinates = CLLocationCoordinate2DMake((data.eventsList[i].venue.location!.coordinate.latitude), (data.eventsList[i].venue.location!.coordinate.longitude))
-            let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: data.eventsList[i])
-            mapView.addAnnotation(dropPin)
-        }
-    }
     
     //removes an event from the array
     func deleteEvent(anEvent: Event){
@@ -90,75 +99,43 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     }
     
     
-    //TODO: It would be nice to do this immediately, but that causes a crash - the user must click the zoom button for now
+    //TODO: It would be nice to do this immediately, but that causes a crash - the user must click the zoom button for now // VIEW DID APPEAR
     func panAndZoomToUserLocation(){
-        
         let userLocation = mapView.userLocation
         let region = MKCoordinateRegionMakeWithDistance(userLocation.location!.coordinate, 2000, 2000)
         
         mapView.setRegion(region, animated: true)
-        
     }
     
-    
-    //reads in existing user data from nsuserdefaults
-    func readInDataFromDefaults(){
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let userName = defaults.stringForKey("userName"){
-            if let userUniqueKey = defaults.stringForKey("userID"){
-                let existingUser = User() //TODO maybe make a constructor for this
-                existingUser.name = userName
-                existingUser.uniqueID = userUniqueKey
-                theUser = existingUser
-            }
-        }
-    }
     
     //this is called when a pin is clicked, segues to the event view
-    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView)
-    {
+    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView){
         if((view.annotation?.title)! != "Current Location"){
             popoverAnchor.frame = CGRectMake(view.frame.origin.x+10,
                 view.frame.origin.y,
                 view.frame.size.width,
                 view.frame.size.height);
-            performSegueWithIdentifier("segueToEventPopover", sender: view)
+            performSegueWithIdentifier("segueToEventPopover", sender: view) //TODO Does this actually make a popover segue?
         }
     }
     
     //Passes any objects the new view might need
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        // good way
         if segue.identifier == "segueToAddEventView" {
             let newVC = segue.destinationViewController as! AddEventTableViewController
-            newVC.data = data // newVC doesn't have data yet
+            newVC.data = data
         } else if segue.identifier == "segueToEventPopover" {
             let newVC = segue.destinationViewController as! EventViewController
-            // which event was clicked?
-            if let theSender = sender?.annotation as? MapPin{
-                newVC.event = theSender.event
-                //give the view controller this MapViewController instance for event deletion
-                newVC.mapInstance = self
-            }
-        }
-        
-        /*
-        let destination = segue.destinationViewController
-        if let newVC = destination as? EventViewController{
             
-            //pass the appropriate event here
             if let theSender = sender?.annotation as? MapPin{
                 newVC.event = theSender.event
-                //give the view controller this MapViewController instance for event deletion
-                newVC.mapInstance = self
+                newVC.data = data
             }
-            //TODO what is this
+            
             if let ppc = newVC.popoverPresentationController { //TODO what is this?
                 ppc.delegate = self
             }
         }
-        */
     }
 
     
