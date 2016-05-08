@@ -9,8 +9,7 @@
 import UIKit
 
 class AddEventTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, mapData {
-    
-    var mapVC : MapViewController?
+    var data: Data?
     
     //storyboard vars
     @IBOutlet weak var startTimePicker: UIDatePicker!
@@ -84,14 +83,14 @@ class AddEventTableViewController: UITableViewController, UIPopoverPresentationC
     
     //the number of rows of data
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        print("Number of rows of data \((mapVC?.map.getVenuesCount())!)")
-        return (mapVC?.map.getVenuesCount())!
+        print("Number of rows of data \(data?.venuesList.count)")
+        return (data?.venuesList.count)!
     }
     
     //the data to return for the row and component (column) that's being passed in
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        print(mapVC?.map.getVenueList())
-        return (mapVC?.map.getVenueList()[row].name)
+        print(data?.venuesList)
+        return (data?.venuesList[row].name)
     }
     
     

@@ -18,7 +18,7 @@
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5t-Fq-5Kh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-449" y="-87"/>
+            <point key="canvasLocation" x="-145" y="-175"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="Na7-hY-u4T">
@@ -143,7 +143,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9BU-t8-Eix" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="988" y="-469"/>
+            <point key="canvasLocation" x="838" y="-676"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="cGu-90-gwl">
@@ -300,7 +300,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="145" placeholder="YES" id="ttb-Hf-Nb5"/>
                                         </constraints>
-                                        <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -855,7 +855,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kun-Ut-kp3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2386" y="-469"/>
+            <point key="canvasLocation" x="3214" y="-547"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="A0p-87-kXZ">
@@ -871,7 +871,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="To0-8t-A3i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1698" y="-469"/>
+            <point key="canvasLocation" x="2526" y="-547"/>
         </scene>
         <!--Add Event Table View Controller-->
         <scene sceneID="Gpg-mg-AtP">
@@ -1251,7 +1251,7 @@
         <image name="dTrenagpc" width="200" height="200"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lKf-kZ-BPD"/>
-        <segue reference="13Y-dY-3JZ"/>
+        <segue reference="QRd-An-1sb"/>
+        <segue reference="zw5-55-lkM"/>
     </inferredMetricsTieBreakers>
 </document>
