@@ -41,9 +41,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //refresh right when the view loads
         refreshAnnotations()
     }
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        panAndZoomToUserLocation()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        //panAndZoomToUserLocation()
     }
     
     //reads in existing user data from nsuserdefaults

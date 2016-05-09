@@ -46,6 +46,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         
     }
     
+    
+    //TODO move to it's own edit profile view controller
     //updates the global user variable if necessary
     func assignUser(){
         if data != nil {
@@ -79,7 +81,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.profileName.delegate = self
+        self.profileName.delegate = self //TODO what is this for?
         
         //tap gesture recognizer for touching the picture
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("imageTapped:"))
