@@ -14,7 +14,7 @@ import MapKit
 
 class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentationControllerDelegate{
     // this is the only time we create a LitData object, everyone else has references to this one
-    var data = LitData()
+    var data: LitData = LitData()
     let serverInstance = Server()
     
     @IBOutlet var mapView: MKMapView!
@@ -120,10 +120,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //Passes any objects the new view might need
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "segueToAddEventView" {
-            let newVC = segue.destinationViewController as! AddEventTableViewController
-            newVC.data = data
-        } else if segue.identifier == "segueToEventPopover" {
+        print("Segueing from map with segue: \(segue.identifier)")
+        if segue.identifier == "segueToEventPopover" {
             let newVC = segue.destinationViewController as! EventViewController
             
             if let theSender = sender?.annotation as? MapPin{
@@ -134,6 +132,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             if let ppc = newVC.popoverPresentationController { //TODO what is this?
                 ppc.delegate = self
             }
+        }
+    }
+    
+    override func didMoveToParentViewController(parent: UIViewController?) {
+        print("hitting back button")
+
+        if let destination = parent as? SidePaneViewController{
+            print("got destination")
+                destination.data = data
         }
     }
 

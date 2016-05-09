@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86309A401CE11EAD00D78AE1 /* AddVenueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86DDF7BC1CE11B5A003174F1 /* AddVenueViewController.swift */; };
 		86369E0E1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E0D1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift */; };
 		86369E101CDEE1B700EBFDBA /* categoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */; };
 		86369E121CDEE1C000EBFDBA /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */; };
 		86369E141CDEE1CA00EBFDBA /* SidePaneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */; };
+		86D47D601CE12A70009226B3 /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D47D5F1CE12A70009226B3 /* AddEventViewController.swift */; };
 		86D6BF3D1CC6BEE0004E44D2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */; };
 		86D6BF3F1CC6BEE0004E44D2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */; };
 		86D6BF421CC6BEE0004E44D2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86D6BF401CC6BEE0004E44D2 /* Main.storyboard */; };
@@ -25,7 +27,6 @@
 		86D6BF731CC6C2E0004E44D2 /* VenueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF721CC6C2E0004E44D2 /* VenueViewController.swift */; };
 		86D6BF771CC6C3E6004E44D2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */; };
 		86DBC6E01CDE7EEE006D4F70 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86DBC6DF1CDE7EEE006D4F70 /* DataModel.swift */; };
-		86DBC6E21CDE9C9B006D4F70 /* AddVenueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86DBC6E11CDE9C9B006D4F70 /* AddVenueViewController.swift */; };
 		A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */; };
 		A897DA6E1CDD8B4700FF219B /* ServerConnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = A897DA6D1CDD8B4700FF219B /* ServerConnect.swift */; };
 		A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89E974B1CCC0F4400B463A0 /* MapPin.swift */; };
@@ -55,6 +56,7 @@
 		86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = categoriesTableViewController.swift; sourceTree = "<group>"; };
 		86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidePaneViewController.swift; sourceTree = "<group>"; };
+		86D47D5F1CE12A70009226B3 /* AddEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
 		86D6BF391CC6BEE0004E44D2 /* Lit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -75,7 +77,7 @@
 		86D6BF721CC6C2E0004E44D2 /* VenueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VenueViewController.swift; sourceTree = "<group>"; };
 		86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		86DBC6DF1CDE7EEE006D4F70 /* DataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
-		86DBC6E11CDE9C9B006D4F70 /* AddVenueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddVenueViewController.swift; path = ../../../Downloads/Lit/Lit/AddVenueViewController.swift; sourceTree = "<group>"; };
+		86DDF7BC1CE11B5A003174F1 /* AddVenueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVenueViewController.swift; sourceTree = "<group>"; };
 		A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttendeeTableViewCell.swift; sourceTree = "<group>"; };
 		A897DA6D1CDD8B4700FF219B /* ServerConnect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerConnect.swift; sourceTree = "<group>"; };
 		A89E974B1CCC0F4400B463A0 /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				86D6BF431CC6BEE0004E44D2 /* Assets.xcassets */,
 				86D6BF451CC6BEE0004E44D2 /* LaunchScreen.storyboard */,
 				86D6BF401CC6BEE0004E44D2 /* Main.storyboard */,
+				86D47D5F1CE12A70009226B3 /* AddEventViewController.swift */,
 				86D6BF481CC6BEE0004E44D2 /* Info.plist */,
 				86D6BF3C1CC6BEE0004E44D2 /* AppDelegate.swift */,
 				86D6BF3E1CC6BEE0004E44D2 /* MapViewController.swift */,
@@ -144,7 +147,7 @@
 				A8D6CB711CCFFB8F00DD10DB /* AddEventTableViewController.swift */,
 				86D6BF721CC6C2E0004E44D2 /* VenueViewController.swift */,
 				86D6BF701CC6C195004E44D2 /* VenueModel.swift */,
-				86DBC6E11CDE9C9B006D4F70 /* AddVenueViewController.swift */,
+				86DDF7BC1CE11B5A003174F1 /* AddVenueViewController.swift */,
 				86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */,
 				86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */,
 				86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */,
@@ -307,7 +310,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86DBC6E21CDE9C9B006D4F70 /* AddVenueViewController.swift in Sources */,
+				86309A401CE11EAD00D78AE1 /* AddVenueViewController.swift in Sources */,
+				86D47D601CE12A70009226B3 /* AddEventViewController.swift in Sources */,
 				CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */,
 				86369E101CDEE1B700EBFDBA /* categoriesTableViewController.swift in Sources */,
 				86369E121CDEE1C000EBFDBA /* OptionsViewController.swift in Sources */,

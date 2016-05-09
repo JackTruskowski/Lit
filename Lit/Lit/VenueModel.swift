@@ -12,6 +12,7 @@ import MapKit
 class Venue {
     var name: String = ""
     var address: String = ""
+    var summary: String?
     var location: CLLocation?
     var events : [Event] = []
     

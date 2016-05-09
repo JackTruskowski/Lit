@@ -9,6 +9,7 @@
 import UIKit
 
 class OptionsViewController: UITableViewController {
+    var data: LitData?
     
     @IBOutlet weak var startTime: UIDatePicker!
     @IBOutlet weak var endTime: UIDatePicker!
@@ -40,14 +41,19 @@ class OptionsViewController: UITableViewController {
     @IBAction func logout() {
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "segueToAddEvent" {
+            if let destination = segue.destinationViewController as? UINavigationController{
+                if let newVC = destination.topViewController as? AddEventViewController{
+                    newVC.data = data
+                }
+            }
+        }else if segue.identifier == "segueToAddVenue" {
+            if let destination = segue.destinationViewController as? UINavigationController{
+                if let newVC = destination.topViewController as? AddVenueViewController{
+                    newVC.data = data
+                }
+            }
+        }
     }
-    */
-
 }
