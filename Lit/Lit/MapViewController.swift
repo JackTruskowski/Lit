@@ -48,7 +48,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         serverInstance.refreshEventsFromServer()
         
         //refresh right when the view loads
-        refreshAnnotations()
+        //refreshAnnotations()
     }
     
     //Actions triggered by the user
@@ -64,7 +64,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //add an event to the map (pressing this button should also trigger a popover for adding event info)
     @IBAction func addEvent(sender: UIBarButtonItem) {
-        
         performSegueWithIdentifier("segueToAddEventView", sender: sender)
     }
     
@@ -80,8 +79,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         print(addedEvents.count)
         
         //add all the events to the map as annotations
-        for var i = 0; i < addedEvents.count; ++i {
+        for i in 0 ..< addedEvents.count {
             let coordinates = CLLocationCoordinate2DMake((addedEvents[i].venue.location!.coordinate.latitude), (addedEvents[i].venue.location!.coordinate.longitude))
+            print(coordinates)
             let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: addedEvents[i])
             mapView.addAnnotation(dropPin)
         }
@@ -89,7 +89,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //removes an event from the array
     func deleteEvent(anEvent: Event){
-        for var i=0; i<addedEvents.count; ++i{
+        for i in 0 ..< addedEvents.count{
             if addedEvents[i] === anEvent {
                 addedEvents.removeAtIndex(i)
             }
@@ -170,7 +170,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController?{
             
             let navController:UINavigationController = UINavigationController(rootViewController: controller.presentedViewController)
-            controller.presentedViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action:"done")
+            controller.presentedViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action:#selector(MapViewController.done))
             return navController
     }
     func done (){

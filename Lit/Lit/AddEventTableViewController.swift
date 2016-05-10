@@ -81,6 +81,7 @@ class AddEventTableViewController: UITableViewController {
                         let newEvent = Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventDescription: descriptionField.text!, eventVenue: theVenue, eventHost: theUser!)
                 
                         addedEvents.append(newEvent)
+                        print(newEvent.venue.location)
                         serverLink.postToServer(newEvent)
                     
                 }else{
