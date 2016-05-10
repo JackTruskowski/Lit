@@ -8,11 +8,13 @@
 
 import UIKit
 import WebKit
+import MapKit
 
 class Server {
     
     var valuesFromDatabase : NSArray = []
     var mapData: LitData?
+    
     func refreshEventsFromServer(){
         let url = NSURL(string: "http://52.201.225.102/getevent.php")
         let data = NSData(contentsOfURL: url!)
@@ -20,83 +22,131 @@ class Server {
         
         //repopulate the added events array with events from the server
         mapData?.eventsList.removeAll()
+        
         for i in 0 ..< valuesFromDatabase.count{
-            printData()
             //get all vars
-            //let hostID = valuesFromDatabase[i]["HostID"] as? Int //TODO: typecast?
-            let venueidstr = String(valuesFromDatabase[i]["VenueID"])
+            let hostidstr = valuesFromDatabase[i]["HostID"] as? String
+            let venueidstr = valuesFromDatabase[i]["VenueID"] as? String
+            
+            var venueloc : CLLocation
+            var eventlatitude : Double = 0.0
+            var eventlongitude : Double = 0.0
+            
+            //location info
+            if let startlat = (valuesFromDatabase[i]["Latitude"]) as? String{
+                eventlatitude = Double(startlat)!
+            }
+            if let startlong = (valuesFromDatabase[i]["Longitude"]) as? String{
+                eventlongitude = Double(startlong)!
+            }
+            
+            if(eventlongitude != 0.0 && eventlatitude != 0.0){
+                venueloc = CLLocation(latitude: eventlatitude, longitude: eventlongitude)
+            }else{
+                print("couldn't find lat and long")
+                continue
+            }
             
             //convert to an nsdate object from datetime
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM-dd HH:mm"
             dateFormatter.locale = NSLocale.currentLocale()
-            print(valuesFromDatabase[i]["StartTime"]!?.description)
-            let starttimedate = dateFormatter.dateFromString(String(valuesFromDatabase[i]["StartTime"]!?.description))
-            let endtimedate = dateFormatter.dateFromString(String(valuesFromDatabase[i]["EndTime"]!?.description))
             
-
-            let titlestr = String(valuesFromDatabase[i]["Title"])
-            let descriptionstr = String(valuesFromDatabase[i]["Description"])
-            print(titlestr)
-            print(starttimedate)
+            //note: making a substring is necessary because for some reason 'Optional()' is saved as part of the string
+            let start1 = String(valuesFromDatabase[i]["StartTime"])
+            let s1 = start1.substringWithRange(Range<String.Index>(start1.startIndex.advancedBy(14) ..< start1.endIndex.advancedBy(-4)))
+            let end1 = String(valuesFromDatabase[i]["EndTime"])
+            let e1 = end1.substringWithRange(Range<String.Index>(end1.startIndex.advancedBy(14) ..< end1.endIndex.advancedBy(-4)))
+            
+            
+            //format the dates back to an nsdate object
+            let starttimedate = dateFormatter.dateFromString(s1)
+            let endtimedate = dateFormatter.dateFromString(e1)
+            
+            //get title and description
+            let titlestr = valuesFromDatabase[i]["Title"] as? String
+            let descriptionstr = valuesFromDatabase[i]["Description"] as? String
             
             //make a sample host TODO: should look up in a host database
-            let aHost = User(userName: "Unknown", ID: Int(rand()))
+            let aHost = User(userName: hostidstr!, ID: Int(rand()))
             
             //make a sample venue TODO: should look up in a venue database
             let aVenue = Venue()
-            aVenue.name = venueidstr
+            aVenue.name = venueidstr!
+            aVenue.location = venueloc
             
             if(starttimedate == nil || endtimedate == nil){
-                print("CONTINUING")
+                print("couldn't find start and end times")
                 continue
             }
-
+            
             //make an event
-            let newEvent = Event(eventTitle: titlestr, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr, eventVenue: aVenue, eventHost: aHost)
+            let newEvent = Event(eventTitle: titlestr!, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr!, eventVenue: aVenue, eventHost: aHost)
             
             mapData?.eventsList.append(newEvent)
+            print("APPENDED")
         }
         
     }
     
     func postToServer(anEvent: Event){
         
-        let hostID = anEvent.host.uniqueID
+        //1. Pull all data from the Event
+        
+        let hostidstr = anEvent.host.uniqueID
         let venueidstr = anEvent.venue.name //TODO: give venues unique IDs
         
         //convert to a datetime object from mysql
-        let starttimestr = anEvent.startTime//dateFormatter.stringFromDate(anEvent.startTime)
-        print(starttimestr)
-        let endtimestr = anEvent.endTime//dateFormatter.stringFromDate(anEvent.endTime)
+        let starttimestr = anEvent.startTime
+        
+        let endtimestr = anEvent.endTime
         let titlestr = anEvent.title
         let descriptionstr = anEvent.description
         
+        //coordinates of the event -- saved as floats in the DB
+        let latcoordinate = Float((anEvent.venue.location?.coordinate.latitude)!)
+        let longcoordinate = Float((anEvent.venue.location?.coordinate.longitude)!)
+        
+        print("COORDINATES: ", latcoordinate, longcoordinate)
+        
+        //2. make the request to the server
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addevent.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(hostID)&b=\(venueidstr)&c=\(starttimestr)&d=\(endtimestr)&e=\(titlestr)&f=\(descriptionstr)"
+        let postString = "a=\(hostidstr)&b=\(venueidstr)&c=\(starttimestr)&d=\(endtimestr)&e=\(titlestr)&f=\(descriptionstr)&g=\(latcoordinate)&h=\(longcoordinate)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
             data, response, error in
             
             if error != nil{
-                print("error=\(error)")
                 return
             }
-            
-            let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-            print("response = \(responseString)")
         }
         task.resume()
     }
     
-    
-    func printData(){
-        for i in 0 ..< valuesFromDatabase.count{
-            print("\(valuesFromDatabase[i]["HostID"])" , "\(valuesFromDatabase[i]["VenueID"])")
+    //Looks up an event on the server and deletes it
+    func deleteFromServer(anEvent: Event){
+        
+        let hostidstr = anEvent.host.uniqueID
+        let venueidstr = anEvent.venue.name
+        
+        print(hostidstr, venueidstr)
+        
+        let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/deleteevent.php")!)
+        request.HTTPMethod = "GET"
+        let postString = "a=\(hostidstr)&b=\(venueidstr)"
+        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
+            data, response, error in
+            
+            if error != nil{
+                
+                return
+            }
         }
+        task.resume()
     }
-    
 }

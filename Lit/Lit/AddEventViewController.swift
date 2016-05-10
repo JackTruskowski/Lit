@@ -11,6 +11,7 @@ import UIKit
 class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var data: LitData?
+    let server = Server()
     
     //storyboard vars
     @IBOutlet weak var startTimePicker: UIDatePicker!
@@ -45,6 +46,7 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
                 data?.addEvent(newEvent)
                 selectedVenue?.events.append(newEvent)
+                server.postToServer(newEvent)
                 
             }else{
                 print("no user exists")

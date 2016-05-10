@@ -35,6 +35,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //read in user defaults
         readInDataFromDefaults()
         
+        serverInstance.mapData = data
+        
         //read in existing events from server
         serverInstance.refreshEventsFromServer()
         
@@ -60,10 +62,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //remove all old annotations
         mapView.removeAnnotations(mapView.annotations)
         
+        serverInstance.refreshEventsFromServer()
+        
         print(data.eventsList.count)
         
         //add all the events to the map as annotations
-        for var i = 0; i < data.eventsList.count; ++i {
+        for i in 0 ..< data.eventsList.count {
+            print(data.eventsList[i].venue)
             let coordinates = CLLocationCoordinate2DMake((data.eventsList[i].venue.location!.coordinate.latitude), (data.eventsList[i].venue.location!.coordinate.longitude))
             let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: data.eventsList[i])
             mapView.addAnnotation(dropPin)
@@ -80,13 +85,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //get updated event data for their location and populate map
     @IBAction func refreshMapData(sender: UIBarButtonItem) {
-        serverInstance.refreshEventsFromServer()
         refreshAnnotations()
     }
     
     //removes an event from the array
     func deleteEvent(anEvent: Event){
-        for var i=0; i<data.eventsList.count; ++i{
+        for i in 0 ..< data.eventsList.count{
             if data.eventsList[i] === anEvent {
                 data.eventsList.removeAtIndex(i)
             }
