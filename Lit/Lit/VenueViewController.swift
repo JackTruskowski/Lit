@@ -10,10 +10,10 @@ import UIKit
 
 class VenueViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var venue: Venue?
+    var data: LitData?
 
     @IBOutlet weak var venueName: UILabel!
     @IBOutlet weak var venueAddress: UILabel!
-    @IBOutlet weak var venueManager: UILabel!
     @IBOutlet weak var eventsTableView: UITableView!
     
     override func viewDidLoad() {
@@ -52,5 +52,19 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
     
+    override func viewWillAppear(animated: Bool) {
+        eventsTableView.reloadData()
+    }
     // TODO add event scheduling from venue (ommitted for now for simplicity)
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "addEventFromVenue" {
+            let destination = segue.destinationViewController as! UINavigationController
+            let newVC = destination.topViewController as! AddEventViewController
+            
+            newVC.selectedVenue = venue
+            newVC.data = data
+            
+        }
+    }
 }

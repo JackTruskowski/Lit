@@ -19,7 +19,7 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var summaryField: UITextView!
     @IBOutlet weak var venuePicker: UIPickerView!
     
-    var selectedVenue:Venue?
+    var selectedVenue: Venue?
     
     @IBAction func addEvent(sender: UIButton) {
         
@@ -41,15 +41,15 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             //add the event
             if(data?.currentUser != nil){ //TODO we should make sure we have a user before segueing to here
                 
-                data?.addEvent((Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventSummary: summaryField.text!, eventVenue: selectedVenue!, eventHost: (data?.currentUser)!)))
+                let newEvent = Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventSummary: summaryField.text!, eventVenue: selectedVenue!, eventHost: (data?.currentUser)!)
+        
+                data?.addEvent(newEvent)
+                selectedVenue?.events.append(newEvent)
                 
             }else{
                 print("no user exists")
             }
             
-            //perform the segue
-            //TODO dismiss with delegate from previous vc
-            //performSegueWithIdentifier("addEvent", sender: sender);
             dismissViewControllerAnimated(true, completion: nil)
         }else{
             let alertController = UIAlertController(title: "Error Adding Event", message: errorMsg,
@@ -71,11 +71,20 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         //make dates in the past not options
         startTimePicker.minimumDate = NSDate()
         endTimePicker.minimumDate = NSDate()
+        
+        //find the venue in the venue list
+        if selectedVenue != nil{
+            venuePicker.selectRow((data?.venuesList.indexOf({$0 === selectedVenue!})) ?? 0, inComponent: 0, animated: true)
+            venuePicker.userInteractionEnabled = false
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         print("View will appear")
         venuePicker.reloadAllComponents()
+        if data?.venuesList.isEmpty == false {
+            venuePicker.selectRow(0, inComponent: 0, animated: true)
+        }
     }
     // MARK: - functions for venuePicker/UIPickerView -> source: http://codewithchris.com/uipickerview-example/
     

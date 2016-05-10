@@ -106,6 +106,9 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         eventTableView.reloadData()
     }
     
+    @IBAction func backToMap(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     
     
     //returns the number of rows that the attendee table will have
@@ -117,7 +120,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBAction func deleteEventPressed(sender: UIButton) {
         if data != nil && event != nil{
             data?.deleteEvent(event!)
-            self.dismissViewControllerAnimated(true, completion: nil) //TODO what is this?
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
@@ -141,15 +144,9 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
                 //pass the appropriate venue here
                 if let theVenue = event?.venue {
                     newVC.venue = theVenue
-                }
-                if let ppc = newVC.popoverPresentationController {
-                    print("self is a delegate")
-                    ppc.delegate = self
+                    newVC.data  = data
                 }
             }
-        } else{
-            print("SEGUE WITH IDENTIFIER" + segue.identifier!)
-            //data?.refreshAnnotations() // TODO put this in the prepare for segue
         }
     }
 }

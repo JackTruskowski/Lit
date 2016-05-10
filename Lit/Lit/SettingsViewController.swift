@@ -15,27 +15,12 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     //profile fields
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var profileName: UITextField!
-    @IBOutlet weak var userID: UITextField!
-    
-    @IBOutlet weak var backToMapButton: UIButton!
 
     
-    @IBAction func `return`(sender: UIButton) { //TODO make this unnecissary
-        
-        //dont perform segue if its an ipad
-        let deviceIdiom = UIScreen.mainScreen().traitCollection.userInterfaceIdiom
-        if deviceIdiom == .Phone{
-            performSegueWithIdentifier("returnToMap", sender: nil)
-        }else{
-            if let split = self.splitViewController {
-                let controllers = split.viewControllers
-                if let _ = controllers[1] as? MapViewController {
-                    assignUser()
-                }
-                
-            }
-        }
-        
+    @IBAction func save(sender: UIButton) {
+        assignUser()
+        //dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.popViewControllerAnimated(true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -57,13 +42,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                     theUser.picture = profileImage.image
                 }else{
                     
-                    var newID = ""
-                    if userID.text != nil{
-                        newID = userID.text!
-                    }else{
-                        newID = "ad24rew"
-                    }
-                    let theUser = User(userName: profileName.text!, ID: newID)
+                    let newID = rand()
+                    let theUser = User(userName: profileName.text!, ID: Int(newID))
                     
                     let defaults = NSUserDefaults.standardUserDefaults()
                     defaults.setValue(theUser.uniqueID, forKey: "userID")
@@ -74,6 +54,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             }else{
                 data!.currentUser = nil
             }
+            // reload
         }
         // if data is nill, there's a problem
     }
@@ -88,25 +69,25 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         profileImage.userInteractionEnabled = true
         profileImage.addGestureRecognizer(tapGestureRecognizer)
         
-        //update profile picture
-        if let theUser = data?.currentUser {
-            profileImage.image = theUser.picture
-        }else{
-            profileImage.image = UIImage(named: "useravatar")
-        }
         
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Settings", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
+        
+        setupView()
         
         //fill in the name field if user defaults exist
         let defaults = NSUserDefaults.standardUserDefaults()
         if let userName = defaults.stringForKey("userName"){
             profileName.text = userName
         }
-        if let id = defaults.stringForKey("userID"){
-            userID.text = id
+    }
+    
+    func setupView(){
+        //update profile picture
+        if let theUser = data?.currentUser {
+            profileImage.image = theUser.picture
+            profileName.text = theUser.name
+        }else{
+            profileImage.image = UIImage(named: "useravatar")
         }
-        
-        
     }
     
     func imageTapped(image: AnyObject){

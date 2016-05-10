@@ -41,19 +41,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //refresh right when the view loads
         refreshAnnotations()
     }
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        //panAndZoomToUserLocation()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshAnnotations()
     }
     
     //reads in existing user data from nsuserdefaults
     func readInDataFromDefaults(){
         let defaults = NSUserDefaults.standardUserDefaults()
         if let userName = defaults.stringForKey("userName"){
-            if let userUniqueKey = defaults.stringForKey("userID"){
-                let existingUser = User(userName: userName, ID: userUniqueKey)
-                data.currentUser = existingUser
-            }
+            let userUniqueKey = defaults.integerForKey("userID")
+            let existingUser = User(userName: userName, ID: userUniqueKey)
+            data.currentUser = existingUser
         }
     }
     
@@ -83,11 +82,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     @IBAction func refreshMapData(sender: UIBarButtonItem) {
         serverInstance.refreshEventsFromServer()
         refreshAnnotations()
-    }
-    
-    //add an event to the map (pressing this button should also trigger a popover for adding event info)
-    @IBAction func addEvent(sender: UIBarButtonItem) {
-        performSegueWithIdentifier("segueToAddEventView", sender: sender)
     }
     
     //removes an event from the array
@@ -120,9 +114,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     
     //Passes any objects the new view might need
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print("Segueing from map with segue: \(segue.identifier)")
         if segue.identifier == "segueToEventPopover" {
-            let newVC = segue.destinationViewController as! EventViewController
+            let destination = segue.destinationViewController as! UINavigationController
+            let newVC = destination.topViewController as! EventViewController
             
             if let theSender = sender?.annotation as? MapPin{
                 newVC.event = theSender.event
@@ -131,6 +125,12 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             
             if let ppc = newVC.popoverPresentationController { //TODO what is this?
                 ppc.delegate = self
+            }
+        } else if segue.identifier == "showOptions" {
+            if let destination = segue.destinationViewController as? UINavigationController{
+                if let newVC = destination.topViewController as? SidePaneViewController{
+                    newVC.data = data
+                }
             }
         }
     }

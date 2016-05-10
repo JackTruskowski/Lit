@@ -21,8 +21,9 @@ class Server {
         //repopulate the added events array with events from the server
         mapData?.eventsList.removeAll()
         for i in 0 ..< valuesFromDatabase.count{
+            printData()
             //get all vars
-            let hostidstr = String(valuesFromDatabase[i]["HostID"])
+            //let hostID = valuesFromDatabase[i]["HostID"] as? Int //TODO: typecast?
             let venueidstr = String(valuesFromDatabase[i]["VenueID"])
             
             //convert to an nsdate object from datetime
@@ -40,7 +41,7 @@ class Server {
             print(starttimedate)
             
             //make a sample host TODO: should look up in a host database
-            let aHost = User(userName: "Unknown", ID: hostidstr)
+            let aHost = User(userName: "Unknown", ID: Int(rand()))
             
             //make a sample venue TODO: should look up in a venue database
             let aVenue = Venue()
@@ -61,7 +62,7 @@ class Server {
     
     func postToServer(anEvent: Event){
         
-        let hostidstr = anEvent.host.uniqueID
+        let hostID = anEvent.host.uniqueID
         let venueidstr = anEvent.venue.name //TODO: give venues unique IDs
         
         //convert to a datetime object from mysql
@@ -74,7 +75,7 @@ class Server {
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addevent.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(hostidstr)&b=\(venueidstr)&c=\(starttimestr)&d=\(endtimestr)&e=\(titlestr)&f=\(descriptionstr)"
+        let postString = "a=\(hostID)&b=\(venueidstr)&c=\(starttimestr)&d=\(endtimestr)&e=\(titlestr)&f=\(descriptionstr)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
