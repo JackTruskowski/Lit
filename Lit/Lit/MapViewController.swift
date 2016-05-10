@@ -84,6 +84,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             print(coordinates)
             let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: addedEvents[i])
             mapView.addAnnotation(dropPin)
+            
+            serverInstance.deleteFromServer(addedEvents[i])
         }
     }
     

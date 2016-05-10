@@ -121,4 +121,35 @@ class Server {
         }
         task.resume()
     }
+    
+    //Looks up an event on the server and deletes it
+    func deleteFromServer(anEvent: Event){
+        
+        let hostidstr = anEvent.host.uniqueID
+        let venueidstr = anEvent.venue.name!
+        
+        print(hostidstr, venueidstr)
+        
+        let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/deleteevent.php")!)
+        request.HTTPMethod = "GET"
+        let postString = "a=\(hostidstr)&b=\(venueidstr)"
+        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
+            data, response, error in
+            
+            if error != nil{
+               
+                return
+            }
+        }
+        task.resume()
+    }
 }
+
+
+
+
+
+
+
