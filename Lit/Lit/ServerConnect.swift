@@ -150,7 +150,7 @@ class Server {
         task.resume()
     }
     
-    //adds a specified user to the UsersTable using addhost.php
+    //adds a specified user to the UsersTable using addhost.php script
     func postUserToServer(aUser: User){
         
         //1. Pull all data from the User
@@ -168,6 +168,36 @@ class Server {
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addhost.php")!)
         request.HTTPMethod = "POST"
         let postString = "a=\(namestr)&b=\(imagestr)&c=\(idstr)&d=\(hashedpass)"
+        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
+            data, response, error in
+            
+            if error != nil{
+                return
+            }
+        }
+        task.resume()
+    }
+    
+    //adds a specified venue to the VenuesTable using addvenue.php script
+    func postVenueToServer(aVenue: Venue){
+        
+        let name = aVenue.name
+        let address = aVenue.address
+        let summary = aVenue.summary!
+        
+        //is this necessary? Not used right now
+        let latitude = aVenue.location?.coordinate.latitude
+        let longitude = aVenue.location?.coordinate.longitude
+        
+            
+        //2. make the request to the server
+        print("making request")
+        
+        let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addvenue.php")!)
+        request.HTTPMethod = "POST"
+        let postString = "a=\(name)&b=\(address)&c=\(summary)&d=\(latitude)&e=\(longitude)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){

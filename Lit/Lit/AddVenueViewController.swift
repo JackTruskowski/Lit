@@ -15,6 +15,7 @@ class AddVenueViewController: UIViewController {
     @IBOutlet weak var summary: UITextView!
     
     var data: LitData?
+    var server = Server()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +31,11 @@ class AddVenueViewController: UIViewController {
         if data == nil {
             print("Data is nil")
         }
-        data?.addVenue(Venue(venueName: name.text!, venueAddress: address.text!))
+        let aNewVenue = Venue(venueName: name.text!, venueAddress: address.text!)
+        aNewVenue.summary = summary.text!
+        
+        data?.addVenue(aNewVenue)
+        server.postVenueToServer(aNewVenue)
         
         dismissViewControllerAnimated(true, completion: nil)
     }
