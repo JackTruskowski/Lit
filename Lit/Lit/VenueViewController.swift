@@ -34,7 +34,7 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
         venueName.text = theVenue.name
         venueAddress.text = theVenue.address
         
-        print("\(theVenue.events[0])")
+        //print("\(theVenue.events[0])")
     }
     
     //returns the number of rows that the events table will have

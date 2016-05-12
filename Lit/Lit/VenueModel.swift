@@ -40,7 +40,7 @@ class Venue {
     }
     
     init() {
-        name = "New Venue"
-        address = "New Address"
+        name = "Unknown Name"
+        address = "Unknown Address"
     }
 }

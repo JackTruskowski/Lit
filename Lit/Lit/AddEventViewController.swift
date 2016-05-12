@@ -46,6 +46,9 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
                 data?.addEvent(newEvent)
                 selectedVenue?.events.append(newEvent)
+                
+                //update server
+                server.postVenueToServer(selectedVenue!)
                 server.postEventToServer(newEvent)
                 
             }else{
@@ -82,7 +85,6 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
     
     override func viewWillAppear(animated: Bool) {
-        print("View will appear")
         venuePicker.reloadAllComponents()
         if data?.venuesList.isEmpty == false {
             venuePicker.selectRow(0, inComponent: 0, animated: true)
@@ -97,13 +99,11 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     //the number of rows of data
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        print("Number of rows of data \(data?.venuesList.count)")
         return (data?.venuesList.count)!
     }
     
     //the data to return for the row and component (column) that's being passed in
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        print(data?.venuesList)
         return (data?.venuesList[row].name)
     }
     

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MapKit
 
 class LitData {
     var eventsList: [Event] = []
@@ -52,4 +53,19 @@ class LitData {
             }
         }
     }
+    
+    //Note this could be a problem if 2 venues are in the same location
+    func searchForVenueByLocation(loc: CLLocation)->Venue?{
+        
+        for i in 0..<venuesList.count {
+            if loc.coordinate.latitude == venuesList[i].location?.coordinate.latitude && loc.coordinate.longitude == venuesList[i].location?.coordinate.longitude {
+                //this is the venue
+                return venuesList[i]
+            }
+        }
+        
+        //didn't find a venue with the same location
+        return nil
+    }
+    
 }

@@ -38,7 +38,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         serverInstance.mapData = data
         
         //read in existing events from server
-        serverInstance.refreshEventsFromServer()
+        serverInstance.refreshAllDataFromServer()
         
         //refresh right when the view loads
         refreshAnnotations()
@@ -62,7 +62,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //remove all old annotations
         mapView.removeAnnotations(mapView.annotations)
         
-        serverInstance.refreshEventsFromServer()
+        serverInstance.refreshAllDataFromServer()
         
         print(data.eventsList.count)
         

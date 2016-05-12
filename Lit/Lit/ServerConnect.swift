@@ -15,7 +15,15 @@ class Server {
     var valuesFromDatabase : NSArray = []
     var mapData: LitData?
     
+    func refreshAllDataFromServer(){
+        refreshVenuesFromServer()
+        refreshEventsFromServer()
+    }
+    
     func refreshEventsFromServer(){
+        
+        print("refreshing events from the server")
+        
         let url = NSURL(string: "http://52.201.225.102/getevent.php")
         let data = NSData(contentsOfURL: url!)
         valuesFromDatabase = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray
@@ -70,10 +78,12 @@ class Server {
             //make a sample host TODO: should look up in a host database
             let aHost = User(userName: hostidstr!, ID: Int(rand()))
             
-            //make a sample venue TODO: should look up in a venue database
-            let aVenue = Venue()
-            aVenue.name = venueidstr!
-            aVenue.location = venueloc
+            //looks up the venue in the data (should have already been populated from server)
+            var aVenue = mapData?.searchForVenueByLocation(venueloc)
+            if aVenue == nil{
+                aVenue = Venue()
+                aVenue?.location = venueloc
+            }
             
             if(starttimedate == nil || endtimedate == nil){
                 print("couldn't find start and end times")
@@ -81,14 +91,42 @@ class Server {
             }
             
             //make an event
-            let newEvent = Event(eventTitle: titlestr!, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr!, eventVenue: aVenue, eventHost: aHost)
+            let newEvent = Event(eventTitle: titlestr!, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr!, eventVenue: aVenue!, eventHost: aHost)
             
             mapData?.eventsList.append(newEvent)
-            print("APPENDED")
         }
-        
     }
     
+    func refreshVenuesFromServer(){
+        
+        print("refreshing venues from the server")
+        
+        let url = NSURL(string: "http://52.201.225.102/getvenues.php")
+        let data = NSData(contentsOfURL: url!)
+        valuesFromDatabase = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray
+        
+        mapData?.venuesList.removeAll()
+        
+        for i in 0 ..< valuesFromDatabase.count{
+            //get all vars
+            let name = valuesFromDatabase[i]["Name"] as? String
+            let address = valuesFromDatabase[i]["Address"] as? String
+            let summary = valuesFromDatabase[i]["Summary"] as? String
+            
+            //lat and long currently not used
+            let lat = valuesFromDatabase[i]["Latitude"] as? Float
+            let long = valuesFromDatabase[i]["Longitude"] as? Float
+            
+            //make a venue
+            if(name != nil && address != nil){
+                let venueToAdd = Venue(venueName: name!, venueAddress: address!)
+                venueToAdd.summary = summary
+                mapData?.venuesList.append(venueToAdd)
+            }
+        }
+    }
+    
+        
     func postEventToServer(anEvent: Event){
         
         //1. Pull all data from the Event
@@ -107,9 +145,8 @@ class Server {
         let latcoordinate = Float((anEvent.venue.location?.coordinate.latitude)!)
         let longcoordinate = Float((anEvent.venue.location?.coordinate.longitude)!)
         
-        print("COORDINATES: ", latcoordinate, longcoordinate)
-        
         //2. make the request to the server
+        print("posting an event to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addevent.php")!)
         request.HTTPMethod = "POST"
@@ -131,8 +168,6 @@ class Server {
         
         let hostidstr = anEvent.host.uniqueID
         let venueidstr = anEvent.venue.name
-        
-        print(hostidstr, venueidstr)
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/deleteevent.php")!)
         request.HTTPMethod = "GET"
@@ -162,8 +197,7 @@ class Server {
         let idstr = aUser.uniqueID
         let hashedpass = aUser.passwordHash
         
-        //2. make the request to the server
-        print("making request")
+        print("posting a user to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addhost.php")!)
         request.HTTPMethod = "POST"
@@ -188,12 +222,12 @@ class Server {
         let summary = aVenue.summary!
         
         //is this necessary? Not used right now
-        let latitude = aVenue.location?.coordinate.latitude
-        let longitude = aVenue.location?.coordinate.longitude
-        
+        let latitude = aVenue.location!.coordinate.latitude
+        let longitude = aVenue.location!.coordinate.longitude
+        print(latitude, longitude)
             
         //2. make the request to the server
-        print("making request")
+        print("Adding a venue to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addvenue.php")!)
         request.HTTPMethod = "POST"

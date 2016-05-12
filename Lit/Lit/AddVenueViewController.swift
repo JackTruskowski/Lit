@@ -34,6 +34,8 @@ class AddVenueViewController: UIViewController {
         let aNewVenue = Venue(venueName: name.text!, venueAddress: address.text!)
         aNewVenue.summary = summary.text!
         
+        print(aNewVenue.location)
+        
         data?.addVenue(aNewVenue)
         server.postVenueToServer(aNewVenue)
         
