@@ -46,7 +46,7 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
                 data?.addEvent(newEvent)
                 selectedVenue?.events.append(newEvent)
-                server.postToServer(newEvent)
+                server.postEventToServer(newEvent)
                 
             }else{
                 print("no user exists")

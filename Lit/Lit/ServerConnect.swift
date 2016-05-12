@@ -89,7 +89,7 @@ class Server {
         
     }
     
-    func postToServer(anEvent: Event){
+    func postEventToServer(anEvent: Event){
         
         //1. Pull all data from the Event
         
@@ -127,7 +127,7 @@ class Server {
     }
     
     //Looks up an event on the server and deletes it
-    func deleteFromServer(anEvent: Event){
+    func deleteEventFromServer(anEvent: Event){
         
         let hostidstr = anEvent.host.uniqueID
         let venueidstr = anEvent.venue.name
@@ -149,4 +149,36 @@ class Server {
         }
         task.resume()
     }
+    
+    //adds a specified user to the UsersTable using addhost.php
+    func postUserToServer(aUser: User){
+        
+        //1. Pull all data from the User
+        
+        let namestr = aUser.name
+        let imagestr = aUser.picture?.description //todo: host the image somewhere online?
+        
+        //convert to a datetime object from mysql
+        let idstr = aUser.uniqueID
+        let hashedpass = aUser.passwordHash
+        
+        //2. make the request to the server
+        print("making request")
+        
+        let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addhost.php")!)
+        request.HTTPMethod = "POST"
+        let postString = "a=\(namestr)&b=\(imagestr)&c=\(idstr)&d=\(hashedpass)"
+        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
+            data, response, error in
+            
+            if error != nil{
+                return
+            }
+        }
+        task.resume()
+    }
+    
+    
 }

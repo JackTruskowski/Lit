@@ -11,6 +11,7 @@ import UIKit
 class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate {
     
     var data: LitData?
+    var server = Server()
     
     //profile fields
     @IBOutlet weak var profileImage: UIImageView!
@@ -40,6 +41,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                 if let theUser = data!.currentUser {
                     theUser.name = profileName.text!
                     theUser.picture = profileImage.image
+                    
+                    server.postUserToServer(theUser)
                 }else{
                     
                     let newID = rand()
@@ -50,6 +53,9 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                 
                     theUser.picture = profileImage.image
                     data!.currentUser = theUser
+                    
+                    //post this user to the server
+                    server.postUserToServer(theUser)
                 }
             }else{
                 data!.currentUser = nil

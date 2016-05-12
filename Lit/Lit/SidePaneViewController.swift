@@ -46,6 +46,7 @@ class SidePaneViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
         if segue.identifier == "EmbedSegue" {
             if let destination = segue.destinationViewController as? OptionsViewController {
                 destination.data = data
