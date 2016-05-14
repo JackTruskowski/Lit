@@ -69,9 +69,25 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //add all the events to the map as annotations
         for i in 0 ..< data.eventsList.count {
             print(data.eventsList[i].venue)
-            let coordinates = CLLocationCoordinate2DMake((data.eventsList[i].venue.location!.coordinate.latitude), (data.eventsList[i].venue.location!.coordinate.longitude))
-            let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: data.eventsList[i])
-            mapView.addAnnotation(dropPin)
+            
+            //convert address to a location with longitude and latitude: http://mhorga.org/2015/08/14/geocoding-in-ios.html
+            geocoding(i, location: data.eventsList[i].venue.address){}
+        }
+    }
+    
+    func geocoding(index: Int, location: String, completion: () -> ()){
+        CLGeocoder().geocodeAddressString(location) { (placemarks, error) in
+            if placemarks?.count > 0 {
+                let placemark = placemarks?[0]
+                let location = placemark!.location
+                let coordinate = location?.coordinate
+
+                let coordinates = CLLocationCoordinate2DMake((coordinate?.latitude)!, (coordinate?.longitude)!)
+                let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: self.data.eventsList[index])
+                self.mapView.addAnnotation(dropPin)
+                
+                completion()
+            }
         }
     }
     

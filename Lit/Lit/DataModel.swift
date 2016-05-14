@@ -55,10 +55,10 @@ class LitData {
     }
     
     //Note this could be a problem if 2 venues are in the same location
-    func searchForVenueByLocation(loc: CLLocation)->Venue?{
+    func searchForVenueByAddress(address: String)->Venue?{
         
         for i in 0..<venuesList.count {
-            if loc.coordinate.latitude == venuesList[i].location?.coordinate.latitude && loc.coordinate.longitude == venuesList[i].location?.coordinate.longitude {
+            if address == venuesList[i].address {
                 //this is the venue
                 return venuesList[i]
             }

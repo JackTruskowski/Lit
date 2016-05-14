@@ -36,24 +36,9 @@ class Server {
             let hostidstr = valuesFromDatabase[i]["HostID"] as? String
             let venueidstr = valuesFromDatabase[i]["VenueID"] as? String
             
-            var venueloc : CLLocation
-            var eventlatitude : Double = 0.0
-            var eventlongitude : Double = 0.0
-            
             //location info
-            if let startlat = (valuesFromDatabase[i]["Latitude"]) as? String{
-                eventlatitude = Double(startlat)!
-            }
-            if let startlong = (valuesFromDatabase[i]["Longitude"]) as? String{
-                eventlongitude = Double(startlong)!
-            }
+            let addresstr = valuesFromDatabase[i]["Address"] as? String
             
-            if(eventlongitude != 0.0 && eventlatitude != 0.0){
-                venueloc = CLLocation(latitude: eventlatitude, longitude: eventlongitude)
-            }else{
-                print("couldn't find lat and long")
-                continue
-            }
             
             //convert to an nsdate object from datetime
             let dateFormatter = NSDateFormatter()
@@ -79,10 +64,9 @@ class Server {
             let aHost = User(userName: hostidstr!, ID: Int(rand()))
             
             //looks up the venue in the data (should have already been populated from server)
-            var aVenue = mapData?.searchForVenueByLocation(venueloc)
+            var aVenue = mapData?.searchForVenueByAddress(addresstr!)
             if aVenue == nil{
                 aVenue = Venue()
-                aVenue?.location = venueloc
             }
             
             if(starttimedate == nil || endtimedate == nil){
@@ -140,17 +124,14 @@ class Server {
         let endtimestr = anEvent.endTime
         let titlestr = anEvent.title
         let descriptionstr = anEvent.description
-        
-        //coordinates of the event -- saved as floats in the DB
-        let latcoordinate = Float((anEvent.venue.location?.coordinate.latitude)!)
-        let longcoordinate = Float((anEvent.venue.location?.coordinate.longitude)!)
+        let address = anEvent.venue.address
         
         //2. make the request to the server
         print("posting an event to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addevent.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(hostidstr)&b=\(venueidstr)&c=\(starttimestr)&d=\(endtimestr)&e=\(titlestr)&f=\(descriptionstr)&g=\(latcoordinate)&h=\(longcoordinate)"
+        let postString = "a=\(hostidstr)&b=\(venueidstr)&c=\(starttimestr)&d=\(endtimestr)&e=\(titlestr)&f=\(descriptionstr)&g=\(address)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
@@ -222,16 +203,13 @@ class Server {
         let summary = aVenue.summary!
         
         //is this necessary? Not used right now
-        let latitude = aVenue.location!.coordinate.latitude
-        let longitude = aVenue.location!.coordinate.longitude
-        print(latitude, longitude)
             
         //2. make the request to the server
         print("Adding a venue to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addvenue.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(name)&b=\(address)&c=\(summary)&d=\(latitude)&e=\(longitude)"
+        let postString = "a=\(name)&b=\(address)&c=\(summary)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
