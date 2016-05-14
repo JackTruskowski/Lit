@@ -52,9 +52,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     func readInDataFromDefaults(){
         let defaults = NSUserDefaults.standardUserDefaults()
         if let userName = defaults.stringForKey("userName"){
-            let userUniqueKey = defaults.integerForKey("userID")
-            let existingUser = User(userName: userName, ID: userUniqueKey)
-            data.currentUser = existingUser
+            if let userUniqueKey = defaults.stringForKey("userID"){
+                let existingUser = User(userName: userName, ID: userUniqueKey)
+                data.currentUser = existingUser
+            }
         }
     }
     

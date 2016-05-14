@@ -45,8 +45,8 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                     server.postUserToServer(theUser)
                 }else{
                     
-                    let newID = rand()
-                    let theUser = User(userName: profileName.text!, ID: Int(newID))
+                    let newID = Int(arc4random_uniform(99999) + 1)
+                    let theUser = User(userName: profileName.text!, ID: String(newID))
                     
                     let defaults = NSUserDefaults.standardUserDefaults()
                     defaults.setValue(theUser.uniqueID, forKey: "userID")

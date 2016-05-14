@@ -50,6 +50,7 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
                 //update server
                 server.postVenueToServer(selectedVenue!)
                 server.postEventToServer(newEvent)
+                print("posted event to server")
                 
             }else{
                 print("no user exists")

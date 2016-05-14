@@ -12,9 +12,9 @@ class User: CustomStringConvertible{
     var name: String = ""
     var picture : UIImage?
     var passwordHash = 0
-    var uniqueID = 0
+    var uniqueID : String = ""
     
-    init(userName: String, ID: Int){
+    init(userName: String, ID: String){
         name = userName
         uniqueID = ID
     }

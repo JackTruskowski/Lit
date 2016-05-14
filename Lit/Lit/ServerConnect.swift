@@ -61,7 +61,11 @@ class Server {
             let descriptionstr = valuesFromDatabase[i]["Description"] as? String
             
             //make a sample host TODO: should look up in a host database
-            let aHost = User(userName: hostidstr!, ID: Int(rand()))
+            var aHost = searchDBForUserID(hostidstr!)
+            if aHost == nil{
+                aHost = User(userName: "Unknown User", ID: "-1")
+            }
+            
             
             //looks up the venue in the data (should have already been populated from server)
             var aVenue = mapData?.searchForVenueByAddress(addresstr!)
@@ -75,7 +79,7 @@ class Server {
             }
             
             //make an event
-            let newEvent = Event(eventTitle: titlestr!, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr!, eventVenue: aVenue!, eventHost: aHost)
+            let newEvent = Event(eventTitle: titlestr!, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr!, eventVenue: aVenue!, eventHost: aHost!)
             
             mapData?.eventsList.append(newEvent)
         }
@@ -96,10 +100,6 @@ class Server {
             let name = valuesFromDatabase[i]["Name"] as? String
             let address = valuesFromDatabase[i]["Address"] as? String
             let summary = valuesFromDatabase[i]["Summary"] as? String
-            
-            //lat and long currently not used
-            let lat = valuesFromDatabase[i]["Latitude"] as? Float
-            let long = valuesFromDatabase[i]["Longitude"] as? Float
             
             //make a venue
             if(name != nil && address != nil){
@@ -125,6 +125,8 @@ class Server {
         let titlestr = anEvent.title
         let descriptionstr = anEvent.description
         let address = anEvent.venue.address
+        
+        print(hostidstr, venueidstr, starttimestr, endtimestr, titlestr, descriptionstr, address)
         
         //2. make the request to the server
         print("posting an event to the server")
@@ -182,7 +184,7 @@ class Server {
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addhost.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(namestr)&b=\(imagestr)&c=\(idstr)&d=\(hashedpass)"
+        let postString = "a=\(namestr)&b=\(imagestr)&c=\(hashedpass)&d=\(idstr)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
@@ -220,6 +222,30 @@ class Server {
             }
         }
         task.resume()
+    }
+    
+    func searchDBForUserID(userid: String)->User? {
+        
+        //grab all data -- TODO: optimization could just query the database for the 1 specific user
+        let url = NSURL(string: "http://52.201.225.102/gethost.php")
+        let data = NSData(contentsOfURL: url!)
+        valuesFromDatabase = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSArray
+        
+        for i in 0 ..< valuesFromDatabase.count{
+            print("HOST FOUND")
+            //get all vars
+            let name = valuesFromDatabase[i]["Name"] as? String
+            let uniqueid = valuesFromDatabase[i]["UniqueID"] as? String
+            print(name, uniqueid)
+            //make a user
+            if(name != nil && uniqueid != nil && uniqueid == userid){
+                print("swaggy")
+                let userToReturn = User(userName: name!, ID: uniqueid!)
+                return userToReturn
+            }
+        }
+        print("returned nil")
+        return nil
     }
     
     
