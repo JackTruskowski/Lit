@@ -21,6 +21,7 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     @IBOutlet weak var venuePicker: UIPickerView!
     
     var selectedVenue: Venue?
+    var venuesList: [Venue] = []
     
     @IBAction func addEvent(sender: UIButton) {
         
@@ -40,9 +41,9 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         if errorMsg == ""{
             //add the event
-            if(data?.currentUser != nil){ //TODO we should make sure we have a user before segueing to here
+            if(data?.currentUser != nil){
                 
-                let newEvent = Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventSummary: summaryField.text!, eventVenue: selectedVenue!, eventHost: (data?.currentUser)!)
+                let newEvent = Event(eventTitle: titleField.text!, eventStartTime: startTimePicker.date, eventEndTime: endTimePicker.date, eventSummary: summaryField.text!, eventVenue: selectedVenue!, eventHost: (data?.currentUser)!, eventID: random())
         
                 data?.addEvent(newEvent)
                 selectedVenue?.events.append(newEvent)
@@ -78,16 +79,27 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         startTimePicker.minimumDate = NSDate()
         endTimePicker.minimumDate = NSDate()
         
-        //find the venue in the venue list
-        if selectedVenue != nil{
-            venuePicker.selectRow((data?.venuesList.indexOf({$0 === selectedVenue!})) ?? 0, inComponent: 0, animated: true)
-            venuePicker.userInteractionEnabled = false
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
+        venuesList.removeAll()
+        for v in (data?.venuesList)!{
+            venuesList.append(v.1)
+        }
+        
+        if selectedVenue == nil && venuesList.count > 0{
+            venuePicker.selectRow(0, inComponent: 0, animated: true)
+            selectedVenue = venuesList[0]
+        }
+        
+        //find the venue in the venue list
+        if selectedVenue != nil{
+            venuePicker.selectRow((venuesList.indexOf({$0 === selectedVenue!})) ?? 0, inComponent: 0, animated: true)
+        }
+        
+        
         venuePicker.reloadAllComponents()
-        if data?.venuesList.isEmpty == false {
+        if venuesList.isEmpty == false {
             venuePicker.selectRow(0, inComponent: 0, animated: true)
         }
     }
@@ -100,22 +112,22 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     //the number of rows of data
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return (data?.venuesList.count)!
+        return (venuesList.count)
     }
     
     //the data to return for the row and component (column) that's being passed in
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return (data?.venuesList[row].name)
+        return (venuesList[row].name)
     }
     
     // Catpure the picker view selection
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // This method is triggered whenever the user makes a change to the picker selection.
         // The parameter named row and component represents what was selected.
-        if data?.venuesList.count == 0{
+        if venuesList.count == 0{
             selectedVenue = nil
         } else{
-            selectedVenue = data?.venuesList[row]
+            selectedVenue = venuesList[row]
         }
         
         

@@ -21,7 +21,7 @@ class Server {
     }
     
     func refreshEventsFromServer(){
-        
+    
         print("refreshing events from the server")
         
         let url = NSURL(string: "http://52.201.225.102/getevent.php")
@@ -32,14 +32,20 @@ class Server {
         mapData?.eventsList.removeAll()
         
         for i in 0 ..< valuesFromDatabase.count{
-            //get all vars
-            let hostidstr = valuesFromDatabase[i]["HostID"] as? String
-            let venueidstr = valuesFromDatabase[i]["VenueID"] as? String
-            
-            //location info
-            let addresstr = valuesFromDatabase[i]["Address"] as? String
-            
-            
+            //get ids
+            let eventIDstr = valuesFromDatabase[i]["EventID"] as? String
+            let hostIDstr = valuesFromDatabase[i]["HostID"] as? String
+            let venueIDstr = valuesFromDatabase[i]["VenueID"] as? String
+            let eventID = Int(eventIDstr!)
+            let hostID = Int(hostIDstr!)
+            let venueID = Int(venueIDstr!)
+            print("==================")
+            print(valuesFromDatabase)
+            print("==================")
+            //get title and description
+            let eventTitle = valuesFromDatabase[i]["Title"] as? String
+            let eventDescription = valuesFromDatabase[i]["Description"] as? String
+
             //convert to an nsdate object from datetime
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MM-dd HH:mm"
@@ -53,35 +59,35 @@ class Server {
             
             
             //format the dates back to an nsdate object
-            let starttimedate = dateFormatter.dateFromString(s1)
-            let endtimedate = dateFormatter.dateFromString(e1)
+            let startTimeDate = dateFormatter.dateFromString(s1)
+            let endTimeDate = dateFormatter.dateFromString(e1)
             
-            //get title and description
-            let titlestr = valuesFromDatabase[i]["Title"] as? String
-            let descriptionstr = valuesFromDatabase[i]["Description"] as? String
-            
-            //make a sample host TODO: should look up in a host database
-            var aHost = searchDBForUserID(hostidstr!)
-            if aHost == nil{
-                aHost = User(userName: "Unknown User", ID: "-1")
-            }
-            
-            
-            //looks up the venue in the data (should have already been populated from server)
-            var aVenue = mapData?.searchForVenueByAddress(addresstr!)
-            if aVenue == nil{
-                aVenue = Venue()
-            }
-            
-            if(starttimedate == nil || endtimedate == nil){
+            if(startTimeDate == nil || endTimeDate == nil){
                 print("couldn't find start and end times")
                 continue
             }
             
-            //make an event
-            let newEvent = Event(eventTitle: titlestr!, eventStartTime: starttimedate!, eventEndTime: endtimedate!, eventSummary: descriptionstr!, eventVenue: aVenue!, eventHost: aHost!)
+            //lookup host in DataBase
+            let aHost = getUser(hostID!)
+            if aHost == nil{
+                //aHost = User(userName: "Unknown User", ID: -1)
+                print("no user found in DB for id \(hostID!)")
+                continue
+            }
             
-            mapData?.eventsList.append(newEvent)
+            //looks up the venue in the data (should have already been populated from server)
+            let aVenue = mapData?.venuesList[venueID!]
+            if aVenue == nil{
+                //aVenue = Venue()
+                print("no venue found for id \(venueID)")
+                continue
+            }
+            
+            //make an event
+            let newEvent = Event(eventTitle: eventTitle!, eventStartTime: startTimeDate!, eventEndTime: endTimeDate!, eventSummary: eventDescription!, eventVenue: aVenue!, eventHost: aHost!, eventID: eventID!)
+            
+            // add event
+            mapData?.addEvent(newEvent)
         }
     }
     
@@ -97,15 +103,18 @@ class Server {
         
         for i in 0 ..< valuesFromDatabase.count{
             //get all vars
+            let venueIDstr = valuesFromDatabase[i]["VenueID"] as? String
+            let venueID = Int(venueIDstr!)
             let name = valuesFromDatabase[i]["Name"] as? String
             let address = valuesFromDatabase[i]["Address"] as? String
             let summary = valuesFromDatabase[i]["Summary"] as? String
             
             //make a venue
-            if(name != nil && address != nil){
-                let venueToAdd = Venue(venueName: name!, venueAddress: address!)
+            if(name != nil && address != nil && venueID != nil){
+                let venueToAdd = Venue(venueName: name!, venueAddress: address!, venueID: venueID!)
                 venueToAdd.summary = summary
-                mapData?.venuesList.append(venueToAdd)
+                // instead of appending, add to dictionary with ID as key
+                mapData?.addVenue(venueToAdd)
             }
         }
     }
@@ -115,25 +124,24 @@ class Server {
         
         //1. Pull all data from the Event
         
-        let hostidstr = anEvent.host.uniqueID
-        let venueidstr = anEvent.venue.name //TODO: give venues unique IDs
+        let hostID = anEvent.host.ID
+        let venueID = anEvent.venue.ID
+        let eventID = anEvent.ID
         
         //convert to a datetime object from mysql
-        let starttimestr = anEvent.startTime
+        let startTime = anEvent.startTime
+        let endTime = anEvent.endTime
+        let title = anEvent.title
+        let description = anEvent.description
         
-        let endtimestr = anEvent.endTime
-        let titlestr = anEvent.title
-        let descriptionstr = anEvent.description
-        let address = anEvent.venue.address
-        
-        print(hostidstr, venueidstr, starttimestr, endtimestr, titlestr, descriptionstr, address)
+        print(hostID, venueID, startTime, endTime, title, description)
         
         //2. make the request to the server
         print("posting an event to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addevent.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(hostidstr)&b=\(venueidstr)&c=\(starttimestr)&d=\(endtimestr)&e=\(titlestr)&f=\(descriptionstr)&g=\(address)"
+        let postString = "a=\(eventID)&b=\(hostID)&c=\(venueID)&d=\(startTime)&e=\(endTime)&f=\(title)&g=\(description)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
@@ -148,13 +156,14 @@ class Server {
     
     //Looks up an event on the server and deletes it
     func deleteEventFromServer(anEvent: Event){
+        // NOT WORKING TODO make this work
+        // may have to edit deleteevent.php
         
-        let hostidstr = anEvent.host.uniqueID
-        let venueidstr = anEvent.venue.name
+        let eventID = anEvent.ID
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/deleteevent.php")!)
-        request.HTTPMethod = "GET"
-        let postString = "a=\(hostidstr)&b=\(venueidstr)"
+        request.HTTPMethod = "POST" // Should this be post?
+        let postString = "a=\(eventID)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
@@ -172,24 +181,20 @@ class Server {
     func postUserToServer(aUser: User){
         
         //1. Pull all data from the User
-        
-        let namestr = aUser.name
-        let imagestr = aUser.picture?.description //todo: host the image somewhere online?
+        let userName = aUser.name
         
         //convert to a datetime object from mysql
-        let idstr = aUser.uniqueID
-        let hashedpass = aUser.passwordHash
+        let userID = aUser.ID
         
         print("posting a user to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addhost.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(namestr)&b=\(imagestr)&c=\(hashedpass)&d=\(idstr)"
+        let postString = "a=\(userName)&b=\(userID)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
             data, response, error in
-            
             if error != nil{
                 return
             }
@@ -203,15 +208,14 @@ class Server {
         let name = aVenue.name
         let address = aVenue.address
         let summary = aVenue.summary!
-        
-        //is this necessary? Not used right now
+        let venueID = aVenue.ID
             
         //2. make the request to the server
         print("Adding a venue to the server")
         
         let request = NSMutableURLRequest(URL: NSURL(string:"http://52.201.225.102/addvenue.php")!)
         request.HTTPMethod = "POST"
-        let postString = "a=\(name)&b=\(address)&c=\(summary)"
+        let postString = "a=\(venueID)&b=\(name)&c=\(address)&d=\(summary)"
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         let task = NSURLSession.sharedSession().dataTaskWithRequest(request){
@@ -224,8 +228,7 @@ class Server {
         task.resume()
     }
     
-    func searchDBForUserID(userid: String)->User? {
-        
+    func getUser(userID: Int)->User? {
         //grab all data -- TODO: optimization could just query the database for the 1 specific user
         let url = NSURL(string: "http://52.201.225.102/gethost.php")
         let data = NSData(contentsOfURL: url!)
@@ -235,15 +238,17 @@ class Server {
             print("HOST FOUND")
             //get all vars
             let name = valuesFromDatabase[i]["Name"] as? String
-            let uniqueid = valuesFromDatabase[i]["UniqueID"] as? String
-            print(name, uniqueid)
+            let foundIDstr = valuesFromDatabase[i]["UserID"] as? String
+            let foundID = Int(foundIDstr!)
+            print(name, foundID)
             //make a user
-            if(name != nil && uniqueid != nil && uniqueid == userid){
+            if(name != nil && foundID != nil && foundID == userID){
                 print("swaggy")
-                let userToReturn = User(userName: name!, ID: uniqueid!)
+                let userToReturn = User(userName: name!, id: userID)
                 return userToReturn
             }
         }
+        
         print("returned nil")
         return nil
     }

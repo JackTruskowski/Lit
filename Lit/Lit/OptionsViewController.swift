@@ -14,6 +14,8 @@ class OptionsViewController: UITableViewController {
     @IBOutlet weak var startTime: UIDatePicker!
     @IBOutlet weak var endTime: UIDatePicker!
     @IBOutlet weak var radius: UISlider!
+    @IBOutlet weak var addVenueButton: UIButton!
+    @IBOutlet weak var addEventButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,9 +23,18 @@ class OptionsViewController: UITableViewController {
         endTime.minimumDate = NSDate().dateByAddingTimeInterval(-24 * 60 * 60)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(animated: Bool) {
+        if data?.currentUser == nil {
+            addEventButton.setTitle("Sign In to add events", forState: UIControlState.Normal)
+            addEventButton.enabled = false
+            addVenueButton.setTitle("Sign In to add venues", forState: UIControlState.Normal)
+            addVenueButton.enabled = false
+        } else {
+            addEventButton.setTitle("Add Event", forState: UIControlState.Normal)
+            addEventButton.enabled = true
+            addVenueButton.setTitle("Add Venue", forState: UIControlState.Normal)
+            addVenueButton.enabled = true
+        }
     }
     
     @IBAction func changeStartTime(sender: UIDatePicker) {

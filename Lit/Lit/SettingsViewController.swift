@@ -20,20 +20,9 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     
     @IBAction func save(sender: UIButton) {
         assignUser()
-        //dismissViewControllerAnimated(true, completion: nil)
         navigationController?.popViewControllerAnimated(true)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let destination = segue.destinationViewController
-        if let _ = destination as? MapViewController{
-            assignUser()
-        }
-        
-    }
-    
-    
-    //TODO move to it's own edit profile view controller
     //updates the global user variable if necessary
     func assignUser(){
         if data != nil {
@@ -45,11 +34,10 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                     server.postUserToServer(theUser)
                 }else{
                     
-                    let newID = Int(arc4random_uniform(99999) + 1)
-                    let theUser = User(userName: profileName.text!, ID: String(newID))
+                    let newID = random()
+                    let theUser = User(userName: profileName.text!, id: newID)
                     
-                    let defaults = NSUserDefaults.standardUserDefaults()
-                    defaults.setValue(theUser.uniqueID, forKey: "userID")
+
                 
                     theUser.picture = profileImage.image
                     data!.currentUser = theUser
@@ -75,15 +63,7 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         profileImage.userInteractionEnabled = true
         profileImage.addGestureRecognizer(tapGestureRecognizer)
         
-        
-        
         setupView()
-        
-        //fill in the name field if user defaults exist
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let userName = defaults.stringForKey("userName"){
-            profileName.text = userName
-        }
     }
     
     func setupView(){
@@ -139,18 +119,4 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         userText.resignFirstResponder()
         return true;
     }
-    
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

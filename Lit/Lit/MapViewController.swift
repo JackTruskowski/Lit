@@ -32,9 +32,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         //get permission to use location data
         mapView.showsUserLocation = true
         
-        //read in user defaults
-        readInDataFromDefaults()
-        
         serverInstance.mapData = data
         
         //read in existing events from server
@@ -48,17 +45,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         refreshAnnotations()
     }
     
-    //reads in existing user data from nsuserdefaults
-    func readInDataFromDefaults(){
-        let defaults = NSUserDefaults.standardUserDefaults()
-        if let userName = defaults.stringForKey("userName"){
-            if let userUniqueKey = defaults.stringForKey("userID"){
-                let existingUser = User(userName: userName, ID: userUniqueKey)
-                data.currentUser = existingUser
-            }
-        }
-    }
-    
     func refreshAnnotations(){
         //remove all old annotations
         mapView.removeAnnotations(mapView.annotations)
@@ -68,26 +54,25 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
         print(data.eventsList.count)
         
         //add all the events to the map as annotations
-        for i in 0 ..< data.eventsList.count {
-            print(data.eventsList[i].venue)
+        //for i in 0 ..< data.eventsList.count {
+        for event in data.eventsList{
+            print(event.1.venue)
             
             //convert address to a location with longitude and latitude: http://mhorga.org/2015/08/14/geocoding-in-ios.html
-            geocoding(i, location: data.eventsList[i].venue.address){}
+            geocoding(event.1)
         }
     }
     
-    func geocoding(index: Int, location: String, completion: () -> ()){
-        CLGeocoder().geocodeAddressString(location) { (placemarks, error) in
+    func geocoding(event: Event){
+        CLGeocoder().geocodeAddressString(event.venue.address) { (placemarks, error) in
             if placemarks?.count > 0 {
                 let placemark = placemarks?[0]
                 let location = placemark!.location
                 let coordinate = location?.coordinate
 
                 let coordinates = CLLocationCoordinate2DMake((coordinate?.latitude)!, (coordinate?.longitude)!)
-                let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: self.data.eventsList[index])
+                let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: event)
                 self.mapView.addAnnotation(dropPin)
-                
-                completion()
             }
         }
     }
@@ -103,15 +88,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     //get updated event data for their location and populate map
     @IBAction func refreshMapData(sender: UIBarButtonItem) {
         refreshAnnotations()
-    }
-    
-    //removes an event from the array
-    func deleteEvent(anEvent: Event){
-        for i in 0 ..< data.eventsList.count{
-            if data.eventsList[i] === anEvent {
-                data.eventsList.removeAtIndex(i)
-            }
-        }
     }
     
     //TODO: It would be nice to do this immediately, but that causes a crash - the user must click the zoom button for now // VIEW DID APPEAR

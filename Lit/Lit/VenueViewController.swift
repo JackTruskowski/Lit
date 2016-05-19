@@ -15,6 +15,7 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
     @IBOutlet weak var venueName: UILabel!
     @IBOutlet weak var venueAddress: UILabel!
     @IBOutlet weak var eventsTableView: UITableView!
+    @IBOutlet weak var addEventButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +35,6 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
         venueName.text = theVenue.name
         venueAddress.text = theVenue.address
         
-        //print("\(theVenue.events[0])")
     }
     
     //returns the number of rows that the events table will have
@@ -54,8 +54,17 @@ class VenueViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewWillAppear(animated: Bool) {
         eventsTableView.reloadData()
+        if data?.currentUser == nil{
+            addEventButton.setTitle("Sign In to add events", forState: UIControlState.Normal)
+            addEventButton.enabled = false
+            addEventButton.alpha = 0.5
+        } else {
+            addEventButton.setTitle("Schedule an Event", forState: UIControlState.Normal)
+            addEventButton.enabled = true
+            addEventButton.alpha = 1
+            
+        }
     }
-    // TODO add event scheduling from venue (ommitted for now for simplicity)
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addEventFromVenue" {

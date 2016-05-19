@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		86309A401CE11EAD00D78AE1 /* AddVenueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86DDF7BC1CE11B5A003174F1 /* AddVenueViewController.swift */; };
-		86369E0E1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E0D1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift */; };
-		86369E101CDEE1B700EBFDBA /* categoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */; };
 		86369E121CDEE1C000EBFDBA /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */; };
 		86369E141CDEE1CA00EBFDBA /* SidePaneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */; };
 		86D47D601CE12A70009226B3 /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D47D5F1CE12A70009226B3 /* AddEventViewController.swift */; };
@@ -51,8 +49,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		86369E0D1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
-		86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = categoriesTableViewController.swift; sourceTree = "<group>"; };
 		86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidePaneViewController.swift; sourceTree = "<group>"; };
 		86D47D5F1CE12A70009226B3 /* AddEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
@@ -148,8 +144,6 @@
 				86D6BF761CC6C3E6004E44D2 /* SettingsViewController.swift */,
 				86369E131CDEE1CA00EBFDBA /* SidePaneViewController.swift */,
 				86369E111CDEE1C000EBFDBA /* OptionsViewController.swift */,
-				86369E0F1CDEE1B700EBFDBA /* categoriesTableViewController.swift */,
-				86369E0D1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift */,
 				A856B7781CCC2CF000380F3B /* AttendeeTableViewCell.swift */,
 				CB2478921CCE8EBD005B8A51 /* EventTableViewCell.swift */,
 				A89E974B1CCC0F4400B463A0 /* MapPin.swift */,
@@ -310,7 +304,6 @@
 				86309A401CE11EAD00D78AE1 /* AddVenueViewController.swift in Sources */,
 				86D47D601CE12A70009226B3 /* AddEventViewController.swift in Sources */,
 				CB2478931CCE8EBD005B8A51 /* EventTableViewCell.swift in Sources */,
-				86369E101CDEE1B700EBFDBA /* categoriesTableViewController.swift in Sources */,
 				86369E121CDEE1C000EBFDBA /* OptionsViewController.swift in Sources */,
 				86D6BF6F1CC6C0F8004E44D2 /* UserModel.swift in Sources */,
 				A856B7791CCC2CF000380F3B /* AttendeeTableViewCell.swift in Sources */,
@@ -318,7 +311,6 @@
 				86369E141CDEE1CA00EBFDBA /* SidePaneViewController.swift in Sources */,
 				86DBC6E01CDE7EEE006D4F70 /* DataModel.swift in Sources */,
 				86D6BF3F1CC6BEE0004E44D2 /* MapViewController.swift in Sources */,
-				86369E0E1CDEE1AB00EBFDBA /* CategoryTableViewCell.swift in Sources */,
 				86D6BF3D1CC6BEE0004E44D2 /* AppDelegate.swift in Sources */,
 				86D6BF711CC6C195004E44D2 /* VenueModel.swift in Sources */,
 				A89E974C1CCC0F4400B463A0 /* MapPin.swift in Sources */,

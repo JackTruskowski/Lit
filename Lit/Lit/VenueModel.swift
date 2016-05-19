@@ -10,28 +10,16 @@ import Foundation
 import MapKit
 
 class Venue {
-    var name: String = ""
-    var address: String = ""
+    var name: String = "no name"
+    var address: String = "no address"
     var summary: String?
+    var ID = -1
     var events : [Event] = []
     
     //functions
-    init(venueName: String, venueAddress: String) {
+    init(venueName: String, venueAddress: String, venueID: Int) {
         name = venueName
         address = venueAddress
-        
-        
-        
-        
+        ID = venueID
     }
-    
-    init() {
-        name = "Unknown Name"
-        address = "Unknown Address"
-    }
-    
-    
-    
-    
-    
 }

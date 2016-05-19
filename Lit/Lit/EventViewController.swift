@@ -83,13 +83,19 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
             
             // can the user delete events
-            if theUser.uniqueID != theEvent.host.uniqueID {
-                deleteEventButton.hidden = true
-            }else{ deleteEventButton.hidden = false }
+            if theUser.ID != theEvent.host.ID {
+                deleteEventButton.enabled = false
+                deleteEventButton.alpha = 0.5
+                deleteEventButton.setTitle("Must be host to delete", forState: UIControlState.Normal)
+            }else{ deleteEventButton.enabled = true }
 
         } else{ // if there is no user, they can't check in, or delete events
-            checkInButton.hidden = true
-            deleteEventButton.hidden = true
+            checkInButton.enabled = false
+            checkInButton.alpha = 0.5
+            checkInButton.setTitle("Sign in to check-in", forState: UIControlState.Normal)
+            deleteEventButton.enabled = false
+            deleteEventButton.alpha = 0.5
+            deleteEventButton.setTitle("Must be host to delete", forState: UIControlState.Normal)
         }
     }
     

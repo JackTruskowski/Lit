@@ -16,6 +16,7 @@ class Event: CustomStringConvertible{
     var startTime: NSDate
     var endTime: NSDate
     var attendees: [User] = [] //dictionary to eliminate the need for userIsAttending
+    var ID = 0
     
     var description: String{
         get{
@@ -23,19 +24,20 @@ class Event: CustomStringConvertible{
         }
     }
     
-    init(eventTitle: String, eventStartTime: NSDate, eventEndTime: NSDate, eventSummary: String, eventVenue: Venue, eventHost: User){
+    init(eventTitle: String, eventStartTime: NSDate, eventEndTime: NSDate, eventSummary: String, eventVenue: Venue, eventHost: User, eventID: Int){
         title = eventTitle
         startTime = eventStartTime
         endTime = eventEndTime
         summary = eventSummary
         venue = eventVenue
         host = eventHost
+        ID = eventID
     }
     
     //returns a boolean of whether or not the user is at the event
     func userIsAttending(person: User)->Bool{
         for i in 0 ..< attendees.count {
-            if person.uniqueID == attendees[i].uniqueID {
+            if person.ID == attendees[i].ID {
                 return true
             }
         }
@@ -45,7 +47,7 @@ class Event: CustomStringConvertible{
     func addAttendee(person: User){
         //ensure the user hasn't already checked in (will this be necessary?)
         for i in 0 ..< attendees.count {
-            if person.uniqueID == attendees[i].uniqueID {
+            if person.ID == attendees[i].ID {
                 print("\(person.name) is already attending \(title)")
                 return
             }
@@ -56,7 +58,7 @@ class Event: CustomStringConvertible{
     func removeAttendee(person: User){
         //loop thru and find the user
         for i in 0 ..< attendees.count {
-            if person.uniqueID == attendees[i].uniqueID {
+            if person.ID == attendees[i].ID {
                 attendees.removeAtIndex(i)
                 return
             }

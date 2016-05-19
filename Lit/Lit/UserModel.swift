@@ -10,13 +10,12 @@ import UIKit
 
 class User: CustomStringConvertible{
     var name: String = ""
-    var picture : UIImage?
-    var passwordHash = 0
-    var uniqueID : String = ""
+    var picture: UIImage?
+    var ID: Int = 0
     
-    init(userName: String, ID: String){
+    init(userName: String, id: Int){
         name = userName
-        uniqueID = ID
+        ID = id
     }
     
     var description: String{

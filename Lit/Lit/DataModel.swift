@@ -10,62 +10,29 @@ import Foundation
 import MapKit
 
 class LitData {
-    var eventsList: [Event] = []
-    var venuesList: [Venue] = []
+    var eventsList: [Int:Event] = [:]
+    var venuesList: [Int:Venue] = [:]
     var currentUser: User?
     
     // add and remove events
     func addEvent(event: Event){
-        for i in 0 ..< eventsList.count {
-            if event.title == eventsList[i].title{
-                print(event.title + "already exists")
-                return
-            }
+        if eventsList[event.ID] == nil {
+            eventsList[event.ID] = event
         }
-        eventsList.append(event)
     }
     
     func deleteEvent(event: Event){
-        for i in 0 ..< eventsList.count {
-            if event.title == eventsList[i].title {
-                eventsList.removeAtIndex(i)
-                return
-            }
-        }
+        eventsList[event.ID] = nil
     }
     
     // add and remove venues
     func addVenue(venue: Venue){
-        for i in 0 ..< venuesList.count {
-            if venue.name == venuesList[i].name{
-                print(venue.name + "already exists")
-                return
-            }
+        if venuesList[venue.ID] == nil{
+            venuesList[venue.ID] = venue
         }
-        venuesList.append(venue)
     }
     
     func deleteVenue(venue: Venue){
-        for i in 0 ..< venuesList.count {
-            if venue.name == venuesList[i].name {
-                venuesList.removeAtIndex(i)
-                return
-            }
-        }
+        venuesList[venue.ID] = nil
     }
-    
-    //Note this could be a problem if 2 venues are in the same location
-    func searchForVenueByAddress(address: String)->Venue?{
-        
-        for i in 0..<venuesList.count {
-            if address == venuesList[i].address {
-                //this is the venue
-                return venuesList[i]
-            }
-        }
-        
-        //didn't find a venue with the same location
-        return nil
-    }
-    
 }

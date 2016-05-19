@@ -26,18 +26,12 @@ class AddVenueViewController: UIViewController {
     }
     
     @IBAction func addVenue() {
-        // check them to make sure they are not nil
-        print("hello")
-        if data == nil {
-            print("Data is nil")
-        }
-        let aNewVenue = Venue(venueName: name.text!, venueAddress: address.text!)
+        let aNewVenue = Venue(venueName: name.text!, venueAddress: address.text!, venueID: random())
         aNewVenue.summary = summary.text!
         
         print(aNewVenue.address)
         
         data?.addVenue(aNewVenue)
-        server.postVenueToServer(aNewVenue)
         
         dismissViewControllerAnimated(true, completion: nil)
     }
