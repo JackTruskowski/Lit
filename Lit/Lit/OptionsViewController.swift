@@ -10,6 +10,7 @@ import UIKit
 
 class OptionsViewController: UITableViewController {
     var data: LitData?
+    var options: Options?
     
     @IBOutlet weak var startTime: UIDatePicker!
     @IBOutlet weak var endTime: UIDatePicker!
@@ -21,6 +22,8 @@ class OptionsViewController: UITableViewController {
         super.viewDidLoad()
         startTime.minimumDate = NSDate().dateByAddingTimeInterval(-24 * 60 * 60)
         endTime.minimumDate = NSDate().dateByAddingTimeInterval(-24 * 60 * 60)
+        radius.minimumValue = 0 // miles?
+        radius.maximumValue = 100 // miles?
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -38,18 +41,19 @@ class OptionsViewController: UITableViewController {
     }
     
     @IBAction func changeStartTime(sender: UIDatePicker) {
+        options?.starTime = sender.date
     }
     
     @IBAction func changeEndTime(sender: UIDatePicker) {
+        options?.endTime = sender.date
     }
     
     @IBAction func changeRadius(sender: UISlider) {
+        options?.radius = Double(radius.value)
     }
     
     @IBAction func changeAutoCheckIn(sender: UISwitch) {
-    }
-    
-    @IBAction func logout() {
+        options?.autoCheckIn = sender.on
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

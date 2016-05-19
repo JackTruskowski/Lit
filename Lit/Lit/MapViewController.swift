@@ -16,6 +16,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     // this is the only time we create a LitData object, everyone else has references to this one
     var data: LitData = LitData()
     let serverInstance = Server()
+    var options = Options()
+    var eventCoords: CLLocationCoordinate2D?
     
     @IBOutlet var mapView: MKMapView!
 
@@ -60,6 +62,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             
             //convert address to a location with longitude and latitude: http://mhorga.org/2015/08/14/geocoding-in-ios.html
             geocoding(event.1)
+            
+            
         }
     }
     
@@ -71,7 +75,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
                 let coordinate = location?.coordinate
 
                 let coordinates = CLLocationCoordinate2DMake((coordinate?.latitude)!, (coordinate?.longitude)!)
-                let dropPin = MapPin(coordinate: coordinates, title: nil, subtitle: nil, event: event)
+                let dropPin = MapPin(coordinate: coordinates ?? CLLocationCoordinate2D(), title: nil, subtitle: nil, event: event)
+                let eventLoc = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
+                //print("#### distance: \(self.mapView.userLocation.location?.distanceFromLocation(eventLoc)), radius: \(self.options.radius)")
+                // if it's out of radius
+                //if self.mapView.userLocation.location?.distanceFromLocation(eventLoc) > self.options.radius{return}
+                // if it starts before
+                // if it ends after
                 self.mapView.addAnnotation(dropPin)
             }
         }
@@ -93,6 +103,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
     //TODO: It would be nice to do this immediately, but that causes a crash - the user must click the zoom button for now // VIEW DID APPEAR
     func panAndZoomToUserLocation(){
         let userLocation = mapView.userLocation
+        if userLocation.location == nil{return}
         let region = MKCoordinateRegionMakeWithDistance(userLocation.location!.coordinate, 2000, 2000)
         mapView.setRegion(region, animated: true)
     }
@@ -127,17 +138,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UIPopoverPresentat
             if let destination = segue.destinationViewController as? UINavigationController{
                 if let newVC = destination.topViewController as? SidePaneViewController{
                     newVC.data = data
+                    newVC.options = options
                 }
             }
-        }
-    }
-    
-    override func didMoveToParentViewController(parent: UIViewController?) {
-        print("hitting back button")
-
-        if let destination = parent as? SidePaneViewController{
-            print("got destination")
-                destination.data = data
         }
     }
 

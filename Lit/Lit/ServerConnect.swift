@@ -12,7 +12,7 @@ import MapKit
 
 class Server {
     
-    var valuesFromDatabase : NSArray = []
+    
     var mapData: LitData?
     
     func refreshAllDataFromServer(){
@@ -21,6 +21,7 @@ class Server {
     }
     
     func refreshEventsFromServer(){
+        var valuesFromDatabase : NSArray = []
     
         print("refreshing events from the server")
         
@@ -32,6 +33,9 @@ class Server {
         mapData?.eventsList.removeAll()
         
         for i in 0 ..< valuesFromDatabase.count{
+            print("==================")
+            print(valuesFromDatabase)
+            print("==================")
             //get ids
             let eventIDstr = valuesFromDatabase[i]["EventID"] as? String
             let hostIDstr = valuesFromDatabase[i]["HostID"] as? String
@@ -39,9 +43,7 @@ class Server {
             let eventID = Int(eventIDstr!)
             let hostID = Int(hostIDstr!)
             let venueID = Int(venueIDstr!)
-            print("==================")
-            print(valuesFromDatabase)
-            print("==================")
+            
             //get title and description
             let eventTitle = valuesFromDatabase[i]["Title"] as? String
             let eventDescription = valuesFromDatabase[i]["Description"] as? String
@@ -83,15 +85,19 @@ class Server {
                 continue
             }
             
+            
             //make an event
             let newEvent = Event(eventTitle: eventTitle!, eventStartTime: startTimeDate!, eventEndTime: endTimeDate!, eventSummary: eventDescription!, eventVenue: aVenue!, eventHost: aHost!, eventID: eventID!)
             
             // add event
             mapData?.addEvent(newEvent)
+            aVenue?.events.append(newEvent)
+            
         }
     }
     
     func refreshVenuesFromServer(){
+        var valuesFromDatabase : NSArray = []
         
         print("refreshing venues from the server")
         
@@ -229,6 +235,7 @@ class Server {
     }
     
     func getUser(userID: Int)->User? {
+        var valuesFromDatabase : NSArray = []
         //grab all data -- TODO: optimization could just query the database for the 1 specific user
         let url = NSURL(string: "http://52.201.225.102/gethost.php")
         let data = NSData(contentsOfURL: url!)

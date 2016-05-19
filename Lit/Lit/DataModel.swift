@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import MapKit
+
 
 class LitData {
     var eventsList: [Int:Event] = [:]

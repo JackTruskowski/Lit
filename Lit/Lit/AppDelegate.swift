@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             locationManager = CLLocationManager()
             locationManager?.requestWhenInUseAuthorization()
             
+            srandom(arc4random())
+            
             return true
     }
     

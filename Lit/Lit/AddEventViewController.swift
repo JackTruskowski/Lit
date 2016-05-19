@@ -86,22 +86,18 @@ class AddEventViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         for v in (data?.venuesList)!{
             venuesList.append(v.1)
         }
+        venuePicker.reloadAllComponents()
         
-        if selectedVenue == nil && venuesList.count > 0{
+        if selectedVenue == nil && venuesList.isEmpty == false{
             venuePicker.selectRow(0, inComponent: 0, animated: true)
             selectedVenue = venuesList[0]
-        }
-        
-        //find the venue in the venue list
-        if selectedVenue != nil{
-            venuePicker.selectRow((venuesList.indexOf({$0 === selectedVenue!})) ?? 0, inComponent: 0, animated: true)
+        } else if selectedVenue != nil{
+            let rowToSelect = venuesList.indexOf({$0.ID == selectedVenue!.ID})
+            venuePicker.selectRow(rowToSelect ?? 0, inComponent: 0, animated: true)
         }
         
         
-        venuePicker.reloadAllComponents()
-        if venuesList.isEmpty == false {
-            venuePicker.selectRow(0, inComponent: 0, animated: true)
-        }
+        
     }
     // MARK: - functions for venuePicker/UIPickerView -> source: http://codewithchris.com/uipickerview-example/
     

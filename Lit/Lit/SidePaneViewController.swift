@@ -10,6 +10,7 @@ import UIKit
 
 class SidePaneViewController: UIViewController {
     var data: LitData?
+    var options: Options?
     var userID: Int? // we will randomly generate this on user creation
     
     @IBOutlet weak var userName: UILabel!
@@ -50,6 +51,7 @@ class SidePaneViewController: UIViewController {
         if segue.identifier == "EmbedSegue" {
             if let destination = segue.destinationViewController as? OptionsViewController {
                 destination.data = data
+                destination.options = options
             }
         } else if segue.identifier == "editUser" {
             if let destination = segue.destinationViewController as? SettingsViewController {
